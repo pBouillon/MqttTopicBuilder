@@ -9,7 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder
+namespace MqttTopicBuilder.MqttUtils
 {
     /// <summary>
     /// TODO: doc

@@ -9,8 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+
 namespace MqttTopicBuilder
 {
+    using MqttUtils;
     using System.Linq;
     
     /// <summary>
@@ -27,7 +29,7 @@ namespace MqttTopicBuilder
         /// <summary>
         /// TODO: doc
         /// </summary>
-        public string Path { get; private set; }
+        public string Path { get; }
 
         /// <summary>
         /// TODO: doc

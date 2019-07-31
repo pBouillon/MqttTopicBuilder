@@ -9,13 +9,18 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder
+namespace MqttTopicBuilder.MqttUtils
 {
     /// <summary>
     /// TODO: doc
     /// </summary>
     public class Topics
     {
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        public const int MaxLength = 32;
+
         /// <summary>
         /// TODO: doc
         /// </summary>
