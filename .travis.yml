@@ -22,8 +22,8 @@ os:
 
 script:
   - dotnet restore 
-  - dotnet build MqttTopicBuilder.sln
+  - dotnet build MqttTopicBuilder/MqttTopicBuilder.sln
 
-solution: MqttTopicBuilder.sln
+solution: MqttTopicBuilder/MqttTopicBuilder.sln
 
 sudo: required
