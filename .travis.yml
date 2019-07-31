@@ -21,8 +21,8 @@ os:
   - linux  # windows is not currently supported | see https://travis-ci.community/t/net-core-versions/2613
 
 script:
-  - dotnet build MqttTopicBuilder/MqttTopicBuilder.sln
+  - dotnet build MqttTopicBuilder.sln
 
-solution: MqttTopicBuilder/MqttTopicBuilder.sln
+solution: MqttTopicBuilder.sln
 
 sudo: required
