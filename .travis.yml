@@ -1,0 +1,29 @@
+# warning: C# support for Travis-CI is community maintained.
+
+# see https://docs.travis-ci.com/user/languages/csharp/
+# see https://github.com/travis-ci/travis-ci/issues/9703
+
+dist: xenial
+
+dotnet: 2.2.203
+
+install:
+  - wget -q https://packages.microsoft.com/config/ubuntu/18.10/packages-microsoft-prod.deb
+  - sudo dpkg -i packages-microsoft-prod.deb
+  - sudo apt-get install apt-transport-https
+  - sudo apt-get update
+
+language: csharp
+
+mono: none
+
+os:
+  - linux  # windows is not currently supported | see https://travis-ci.community/t/net-core-versions/2613
+
+script:
+  - dotnet restore Blog.sln
+  - dotnet build
+
+solution: MqttTopicBuilder.sln
+
+sudo: required
