@@ -21,7 +21,7 @@ os:
   - linux  # windows is not currently supported | see https://travis-ci.community/t/net-core-versions/2613
 
 script:
-  - dotnet restore Blog.sln
+  - dotnet restore MqttTopicBuilder.sln
   - dotnet build
 
 solution: MqttTopicBuilder.sln
