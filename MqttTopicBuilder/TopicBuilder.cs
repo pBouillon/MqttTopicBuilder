@@ -12,7 +12,7 @@
 namespace MqttTopicBuilder
 {
     using MqttUtils;
-    using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// TODO: doc
@@ -22,30 +22,83 @@ namespace MqttTopicBuilder
         /// <summary>
         /// TODO: doc
         /// </summary>
+        private bool IsAppendingForbidden
+            => StagedTopics
+                .Peek()
+                .Equals(Wildcards.MultiLevel.ToString());
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        public bool IsEmpty
+            => StagedTopics.Count == 0;
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
         public int Level
             => StagedTopics.Count;
 
         /// <summary>
         /// TODO: doc
         /// </summary>
-        public Queue StagedTopics { get; }
+        public Queue<string> StagedTopics { get; }
 
         /// <summary>
         /// TODO: doc
         /// </summary>
-        // TODO: str initialization
+        /// <param name="maxLength"></param>
         public TopicBuilder(int maxLength = Topics.MaxLength)
         {
-            StagedTopics = new Queue();
+            StagedTopics = new Queue<string>(maxLength);
         }
 
         /// <summary>
         /// TODO: doc
         /// </summary>
+        /// <param name="topicBase"></param>
+        /// <param name="maxLength"></param>
+        public TopicBuilder(string topicBase, int maxLength = Topics.MaxLength)
+            : this(maxLength)
+        {
+            foreach (var slice in topicBase.Split(Topics.Separator))
+            {
+                AddTopic(slice);
+            }
+        }
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        /// <param name="topic"></param>
         /// <returns></returns>
         public TopicBuilder AddTopic(string topic)
         {
-            // TODO
+            CheckAppendingAllowance();
+
+            // A topic can't be blank
+            if (string.IsNullOrEmpty(topic))
+            {
+                // TODO: raise exception
+            }
+
+            // Manually adding separators is forbidden
+            if (topic.Contains(Topics.Separator))
+            {
+                // TODO: raise exception
+            }
+
+            // Wildcard must only be used to denote a level and 
+            // shouldn't be used to denote multiple characters
+            if (topic.Length > 1 
+                && (topic.Contains(Wildcards.MultiLevel)
+                || topic.Contains(Wildcards.SingleLevel)))
+            {
+                // TODO: raise exception
+            }
+
+            StagedTopics.Enqueue(topic);
+
             return this;
         }
 
@@ -55,7 +108,11 @@ namespace MqttTopicBuilder
         /// <returns></returns>
         public TopicBuilder AddWildcardSingleLevel()
         {
-            // TODO
+            CheckAppendingAllowance();
+
+            StagedTopics.Enqueue(
+                Wildcards.SingleLevel.ToString());
+
             return this;
         }
 
@@ -65,8 +122,37 @@ namespace MqttTopicBuilder
         /// <returns></returns>
         public TopicBuilder AddWildcardMultiLevel()
         {
-            // TODO
+            CheckAppendingAllowance();
+
+            StagedTopics.Enqueue(
+                Wildcards.MultiLevel.ToString());
+
             return this;
+        }
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        /// <returns></returns>
+        public Topic Build()
+        {
+            // An empty builder will result in the construction of the smallest topic possible
+            var generatedTopic = IsEmpty
+                ? Topics.Separator.ToString()
+                : string.Join(Topics.Separator, StagedTopics);
+
+            return new Topic(generatedTopic);
+        }
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        private void CheckAppendingAllowance()
+        {
+            if (!IsAppendingForbidden)
+            {
+                // TODO: raise exception
+            }
         }
     }
 }
