@@ -42,10 +42,23 @@ namespace MqttTopicBuilder
         /// TODO: doc
         /// </summary>
         /// <param name="maxLength"></param>
-        // TODO: str initialization
         public TopicBuilder(int maxLength = Topics.MaxLength)
         {
             StagedTopics = new Queue<string>(maxLength);
+        }
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        /// <param name="topicBase"></param>
+        /// <param name="maxLength"></param>
+        public TopicBuilder(string topicBase, int maxLength = Topics.MaxLength)
+            : this(maxLength)
+        {
+            foreach (var slice in topicBase.Split(Topics.Separator))
+            {
+                AddTopic(slice);
+            }
         }
 
         /// <summary>
@@ -57,13 +70,26 @@ namespace MqttTopicBuilder
         {
             CheckAppendingAllowance();
 
+            // A topic can't be blank
+            if (string.IsNullOrEmpty(topic))
+            {
+                // TODO: raise exception
+            }
+
             // Manually adding separators is forbidden
             if (topic.Contains(Topics.Separator))
             {
                 // TODO: raise exception
             }
 
-            // TODO: check for patterns as '##', '#+', etc.
+            // Wildcard must only be used to denote a level and 
+            // shouldn't be used to denote multiple characters
+            if (topic.Length > 1 
+                && (topic.Contains(Wildcards.MultiLevel)
+                || topic.Contains(Wildcards.SingleLevel)))
+            {
+                // TODO: raise exception
+            }
 
             StagedTopics.Enqueue(topic);
 
