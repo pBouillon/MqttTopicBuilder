@@ -12,7 +12,6 @@
 namespace MqttTopicBuilder
 {
     using MqttUtils;
-    using System.Linq;
     
     /// <summary>
     /// TODO: doc
@@ -22,8 +21,16 @@ namespace MqttTopicBuilder
         /// <summary>
         /// TODO: doc
         /// </summary>
-        public int Level 
-            => Path.Count(_ => _.Equals(Topics.Separator));
+        public bool IsPathEmpty
+            => Path.Length == 0;
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        public int Level
+            => IsPathEmpty
+                ? 0
+                : Path.Split(Topics.Separator).Length;
 
         /// <summary>
         /// TODO: doc
@@ -36,6 +43,19 @@ namespace MqttTopicBuilder
         public Topic(string path)
         {
             Path = path;
+        }
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        /// <param name="toNormalize"></param>
+        /// <returns></returns>
+        public static string Normalize(string toNormalize)
+        {
+            return toNormalize.Replace(" ", string.Empty)
+                .Replace(Topics.Separator.ToString(), string.Empty)
+                .Replace(Wildcards.MultiLevel.ToString(), string.Empty)
+                .Replace(Wildcards.SingleLevel.ToString(), string.Empty);
         }
 
         /// <summary>
