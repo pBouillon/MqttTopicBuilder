@@ -22,10 +22,16 @@ namespace MqttTopicBuilder
         /// <summary>
         /// TODO: doc
         /// </summary>
-        private bool isAppendingBlocked
+        private bool IsAppendingForbidden
             => StagedTopics
                 .Peek()
                 .Equals(Wildcards.MultiLevel.ToString());
+
+        /// <summary>
+        /// TODO: doc
+        /// </summary>
+        public bool IsEmpty
+            => StagedTopics.Count == 0;
 
         /// <summary>
         /// TODO: doc
@@ -131,7 +137,7 @@ namespace MqttTopicBuilder
         public Topic Build()
         {
             // An empty builder will result in the construction of the smallest topic possible
-            var generatedTopic = StagedTopics.Count == 0
+            var generatedTopic = IsEmpty
                 ? Topics.Separator.ToString()
                 : string.Join(Topics.Separator, StagedTopics);
 
@@ -143,7 +149,7 @@ namespace MqttTopicBuilder
         /// </summary>
         private void CheckAppendingAllowance()
         {
-            if (!isAppendingBlocked)
+            if (!IsAppendingForbidden)
             {
                 // TODO: raise exception
             }
