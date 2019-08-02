@@ -23,7 +23,8 @@ namespace MqttTopicBuilder
         /// TODO: doc
         /// </summary>
         private bool IsAppendingForbidden
-            => StagedTopics
+            => !IsEmpty 
+            && StagedTopics
                 .Peek()
                 .Equals(Wildcards.MultiLevel.ToString());
 
