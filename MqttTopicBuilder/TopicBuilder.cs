@@ -11,9 +11,10 @@
 
 namespace MqttTopicBuilder
 {
-    using MqttTopicBuilder.Exceptions;
+    using Exceptions;
     using MqttUtils;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// TODO: doc
@@ -26,7 +27,7 @@ namespace MqttTopicBuilder
         private bool IsAppendingForbidden
             => !IsEmpty 
             && StagedTopics
-                .Peek()
+                .()
                 .Equals(Wildcards.MultiLevel.ToString());
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace MqttTopicBuilder
             // Manually adding separators is forbidden
             if (topic.Contains(Topics.Separator))
             {
-                // TODO: raise exception
+                throw new InvalidTopicException("A topic should not contains a separator");
             }
 
             // Wildcard must only be used to denote a level and 
@@ -97,7 +98,7 @@ namespace MqttTopicBuilder
                 && (topic.Contains(Wildcards.MultiLevel)
                 || topic.Contains(Wildcards.SingleLevel)))
             {
-                // TODO: raise exception
+                throw new InvalidTopicException("A topic should not contains a wildcard in its name");
             }
 
             StagedTopics.Enqueue(topic);
@@ -152,9 +153,9 @@ namespace MqttTopicBuilder
         /// </summary>
         private void CheckAppendingAllowance()
         {
-            if (!IsAppendingForbidden)
+            if (IsAppendingForbidden)
             {
-                // TODO: raise exception
+                throw new IllegalTopicConstructionException();
             }
         }
     }

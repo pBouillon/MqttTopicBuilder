@@ -12,30 +12,31 @@
 namespace MqttTopicBuilder.Exceptions
 {
     using System;
-
+    
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseException : Exception
+    public class InvalidTopicException : BaseException
     {
         /// <summary>
-        /// 
+        /// TODO
         /// </summary>
-        protected BaseException() { }
+        public InvalidTopicException()
+            : base(ExceptionMessages.InvalidTopicException) { }
 
         /// <summary>
-        /// 
+        /// TODO
         /// </summary>
         /// <param name="message"></param>
-        protected BaseException(string message)
-            : base($"{message}.") { }
+        public InvalidTopicException(string message)
+            : base($"{ExceptionMessages.InvalidTopicException}: {message}") { }
 
         /// <summary>
-        /// 
+        /// TODO
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        protected BaseException(string message, Exception inner)
-            : base($"{message}.", inner) { }
+        public InvalidTopicException(string message, Exception inner)
+            : base($"{ExceptionMessages.InvalidTopicException}: {message}", inner) { }
     }
 }

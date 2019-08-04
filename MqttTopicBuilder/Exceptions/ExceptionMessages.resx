@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EmptyTopicException" xml:space="preserve">
-    <value>A topic can't be blank or empty.</value>
+    <value>A topic can't be blank or empty</value>
+  </data>
+  <data name="IllegalTopicConstructionException" xml:space="preserve">
+    <value>Impossible to add a topic at this place</value>
+  </data>
+  <data name="InvalidTopicException" xml:space="preserve">
+    <value>Invalid topic name</value>
   </data>
 </root>
