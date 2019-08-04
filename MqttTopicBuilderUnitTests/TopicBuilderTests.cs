@@ -19,10 +19,34 @@ namespace MqttTopicBuilderUnitTests
     public class TopicBuilderTests
     {
         /// <summary>
-        /// 
+        /// AutoFixture's object to generate fixtures
         /// </summary>
+        /// <see cref="Fixture"/>
         private readonly Fixture fixture = new Fixture();
 
+        /// <summary>
+        /// Check the builder's ability to add a valid topic
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddTopic_NewValidTopic()
+        {
+            // Arrange
+            var topic = fixture.Create<string>();
+            topic = Topic.Normalize(topic);
+
+            var builder = new TopicBuilder();
+
+            // Act
+            builder.AddTopic(topic);
+
+            // Assert
+            builder.Level.Should()
+                .Be(1, "because exactly one element should have been added");
+        }
+
+        /// <summary>
+        /// Check the initializations when the default constructor is called
+        /// </summary>
         [Fact]
         public void TopicBuilder_Constructor_Default()
         {
@@ -37,6 +61,9 @@ namespace MqttTopicBuilderUnitTests
                 .Be(0, "because the empty builder shouldn't be of any level");
         }
 
+        /// <summary>
+        /// Check the initalizations when the constructor is called with a specified stack size
+        /// </summary>
         [Fact]
         public void TopicBuilder_Constructor_SpecifiedQueueSize()
         {
@@ -52,24 +79,6 @@ namespace MqttTopicBuilderUnitTests
 
             builder.Level.Should()
                 .Be(0, "because the empty builder shouldn't be of any level");
-        }
-
-        [Fact]
-        public void TopicBuilder_AddTopic_NewValidTopic()
-        {
-            // Arrange
-            var topic = fixture.Create<string>();
-            topic = Topic.Normalize(topic);
-
-            var builder = new TopicBuilder();
-
-            // Act
-            builder.AddTopic(topic);
-
-            // Assert
-            builder.Level.Should()
-                .Be(1,
-                    "because exactly one element should have been added");
         }
     }
 }
