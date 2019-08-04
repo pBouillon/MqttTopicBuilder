@@ -22,6 +22,7 @@ os:
 
 script:
   - dotnet build MqttTopicBuilder.sln
+  - dotnet test MqttTopicBuilder.sln
 
 solution: MqttTopicBuilder.sln
 
