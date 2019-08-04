@@ -27,7 +27,7 @@ namespace MqttTopicBuilder
         private bool IsAppendingForbidden
             => !IsEmpty 
             && StagedTopics
-                .()
+                .Last()
                 .Equals(Wildcards.MultiLevel.ToString());
 
         /// <summary>
