@@ -14,6 +14,8 @@ namespace MqttTopicBuilderUnitTests
     using AutoFixture;
     using FluentAssertions;
     using MqttTopicBuilder;
+    using MqttTopicBuilder.Exceptions;
+    using System;
     using Xunit;
 
     public class TopicBuilderTests
@@ -25,10 +27,52 @@ namespace MqttTopicBuilderUnitTests
         private readonly Fixture fixture = new Fixture();
 
         /// <summary>
+        /// 
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddTopic_BlankTopic()
+        {
+            // Arrange
+            var topic = " ";
+            var builder = new TopicBuilder();
+
+            // Act
+            Action addBlankTopic = ()
+                => builder.AddTopic(topic);
+
+            // Assert
+            addBlankTopic.Should()
+                .Throw<EmptyTopicException>()
+                .WithMessage("A topic can't be blank or empty.",
+                    "because a topic made of spaces added should result in an exception");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddTopic_EmptyTopic()
+        {
+            // Arrange
+            var topic = string.Empty;
+            var builder = new TopicBuilder();
+
+            // Act
+            Action addEmptyTopic = ()
+                => builder.AddTopic(topic);
+
+            // Assert
+            addEmptyTopic.Should()
+                .Throw<EmptyTopicException>()
+                .WithMessage("A topic can't be blank or empty.",
+                    "because an empty topic added should result in an exception");
+        }
+
+        /// <summary>
         /// Check the builder's ability to add a valid topic
         /// </summary>
         [Fact]
-        public void TopicBuilder_AddTopic_NewValidTopic()
+        public void TopicBuilder_AddTopic_ValidTopic()
         {
             // Arrange
             var topic = fixture.Create<string>();

@@ -59,5 +59,14 @@ namespace MqttTopicBuilder.Exceptions {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à A topic can&apos;t be blank or empty..
+        /// </summary>
+        internal static string EmptyTopicException {
+            get {
+                return ResourceManager.GetString("EmptyTopicException", resourceCulture);
+            }
+        }
     }
 }

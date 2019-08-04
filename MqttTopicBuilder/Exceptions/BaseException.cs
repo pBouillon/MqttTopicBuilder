@@ -13,7 +13,7 @@ namespace MqttTopicBuilder.Exceptions
 {
     using System;
 
-    public class BaseException : Exception
+    public abstract class BaseException : Exception
     {
         public BaseException() { }
 

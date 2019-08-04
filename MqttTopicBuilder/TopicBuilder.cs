@@ -11,6 +11,7 @@
 
 namespace MqttTopicBuilder
 {
+    using MqttTopicBuilder.Exceptions;
     using MqttUtils;
     using System.Collections.Generic;
 
@@ -78,9 +79,10 @@ namespace MqttTopicBuilder
             CheckAppendingAllowance();
 
             // A topic can't be blank
-            if (string.IsNullOrEmpty(topic))
+            if (string.IsNullOrEmpty(topic)
+                || string.IsNullOrWhiteSpace(topic))
             {
-                // TODO: raise exception
+                throw new EmptyTopicException();
             }
 
             // Manually adding separators is forbidden
