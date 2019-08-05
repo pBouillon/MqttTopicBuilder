@@ -12,17 +12,17 @@
 namespace MqttTopicBuilder.MqttUtils
 {
     /// <summary>
-    /// TODO: doc
+    /// References MQTT topic's constants
     /// </summary>
     public class Topics
     {
         /// <summary>
-        /// TODO: doc
+        /// Default maximum topic length (level)
         /// </summary>
         public const int MaxLength = 32;
 
         /// <summary>
-        /// TODO: doc
+        /// Default MQTT topic's separator
         /// </summary>
         public const char Separator = '/';
     }

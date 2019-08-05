@@ -9,16 +9,15 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Text;
-using MqttTopicBuilder.MqttUtils;
-
 namespace MqttTopicBuilderUnitTests
 {
     using AutoFixture;
     using FluentAssertions;
     using MqttTopicBuilder;
     using MqttTopicBuilder.Exceptions;
+    using MqttTopicBuilder.MqttUtils;
     using System;
+    using System.Text;
     using Xunit;
 
     public class TopicBuilderTests
@@ -72,7 +71,7 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
-        /// 
+        /// Check if an exception is correctly raised on the addition of a topic after the builder locked it
         /// </summary>
         [Fact]
         public void TopicBuilder_AddTopic_IllegalTopicAppending()
@@ -188,6 +187,24 @@ namespace MqttTopicBuilderUnitTests
                 .Throw<InvalidTopicException>()
                 .WithMessage("Invalid topic name: A topic should not contains a wildcard in its name.",
                     "because a topic containing a wildcard (single level) should result in an exception.");
+        }
+
+        /// <summary>
+        /// Check if the smallest topic is built when the builder does not contains any data
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_Build_BuildFromEmptyTopic()
+        {
+            // Arrange
+            var builder = new TopicBuilder();
+
+            // Act
+            var result = builder.Build();
+
+            // Assert
+            result.Path.Should()
+                .Be(Topics.Separator.ToString(),
+                    "because a builder with no topic staged should build the smallest one");
         }
 
         /// <summary>
