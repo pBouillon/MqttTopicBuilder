@@ -14,28 +14,28 @@ namespace MqttTopicBuilder.Exceptions
     using System;
     
     /// <summary>
-    /// 
+    /// Exception thrown on an operation on an invalid topic
     /// </summary>
     public class InvalidTopicException : BaseException
     {
         /// <summary>
-        /// TODO
+        /// Default constructor
         /// </summary>
         public InvalidTopicException()
             : base(ExceptionMessages.InvalidTopicException) { }
 
         /// <summary>
-        /// TODO
+        /// Custom constructor providing context specificities
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message to provide along with the exception</param>
         public InvalidTopicException(string message)
             : base($"{ExceptionMessages.InvalidTopicException}: {message}") { }
 
         /// <summary>
-        /// TODO
+        /// Custom constructor providing more precise context specificities
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <param name="message">Message to provide along with the exception</param>
+        /// <param name="inner">Inner exception thrown</param>
         public InvalidTopicException(string message, Exception inner)
             : base($"{ExceptionMessages.InvalidTopicException}: {message}", inner) { }
     }

@@ -17,12 +17,14 @@ namespace MqttTopicBuilder
     using System.Linq;
 
     /// <summary>
-    /// TODO: doc
+    /// Implements a builder to construct topics
     /// </summary>
     public class TopicBuilder
     {
         /// <summary>
-        /// TODO: doc
+        /// Check if the appending is forbidden
+        /// Appending is locked if the queue is not empty
+        /// And if the last element is not a multi-level wildcard
         /// </summary>
         private bool IsAppendingForbidden
             => !IsEmpty 
@@ -31,36 +33,36 @@ namespace MqttTopicBuilder
                 .Equals(Wildcards.MultiLevel.ToString());
 
         /// <summary>
-        /// TODO: doc
+        /// Check if there is any staged topics
         /// </summary>
         public bool IsEmpty
             => StagedTopics.Count == 0;
 
         /// <summary>
-        /// TODO: doc
+        /// Count all topics added
         /// </summary>
         public int Level
             => StagedTopics.Count;
 
         /// <summary>
-        /// TODO: doc
+        /// The staged topics who will result in the topic's path
         /// </summary>
         public Queue<string> StagedTopics { get; }
 
         /// <summary>
-        /// TODO: doc
+        /// Default constructor
         /// </summary>
-        /// <param name="maxLength"></param>
+        /// <param name="maxLength">Maximum topics to add allowed</param>
         public TopicBuilder(int maxLength = Topics.MaxLength)
         {
             StagedTopics = new Queue<string>(maxLength);
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Constructor to initialize the builder with an existing topic
         /// </summary>
-        /// <param name="topicBase"></param>
-        /// <param name="maxLength"></param>
+        /// <param name="topicBase">The existing topic to add to the staged ones</param>
+        /// <param name="maxLength">Maximum topics to add allowed</param>
         public TopicBuilder(string topicBase, int maxLength = Topics.MaxLength)
             : this(maxLength)
         {
@@ -71,10 +73,12 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Add a topic to the staged ones
         /// </summary>
-        /// <param name="topic"></param>
-        /// <returns></returns>
+        /// <param name="topic">Topic to add</param>
+        /// <exception cref="EmptyTopicException">Raised if the topic is blank or empty</exception>
+        /// <exception cref="InvalidTopicException">Raised if the topic is malformed</exception>
+        /// <returns>The builder itself (Fluent pattern)</returns>
         public TopicBuilder AddTopic(string topic)
         {
             CheckAppendingAllowance();
@@ -107,9 +111,9 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Add a single-level wildcard to the staged topics
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The builder itself (Fluent pattern)</returns>
         public TopicBuilder AddWildcardSingleLevel()
         {
             CheckAppendingAllowance();
@@ -121,9 +125,9 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Add a multi-level wildcard to the staged topics
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The builder itself (Fluent pattern)</returns>
         public TopicBuilder AddWildcardMultiLevel()
         {
             CheckAppendingAllowance();
@@ -135,12 +139,13 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Build the topic from the staged ones
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The newly formed topic as a Topic object</returns>
+        /// <see cref="Topic"/>
         public Topic Build()
         {
-            // An empty builder will result in the construction of the smallest topic possible
+            // An empty builder will result in the construction of the smallest topic possible ('/')
             var generatedTopic = IsEmpty
                 ? Topics.Separator.ToString()
                 : string.Join(Topics.Separator, StagedTopics);
@@ -149,7 +154,7 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Check the ability for the user to add a new topic
         /// </summary>
         private void CheckAppendingAllowance()
         {

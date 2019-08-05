@@ -14,28 +14,28 @@ namespace MqttTopicBuilder.Exceptions
     using System;
 
     /// <summary>
-    /// TODO
+    /// Exception thrown on an operation on an empty Topic
     /// </summary>
     public class EmptyTopicException : BaseException
     {
         /// <summary>
-        /// TODO
+        /// Default constructor
         /// </summary>
         public EmptyTopicException()
             : base(ExceptionMessages.EmptyTopicException) { }
 
         /// <summary>
-        /// TODO
+        /// Custom constructor providing context specificities
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message to provide along with the exception</param>
         public EmptyTopicException(string message)
             : base($"{ExceptionMessages.EmptyTopicException}: {message}") { }
 
         /// <summary>
-        /// TODO
+        /// Custom constructor providing more precise context specificities
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <param name="message">Message to provide along with the exception</param>
+        /// <param name="inner">Inner exception thrown</param>
         public EmptyTopicException(string message, Exception inner)
             : base($"{ExceptionMessages.EmptyTopicException}: {message}", inner) { }
     }

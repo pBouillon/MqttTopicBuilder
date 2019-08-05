@@ -14,18 +14,18 @@ namespace MqttTopicBuilder
     using MqttUtils;
     
     /// <summary>
-    /// TODO: doc
+    /// Stores data and logic belonging to MQTT topics
     /// </summary>
     public class Topic
     {
         /// <summary>
-        /// TODO: doc
+        /// Check if the topic is empty
         /// </summary>
         public bool IsPathEmpty
             => Path.Length == 0;
 
         /// <summary>
-        /// TODO: doc
+        /// Get the path level (0 if empty)
         /// </summary>
         public int Level
             => IsPathEmpty
@@ -33,23 +33,24 @@ namespace MqttTopicBuilder
                 : Path.Split(Topics.Separator).Length;
 
         /// <summary>
-        /// TODO: doc
+        /// Get the MQTT topic path
         /// </summary>
         public string Path { get; }
 
         /// <summary>
-        /// TODO: doc
+        /// Default constructor
         /// </summary>
+        /// <param name="path">The MQTT topic's path</param>
         public Topic(string path)
         {
             Path = path;
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Remove all illegal characters in a topic
         /// </summary>
-        /// <param name="toNormalize"></param>
-        /// <returns></returns>
+        /// <param name="toNormalize">Topic to format</param>
+        /// <returns>The sanitized topic</returns>
         public static string Normalize(string toNormalize)
         {
             return toNormalize.Replace(" ", string.Empty)
@@ -59,9 +60,9 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// TODO: doc
+        /// Returns the topic's path
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The topic's path</returns>
         public override string ToString()
         {
             return Path;

@@ -19,6 +19,9 @@ namespace MqttTopicBuilderUnitTests
 
     public class TopicTests
     {
+        /// <summary>
+        /// Check if the object correctly retrieves the topic's level
+        /// </summary>
         [Fact]
         public void Topic_Level_OneOnSingleTopic()
         {
@@ -35,6 +38,9 @@ namespace MqttTopicBuilderUnitTests
                     "because a single level topic without '/' should be considered as a level one topic");
         }
 
+        /// <summary>
+        /// Check if the topic correctly retrieves the topic level on an empty topic path
+        /// </summary>
         [Fact]
         public void Topic_Level_ZeroOnEmptyTopic()
         {
@@ -51,6 +57,9 @@ namespace MqttTopicBuilderUnitTests
                     "because an empty string must result in a topic of level 0");
         }
 
+        /// <summary>
+        /// Check if no error is thrown or further modification performed on the sanitizing of an empty string
+        /// </summary>
         [Fact]
         public void Topic_Normalize_EmptyString()
         {
@@ -67,6 +76,9 @@ namespace MqttTopicBuilderUnitTests
                     "because an empty string can't be normalized more than it is");
         }
 
+        /// <summary>
+        /// Check if a topic containing separators is correctly sanitized
+        /// </summary>
         [Fact]
         public void Topic_Normalize_RemoveSeparator()
         {
@@ -89,6 +101,9 @@ namespace MqttTopicBuilderUnitTests
                     "because all topic's separators must have been cleared");
         }
 
+        /// <summary>
+        /// Check if a topic containing spaces is correctly sanitized
+        /// </summary>
         [Fact]
         public void Topic_Normalize_RemoveSpaces()
         {
@@ -112,6 +127,9 @@ namespace MqttTopicBuilderUnitTests
                     "because all spaces must have been cleared");
         }
 
+        /// <summary>
+        /// Check if a topic containing illegal symbols is correctly sanitized
+        /// </summary>
         [Fact]
         public void Topic_Normalize_RemoveUnexpectedSymbols()
         {
@@ -136,6 +154,9 @@ namespace MqttTopicBuilderUnitTests
                     "because all wildcards and separators must have been cleared");
         }
 
+        /// <summary>
+        /// Check if a topic containing wildcards is correctly sanitized
+        /// </summary>
         [Fact]
         public void Topic_Normalize_RemoveWildcards()
         {

@@ -14,28 +14,28 @@ namespace MqttTopicBuilder.Exceptions
     using System;
 
     /// <summary>
-    /// TODO
+    /// Exception thwon on the attempt to add an illegal topic operation
     /// </summary>
     public class IllegalTopicConstructionException : BaseException
     {
         /// <summary>
-        /// TODO
+        /// Default constructor
         /// </summary>
         public IllegalTopicConstructionException()
             : base(ExceptionMessages.IllegalTopicConstructionException) { }
 
         /// <summary>
-        /// TODO
+        /// Custom constructor providing context specificities
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message to provide along with the exception</param>
         public IllegalTopicConstructionException(string message)
             : base($"{ExceptionMessages.IllegalTopicConstructionException}: {message}") { }
 
         /// <summary>
-        /// TODO
+        /// Custom constructor providing more precise context specificities
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <param name="message">Message to provide along with the exception</param>
+        /// <param name="inner">Inner exception thrown</param>
         public IllegalTopicConstructionException(string message, Exception inner)
             : base($"{ExceptionMessages.IllegalTopicConstructionException}: {message}", inner) { }
     }

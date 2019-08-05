@@ -14,27 +14,27 @@ namespace MqttTopicBuilder.Exceptions
     using System;
 
     /// <summary>
-    /// 
+    /// Custom exception base with default constructors
     /// </summary>
     public abstract class BaseException : Exception
     {
         /// <summary>
-        /// 
+        /// Default constructor
         /// </summary>
         protected BaseException() { }
 
         /// <summary>
-        /// 
+        /// Custom constructor providing context specificities
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message to provide along with the exception</param>
         protected BaseException(string message)
             : base($"{message}.") { }
 
         /// <summary>
-        /// 
+        /// Custom constructor providing more precise context specificities
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <param name="message">Message to provide along with the exception</param>
+        /// <param name="inner">Inner exception thrown</param>
         protected BaseException(string message, Exception inner)
             : base($"{message}.", inner) { }
     }

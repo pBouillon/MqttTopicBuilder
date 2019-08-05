@@ -12,17 +12,17 @@
 namespace MqttTopicBuilder.MqttUtils
 {
     /// <summary>
-    /// TODO: doc
+    /// References MQTT's wildcard constants
     /// </summary>
     public class Wildcards
     {
         /// <summary>
-        /// TODO: doc
+        /// MQTT's multi-level wildcard
         /// </summary>
         public const char MultiLevel = '#';
 
         /// <summary>
-        /// TODO: doc
+        /// MQTT's single-level wildcard
         /// </summary>
         public const char SingleLevel = '+';
     }
