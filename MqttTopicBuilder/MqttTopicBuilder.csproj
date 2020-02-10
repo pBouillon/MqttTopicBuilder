@@ -6,6 +6,7 @@
     <IsPackable>true</IsPackable>
     <PackageId>MqttTopicBuilder</PackageId>
     <PackageLicenseUrl>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicenseUrl>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder/</PackageProjectUrl>
     <PackageTags>mqtt,topic,topics,mqtt-topics,mqtt-tools</PackageTags>
     <RepositoryType>github</RepositoryType>
