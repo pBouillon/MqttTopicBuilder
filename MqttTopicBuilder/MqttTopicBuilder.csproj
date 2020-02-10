@@ -9,7 +9,6 @@
     <PackageTags>mqtt;topic;topics;mqtt-topics;mqtt-tools</PackageTags>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Title>MqttTopicBuilder</Title>
-    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
