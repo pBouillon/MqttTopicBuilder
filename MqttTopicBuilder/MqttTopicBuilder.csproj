@@ -5,7 +5,11 @@
     <PackageDescription>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</PackageDescription>
     <IsPackable>true</IsPackable>
     <PackageId>MqttTopicBuilder</PackageId>
-    <PackageTags>mqtt;topic;topics;mqtt-topics;mqtt-tools</PackageTags>
+    <PackageLicenseUrl>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder/</PackageProjectUrl>
+    <PackageTags>mqtt,topic,topics,mqtt-topics,mqtt-tools</PackageTags>
+    <RepositoryType>github</RepositoryType>
+    <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder/</RepositoryUrl>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Title>MqttTopicBuilder</Title>
     <Version>1.0.0</Version>
