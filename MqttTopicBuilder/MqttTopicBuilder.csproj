@@ -1,8 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Authors>pbouillon</Authors>
+    <PackageDescription>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</PackageDescription>
+    <IsPackable>true</IsPackable>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageId>MqttTopicBuilder</PackageId>
+    <PackageTags>mqtt;topic;topics;mqtt-topics;mqtt-tools</PackageTags>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Title>MqttTopicBuilder</Title>
+    <Version>1.0.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.2" />
