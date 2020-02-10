@@ -6,18 +6,24 @@ on:
       - master
 
 jobs:
-  deploy:
+  publish:
+    name: push on nuget
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.100
       
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.100
-    
-    - name: Publish nupkg on NuGet packages registry
-      run: |
-        dotnet pack --configuration Release
-        dotnet nuget push "bin/Release/MqttTopicBuilder.1.0.0.nupkg" -k ${{ secrets.NugetApiKey }} -s https://api.nuget.org/v3/index.json
+      # Publish
+      - name: publish on version change
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: Core/Core.csproj # Relative to repository root
+          # VERSION_FILE_PATH: Directory.Build.props # Filepath with version info, relative to repository root. Defaults to project file
+          # VERSION_REGEX: <Version>(.*)<\/Version> # Regex pattern to extract version info in a capturing group
+          TAG_COMMIT: false
+          # TAG_FORMAT: v* # Format of the git tag, [*] gets replaced with version
+          NUGET_KEY: ${{ secrets.NugetApiKey }}
