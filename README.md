@@ -2,6 +2,16 @@
 
 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics.
 
+## Installation
+
+You can find this projet [on NuGet](https://www.nuget.org/packages/MqttTopicBuilder/).
+
+To install it from the command line, use:  
+`~$ dotnet add package MqttTopicBuilder`
+
+or, from the package manager:  
+`Install-Package MqttTopicBuilder -Version 1.0.0`
+
 ## Usage
 
 Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
@@ -38,7 +48,7 @@ but also gather informations about it such as its level.
 
 ## Dependencies
 
-This project is using FluentAssertions for its unit tests.
+This project is using [FluentAssertions](https://fluentassertions.com/) for its unit tests.
 
 ## Contributions
 
