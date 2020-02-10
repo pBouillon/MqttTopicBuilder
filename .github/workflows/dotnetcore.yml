@@ -20,3 +20,8 @@ jobs:
         
     - name: Build with dotnet
       run: dotnet build MqttTopicBuilder.sln --configuration Release
+    
+    - name: Publish nupkg on GitHub packages registry
+      run: |
+        dotnet pack --configuration Release
+        dotnet nuget push "bin/Release/MqttTopicBuilder.1.0.0.nupkg" --source "github"
