@@ -22,4 +22,4 @@ jobs:
       - name: publish on nuget
         run: |
           dotnet pack
-          dotnet nuget push MqttTopicBuilder/bin/Release/MqttTopicBuilder.1.0.0.nupkg -k {{ secrets.NugetApiKey }} -s https://api.nuget.org/v3/index.json
+          dotnet nuget push bin/Release/MqttTopicBuilder.1.0.0.nupkg -k {{ secrets.NugetApiKey }} -s https://api.nuget.org/v3/index.json
