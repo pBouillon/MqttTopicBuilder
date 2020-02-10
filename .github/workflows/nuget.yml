@@ -1,6 +1,8 @@
 name: Push NuGet package
 
 on:
+  check_suite:
+    types: completed
   push:
     branches:
       - master
