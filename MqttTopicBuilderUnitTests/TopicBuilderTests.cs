@@ -44,8 +44,7 @@ namespace MqttTopicBuilderUnitTests
 
             // Assert
             addBlankTopic.Should()
-                .Throw<EmptyTopicException>()
-                .WithMessage("A topic can't be blank or empty.",
+                .Throw<EmptyTopicException>(
                     "because a topic made of spaces added should result in an exception");
         }
 
@@ -65,8 +64,7 @@ namespace MqttTopicBuilderUnitTests
 
             // Assert
             addEmptyTopic.Should()
-                .Throw<EmptyTopicException>()
-                .WithMessage("A topic can't be blank or empty.",
+                .Throw<EmptyTopicException>(
                     "because an empty topic added should result in an exception");
         }
 
@@ -88,8 +86,7 @@ namespace MqttTopicBuilderUnitTests
 
             // Assert
             illegalTopicAppending.Should()
-                .Throw<IllegalTopicConstructionException>()
-                .WithMessage("Impossible to add a topic at this place.",
+                .Throw<IllegalTopicConstructionException>(
                     "because a topic added after a multi level wildcard should result in an exception");
         }
 
@@ -134,8 +131,7 @@ namespace MqttTopicBuilderUnitTests
 
             // Assert
             addTopicWithSeparator.Should()
-                .Throw<InvalidTopicException>()
-                .WithMessage("Invalid topic name: A topic should not contains a separator.",
+                .Throw<InvalidTopicException>(
                     "because a topic containing a topic separator added should result in an exception.");
         }
 
@@ -159,8 +155,7 @@ namespace MqttTopicBuilderUnitTests
 
             // Assert
             addTopicWithSeparator.Should()
-                .Throw<InvalidTopicException>()
-                .WithMessage("Invalid topic name: A topic should not contains a wildcard in its name.",
+                .Throw<InvalidTopicException>(
                     "because a topic containing a wildcard (multi level) should result in an exception.");
         }
 
@@ -184,8 +179,7 @@ namespace MqttTopicBuilderUnitTests
 
             // Assert
             addTopicWithSeparator.Should()
-                .Throw<InvalidTopicException>()
-                .WithMessage("Invalid topic name: A topic should not contains a wildcard in its name.",
+                .Throw<InvalidTopicException>(
                     "because a topic containing a wildcard (single level) should result in an exception.");
         }
 
@@ -204,7 +198,7 @@ namespace MqttTopicBuilderUnitTests
             // Assert
             result.Path.Should()
                 .Be(Topics.Separator.ToString(),
-                    "because a builder with no topic staged should build the smallest one");
+                    "because a builder with no topic staged should build the smallest one, even if '/' as a topic is deprecated");
         }
 
         /// <summary>

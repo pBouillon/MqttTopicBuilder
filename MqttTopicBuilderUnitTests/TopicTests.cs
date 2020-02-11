@@ -13,12 +13,93 @@ namespace MqttTopicBuilderUnitTests
 {
     using FluentAssertions;
     using MqttTopicBuilder;
+    using MqttTopicBuilder.Exceptions;
     using MqttTopicBuilder.MqttUtils;
+    using System;
     using System.Text;
     using Xunit;
 
     public class TopicTests
     {
+        /// <summary>
+        /// Check if the topic correctly raises an exception on a topic made of whitespaces
+        /// </summary>
+        [Fact]
+        public void Topic_EmptyTopicExceptionOnBlankTopic()
+        {
+            // Arrange
+            var baseTopic = " \t ";
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => new Topic(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<EmptyTopicException>(
+                    "because a topic made of spaces is not a valid topic");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on an empty topic
+        /// </summary>
+        [Fact]
+        public void Topic_EmptyTopicExceptionOnEmptyTopic()
+        {
+            // Arrange
+            var baseTopic = string.Empty;
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => new Topic(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<EmptyTopicException>(
+                    "because an empty string must throw an exception");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on a null topic
+        /// </summary>
+        [Fact]
+        public void Topic_EmptyTopicExceptionOnNullTopic()
+        {
+            // Arrange
+            var baseTopic = $"{Topics.Separator}{Topics.Separator}";
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => new Topic(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<EmptyTopicException>(
+                    "because a null topic is not be considered as valid");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on too long slice of it
+        /// </summary>
+        [Fact]
+        public void Topic_TooLongTopicExceptionOnTooLongTopic()
+        {
+            // Arrange
+            var baseTopic = $"mqtt{Topics.Separator}" +
+                            $"topic{Topics.Separator}" +
+                            $"{new string('*', Topics.MaxSliceLength + 1)}{Topics.Separator}" +
+                            $"builder";
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => new Topic(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<TooLongTopicException>(
+                    "because a topic with a slice exceeding the `Topics.MaxSliceLength` length should not be considered as valid");
+        }
+
         /// <summary>
         /// Check if the object correctly retrieves the topic's level
         /// </summary>
@@ -36,25 +117,6 @@ namespace MqttTopicBuilderUnitTests
             actual.Should()
                 .Be(expected,
                     "because a single level topic without '/' should be considered as a level one topic");
-        }
-
-        /// <summary>
-        /// Check if the topic correctly retrieves the topic level on an empty topic path
-        /// </summary>
-        [Fact]
-        public void Topic_Level_ZeroOnEmptyTopic()
-        {
-            // Arrange
-            const int expected = 0;
-            var baseTopic = string.Empty;
-
-            // Act
-            var actual = new Topic(baseTopic).Level;
-
-            // Assert
-            actual.Should()
-                .Be(expected,
-                    "because an empty string must result in a topic of level 0");
         }
 
         /// <summary>
@@ -98,7 +160,7 @@ namespace MqttTopicBuilderUnitTests
             // Assert
             actual.Should()
                 .Be(expected,
-                    "because all topic's separators must have been cleared");
+                    "because all topic separators must have been cleared");
         }
 
         /// <summary>
