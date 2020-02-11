@@ -40,10 +40,10 @@ namespace MqttTopicBuilder
         /// <summary>
         /// Default constructor
         /// </summary>
-        /// <param name="path">The MQTT topic's path</param>
-        public Topic(string path)
+        /// <param name="rawMqttTopic">The MQTT topic's path</param>
+        public Topic(string rawMqttTopic)
         {
-            Path = path;
+            Path = rawMqttTopic;
         }
 
         /// <summary>
