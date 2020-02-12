@@ -17,6 +17,7 @@ namespace MqttTopicBuilderUnitTests
     using MqttTopicBuilder.Exceptions;
     using MqttTopicBuilder.MqttUtils;
     using System;
+    using System.Collections.Generic;
     using System.Text;
     using Xunit;
 
@@ -90,12 +91,11 @@ namespace MqttTopicBuilderUnitTests
                     "because a topic added after a multi level wildcard should result in an exception");
         }
 
-
         /// <summary>
         /// Check the builder's ability to add a valid topic
         /// </summary>
         [Fact]
-        public void TopicBuilder_AddTopic_ValidTopic()
+        public void TopicBuilder_AddTopic_ValidSingleLevelTopic()
         {
             // Arrange
             var topic = _fixture.Create<string>();
@@ -199,6 +199,40 @@ namespace MqttTopicBuilderUnitTests
             result.Path.Should()
                 .Be(Topics.Separator.ToString(),
                     "because a builder with no topic staged should build the smallest one, even if '/' as a topic is deprecated");
+        }
+
+        /// <summary>
+        /// Check the builder's ability to generate a valid topic
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_Build_ValidMultipleLevelsTopic()
+        {
+            // Arrange
+            var builder = new TopicBuilder();
+            
+            var topics = new Queue<string>();
+
+            for (var i = 0; i < _fixture.Create<int>(); ++i)
+            {
+                topics.Enqueue(_fixture.Create<string>());
+            }
+
+            var expectedTopic = string.Join(Topics.Separator, topics);
+
+            // Act
+            foreach (var topic in topics)
+            {
+                builder.AddTopic(topic);
+            }
+
+            // Assert
+            builder.Level.Should()
+                .Be(builder.Build().Level, 
+                    "because exactly one element should have been added");
+
+            builder.Build().Path.Should()
+                .Be(expectedTopic,
+                    "because appending simple topics should be them of joint by the separator");
         }
 
         /// <summary>
