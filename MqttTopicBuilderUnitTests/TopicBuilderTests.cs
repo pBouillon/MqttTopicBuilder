@@ -184,6 +184,48 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Check if single level wildcard appending is correctly appended
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddWildcardSingleLevel_AddToEmptyBuilder()
+        {
+            // Arrange
+            var builder = new TopicBuilder();
+
+            // Act
+            builder.AddWildcardSingleLevel();
+
+            // Assert
+            builder.Level.Should()
+                .Be(1,
+                    "because we only append data once");
+
+            builder.Build().Path.Should()
+                .Be(Wildcards.SingleLevel.ToString(),
+                    "because the wildcard must have been used in this macro");
+        }
+
+        /// <summary>
+        /// Check if the addition of a single level wildcard correctly raise an exception after a multi level wildcard
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddWildcardSingleLevel_BlockAdditionAfterMultiLevelWildcard()
+        {
+            // Arrange
+            var builder = new TopicBuilder();
+            builder.AddWildcardMultiLevel();
+
+            // Act
+            Action appendingAfterMultiLevelWildcard = ()
+                => builder.AddWildcardSingleLevel();
+
+            // Assert
+            appendingAfterMultiLevelWildcard.Should()
+                .Throw<IllegalTopicConstructionException>(
+                    "because no topics should ever be append after a multi level wildcard");
+        }
+
+        /// <summary>
         /// Check if the smallest topic is built when the builder does not contains any data
         /// </summary>
         [Fact]
