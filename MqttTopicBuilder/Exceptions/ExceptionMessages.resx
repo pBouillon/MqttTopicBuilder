@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmptyTopicException" xml:space="preserve">
-    <value>A topic can't be blank or empty</value>
+  <data name="EmptyTopic" xml:space="preserve">
+    <value>Null topic level is not allowed</value>
   </data>
-  <data name="IllegalTopicConstructionException" xml:space="preserve">
+  <data name="IllegalTopicConstruction" xml:space="preserve">
     <value>Impossible to add a topic at this place</value>
   </data>
-  <data name="InvalidTopicException" xml:space="preserve">
+  <data name="InvalidTopic" xml:space="preserve">
     <value>Invalid topic name</value>
+  </data>
+  <data name="TooLongTopic" xml:space="preserve">
+    <value>MQTT clients can only handle up to 10 240 characters per level</value>
+  </data>
+  <data name="TopicAfterWildcard" xml:space="preserve">
+    <value>Impossible to add a topic after a multilevel wildcard</value>
   </data>
 </root>

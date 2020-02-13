@@ -22,21 +22,21 @@ namespace MqttTopicBuilder.Exceptions
         /// Default constructor
         /// </summary>
         public EmptyTopicException()
-            : base(ExceptionMessages.EmptyTopicException) { }
+            : base(ExceptionMessages.EmptyTopic) { }
 
         /// <summary>
-        /// Custom constructor providing context specificities
+        /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         public EmptyTopicException(string message)
-            : base($"{ExceptionMessages.EmptyTopicException}: {message}") { }
+            : base($"{ExceptionMessages.EmptyTopic}: {message}") { }
 
         /// <summary>
-        /// Custom constructor providing more precise context specificities
+        /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
         public EmptyTopicException(string message, Exception inner)
-            : base($"{ExceptionMessages.EmptyTopicException}: {message}", inner) { }
+            : base($"{ExceptionMessages.EmptyTopic}: {message}", inner) { }
     }
 }

@@ -19,7 +19,13 @@ namespace MqttTopicBuilder.MqttUtils
         /// <summary>
         /// Default maximum topic length (level)
         /// </summary>
-        public const int MaxLength = 32;
+        public const int MaxDepth = 32;
+
+        /// <summary>
+        /// Default maximum topic slice length (in char)
+        /// </summary>
+        /// <see href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.5.0/com.ibm.mq.dev.doc/q029120_.htm"/>
+        public const int MaxSliceLength = 10_240;
 
         /// <summary>
         /// Default MQTT topic's separator

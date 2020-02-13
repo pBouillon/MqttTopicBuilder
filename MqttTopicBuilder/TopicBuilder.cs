@@ -53,7 +53,7 @@ namespace MqttTopicBuilder
         /// Default constructor
         /// </summary>
         /// <param name="maxLength">Maximum topics to add allowed</param>
-        public TopicBuilder(int maxLength = Topics.MaxLength)
+        public TopicBuilder(int maxLength = Topics.MaxDepth)
         {
             StagedTopics = new Queue<string>(maxLength);
         }
@@ -63,7 +63,7 @@ namespace MqttTopicBuilder
         /// </summary>
         /// <param name="topicBase">The existing topic to add to the staged ones</param>
         /// <param name="maxLength">Maximum topics to add allowed</param>
-        public TopicBuilder(string topicBase, int maxLength = Topics.MaxLength)
+        public TopicBuilder(string topicBase, int maxLength = Topics.MaxDepth)
             : this(maxLength)
         {
             foreach (var slice in topicBase.Split(Topics.Separator))

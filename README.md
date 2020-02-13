@@ -1,4 +1,4 @@
-# MqttTopicBuilder 
+# MqttTopicBuilder ![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/Push%20NuGet%20package/badge.svg)
 
 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics.
 
@@ -10,7 +10,7 @@ To install it from the command line, use:
 `~$ dotnet add package MqttTopicBuilder`
 
 or, from the package manager:  
-`Install-Package MqttTopicBuilder -Version 1.0.0`
+`Install-Package MqttTopicBuilder`
 
 ## Usage
 

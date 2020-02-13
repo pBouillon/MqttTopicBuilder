@@ -11,6 +11,7 @@
 
 namespace MqttTopicBuilder
 {
+    using Exceptions;
     using MqttUtils;
     
     /// <summary>
@@ -40,10 +41,66 @@ namespace MqttTopicBuilder
         /// <summary>
         /// Default constructor
         /// </summary>
-        /// <param name="path">The MQTT topic's path</param>
-        public Topic(string path)
+        /// <param name="rawTopic">The raw MQTT topic</param>
+        public Topic(string rawTopic)
         {
-            Path = path;
+            EnsureRawTopicValidity(rawTopic);
+
+            Path = rawTopic;
+        }
+
+        /// <summary>
+        /// Checks if the raw topic provided is a valid topic or not
+        ///
+        /// Checks are:
+        /// - No addition after a global wildcard <see cref="Wildcards.MultiLevel"/>
+        /// - No part of the topic is a null level topic or an empty one
+        /// - The topic does not contain a part that is longer than the <see cref="Topics.MaxSliceLength"/>
+        /// </summary>
+        ///
+        /// <remarks>
+        /// This method considers "/" as a valid topic
+        /// </remarks>
+        ///
+        /// <param name="rawTopic">The raw MQTT topic to check</param>
+        private static void EnsureRawTopicValidity(string rawTopic)
+        {
+            // Allows most basic (and deprecated) MQTT topic: "/"
+            if (rawTopic == Topics.Separator.ToString())
+            {
+                return;
+            }
+
+            // Starting checks
+            var isMultiLevelWildcardEncountered = false;
+
+            // Analyzing each slice of the provided topic
+            foreach (var slice in rawTopic.Split(Topics.Separator))
+            {
+                // Ensuring that no addition is made after a multilevel wildcard
+                if (isMultiLevelWildcardEncountered)
+                {
+                    throw new IllegalTopicConstructionException(ExceptionMessages.TopicAfterWildcard);
+                }
+
+                // Checking if the topic contains either two consecutive separators or only spaces
+                if (string.IsNullOrWhiteSpace(slice))
+                {
+                    throw new EmptyTopicException();
+                }
+
+                // A topic slice can not be made of more than `Topics.MaxSliceLength` char
+                if (slice.Length > Topics.MaxSliceLength)
+                {
+                    throw new TooLongTopicException($"Attempted to add '{slice}'");
+                }
+
+                // Keeping track of encountered wildcards
+                if (slice == Wildcards.MultiLevel.ToString())
+                {
+                    isMultiLevelWildcardEncountered = true;
+                }
+            }
         }
 
         /// <summary>
