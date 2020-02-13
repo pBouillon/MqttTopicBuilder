@@ -33,7 +33,10 @@ namespace MqttTopicBuilderUnitTests
             var fixture = new Fixture();
             
             var topicDepth = fixture.Create<int>();
-            
+            topicDepth = topicDepth > Topics.MaxDepth
+                ? Topics.MaxDepth
+                : topicDepth;
+
             var topic = "";
             for (var i = 0; i < topicDepth; ++i)
             {
@@ -41,7 +44,7 @@ namespace MqttTopicBuilderUnitTests
                 
                 if (i + 1 != topicDepth)
                 {
-                    topicDepth += Topics.Separator;
+                    topic += Topics.Separator;
                 }
             }
 
