@@ -9,6 +9,8 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using AutoFixture;
+
 namespace MqttTopicBuilderUnitTests
 {
     using FluentAssertions;
@@ -21,6 +23,82 @@ namespace MqttTopicBuilderUnitTests
 
     public class TopicTests
     {
+        /// <summary>
+        /// Ensure that the topic is correctly built from a valid topic
+        /// </summary>
+        [Fact]
+        public void Topic_CreateTopicFromValidRawString()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            
+            var topicDepth = fixture.Create<int>();
+            
+            var topic = "";
+            for (var i = 0; i < topicDepth; ++i)
+            {
+                topic += "MqttTopicBuilder";
+                
+                if (i + 1 != topicDepth)
+                {
+                    topicDepth += Topics.Separator;
+                }
+            }
+
+            // Act
+            var actual = new Topic(topic).Path;
+
+            // Arrange
+            actual.Should()
+                .Be(topic);
+        }
+
+        /// <summary>
+        /// Ensure that the topic is correctly raising an error when creating a topic containing a global wildcard
+        /// </summary>
+        [Fact]
+        public void Topic_CreateTopicFromRawStringContainingMultiLevelWildcard()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var topic = $"mqtt{Topics.Separator}" +
+                        $"topic{Topics.Separator}" +
+                        $"{Wildcards.MultiLevel}{Topics.Separator}" +
+                        $"builder";
+
+            // Act
+            Action attemptingToBuildTopicContainingMultiLevelWildcard = ()
+                => new Topic(topic);
+
+            // Arrange
+            attemptingToBuildTopicContainingMultiLevelWildcard.Should()
+                .Throw<IllegalTopicConstructionException>(
+                    "because a topic containing multi level wildcard should not be a valid one");
+        }
+
+        /// <summary>
+        /// Ensure that the topic is correctly raising an error when creating a topic containing a global wildcard
+        /// </summary>
+        [Fact]
+        public void Topic_CreateTopicFromRawStringContainingSingleLevelWildcard()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var topic = $"mqtt{Topics.Separator}" +
+                        $"topic{Topics.Separator}" +
+                        $"{Wildcards.SingleLevel}{Topics.Separator}" +
+                        $"builder";
+
+            // Act
+            Action attemptingToBuildTopicContainingMultiLevelWildcard = ()
+                => new Topic(topic);
+
+            // Arrange
+            attemptingToBuildTopicContainingMultiLevelWildcard.Should()
+                .NotThrow<IllegalTopicConstructionException>(
+                    "because a topic containing multi level wildcard should not be a valid one");
+        }
+
         /// <summary>
         /// Check if the topic correctly raises an exception on a topic made of whitespaces
         /// </summary>
