@@ -1,4 +1,4 @@
-name: Push NuGet package
+name: NuGet package
 
 on:
   check_suite:
