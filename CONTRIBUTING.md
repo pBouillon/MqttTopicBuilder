@@ -69,6 +69,7 @@ For example: `[Configuration] Migrate from .NET Core X.Y to X'.Y'` or `⚙️ Mi
 
 - Private attributes should start with an underscore
 - In general, follow [the C# coding conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
+- Please keep methods alphabetically ordered
 
 Not really a style but each logic added should be tested and each method/class should be documented.
 
