@@ -1,4 +1,4 @@
-# MqttTopicBuilder ![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/Push%20NuGet%20package/badge.svg)
+# MqttTopicBuilder ![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg)
 
 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics.
 
