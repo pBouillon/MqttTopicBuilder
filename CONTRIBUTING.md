@@ -11,7 +11,7 @@ what prevail the most, please feel free to bring your own ideas !
 
 ## Summary
 
-- [What you probably should know](#what-you-probably-should-know)
+- [What you should probably know](#what-you-probably-should-know)
 - [Guidelines](#guidelines)
 - [Style guide](#style-guide)
 - [Contributing](#contributing)
