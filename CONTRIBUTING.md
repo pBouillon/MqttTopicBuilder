@@ -11,7 +11,7 @@ what prevail the most, please feel free to bring your own ideas !
 
 ## Summary
 
-- [What you probably should know](#what-you-probably-should-know)
+- [What you should probably know](#what-you-probably-should-know)
 - [Guidelines](#guidelines)
 - [Style guide](#style-guide)
 - [Contributing](#contributing)
@@ -35,7 +35,7 @@ your contribution. I will gladly help anyone struggling to do so if I can.
 
 📝 If you need help for anything related to this project, do not hesitate to ask !
 
-In your pull request, do not hesitate to add your name in the `CONTRIBUTORS.md` file ! 
+In your pull request, do not hesitate to add your name in the `CONTRIBUTORS.md` file !
 
 ### Git usage
 
@@ -69,6 +69,7 @@ For example: `[Configuration] Migrate from .NET Core X.Y to X'.Y'` or `⚙️ Mi
 
 - Private attributes should start with an underscore
 - In general, follow [the C# coding conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
+- Please keep methods alphabetically ordered
 
 Not really a style but each logic added should be tested and each method/class should be documented.
 
@@ -134,5 +135,8 @@ body, detail each modification you brought to the project.
 
 Please, be sure that the code is following [the guidelines](#guidelines) and that
 [all checks](https://github.com/pBouillon/MqttTopicBuilder/actions) are passing.
+
+If your PR contains any major changes and will update the package's usage, it would be great
+if you could add a section about what updates should be made in [the wiki](https://github.com/pBouillon/MqttTopicBuilder/wiki).
 
 You can then submit it and wait for its review and its possible comments until it is merged !

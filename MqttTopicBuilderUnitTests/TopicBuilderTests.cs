@@ -270,7 +270,7 @@ namespace MqttTopicBuilderUnitTests
             // Assert
             builder.Level.Should()
                 .Be(builder.Build().Level, 
-                    "because exactly one element should have been added");
+                    "because there should be as much elements as elements added");
 
             builder.Build().Path.Should()
                 .Be(expectedTopic,

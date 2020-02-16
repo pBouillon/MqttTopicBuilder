@@ -1,4 +1,6 @@
-# MqttTopicBuilder ![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/Push%20NuGet%20package/badge.svg)
+# MqttTopicBuilder  
+
+![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg) ![Nuget](https://img.shields.io/nuget/dt/MqttTopicBuilder?color=%2332ca55&label=Downloads%20on%20NuGet&logo=nuget)
 
 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics.
 
@@ -13,6 +15,8 @@ or, from the package manager:
 `Install-Package MqttTopicBuilder`
 
 ## Usage
+
+> More detailed instructions and documentation is available in [the wiki](https://github.com/pBouillon/MqttTopicBuilder/wiki)
 
 Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
 their veracity.
@@ -48,8 +52,8 @@ but also gather informations about it such as its level.
 
 ## Dependencies
 
-This project is using [FluentAssertions](https://fluentassertions.com/) for its unit tests.
+This project is using [FluentAssertions](https://fluentassertions.com/) and [AutoFixture](https://github.com/AutoFixture/AutoFixture) for its unit tests.
 
 ## Contributions
 
-All contributions are welcome, please feel free to suggests pull requests !
+All contributions are welcome, please feel free to suggest pull requests ! You can read more about it in the [CONTRIBUTING.md](https://github.com/pBouillon/MqttTopicBuilder/blob/master/CONTRIBUTING.md).
