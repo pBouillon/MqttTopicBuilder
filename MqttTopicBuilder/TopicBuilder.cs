@@ -73,6 +73,20 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
+        /// Constructor to initialize the builder with a collection of existing topics
+        /// </summary>
+        /// <param name="topicsBase">The existing collection of topics to add to the staged ones</param>
+        /// <param name="maxLength">Maximum topics to add allowed</param>
+        public TopicBuilder(IEnumerable<string> topicsBase, int maxLength = Topics.MaxDepth)
+            : this(maxLength)
+        {
+            foreach (var slice in topicsBase)
+            {
+                AddTopic(slice);
+            }
+        }
+
+        /// <summary>
         /// Add a topic to the staged ones
         /// </summary>
         /// <param name="topic">Topic to add</param>

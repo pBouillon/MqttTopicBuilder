@@ -295,6 +295,39 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Ensure that the topic is correctly built from a collection
+        /// </summary>
+        [Fact]
+        public void Topic_Constructor_CreateTopicFromValidCollection()
+        {
+            // Arrange
+            var fixture = new Fixture();
+
+            var topicDepth = fixture.Create<int>();
+            topicDepth = topicDepth > Topics.MaxDepth
+                ? Topics.MaxDepth
+                : topicDepth;
+
+            var topicsCollection = new Queue<string>();
+            for (var i = 0; i < topicDepth; ++i)
+            {
+                topicsCollection.Enqueue(fixture.Create<string>());
+            }
+
+            // Act
+            var topicBuilder = new TopicBuilder(topicsCollection);
+
+            // Assert
+            topicBuilder.Level.Should()
+                .Be(topicDepth,
+                    "because there should be as much topic level as elements in the original collection");
+
+            topicBuilder.StagedTopics.Should()
+                .ContainInOrder(topicsCollection,
+                    "because the original collection must be transposed without modifications in the builder");
+        }
+
+        /// <summary>
         /// Check the initializations when the constructor is called with a specified stack size
         /// </summary>
         [Fact]
