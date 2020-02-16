@@ -278,6 +278,39 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Ensure that the topic is correctly built from a collection
+        /// </summary>
+        [Fact]
+        public void Topic_Clear()
+        {
+            // Arrange
+            var fixture = new Fixture();
+
+            var topicDepth = fixture.Create<int>();
+            topicDepth = topicDepth > Topics.MaxDepth
+                ? Topics.MaxDepth
+                : topicDepth;
+
+            var topicBuilder = new TopicBuilder();
+            for (var i = 0; i < topicDepth; ++i)
+            {
+                topicBuilder.AddTopic(fixture.Create<string>());
+            }
+
+            // Act
+            topicBuilder.Clear();
+
+            // Assert
+            topicBuilder.Level.Should()
+                .Be(0,
+                    "because all staged topics should have been cleared");
+
+            topicBuilder.IsEmpty
+                .Should()
+                .BeTrue("because all staged topics should have been cleared");
+        }
+
+        /// <summary>
         /// Check the initializations when the default constructor is called
         /// </summary>
         [Fact]

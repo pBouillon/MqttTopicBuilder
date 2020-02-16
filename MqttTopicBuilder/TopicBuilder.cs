@@ -177,5 +177,13 @@ namespace MqttTopicBuilder
                 throw new IllegalTopicConstructionException();
             }
         }
+
+        /// <summary>
+        /// Removes all staged topics
+        /// </summary>
+        public void Clear()
+        {
+            StagedTopics.Clear();
+        }
     }
 }
