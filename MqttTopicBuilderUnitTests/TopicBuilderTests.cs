@@ -92,6 +92,38 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Check if an exception is correctly raised when adding too much data to the builder
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddTopic_OverflowedTopicBuilder()
+        {
+            // Arrange
+            var fixture = new Fixture();
+
+            var topicDepth = fixture.Create<int>();
+            topicDepth = topicDepth > Topics.MaxDepth
+                ? Topics.MaxDepth
+                : topicDepth;
+
+            var builder = new TopicBuilder(topicDepth);
+
+            // Act
+            Action overflowingBuilder = ()
+                =>
+            {
+                for (var i = 0; i < topicDepth + 1; ++i)
+                {
+                    builder.AddTopic(fixture.Create<string>());
+                }
+            };
+
+            // Assert
+            overflowingBuilder.Should()
+                .Throw<TopicBuilderOverflowException>(
+                    "because the user should not b able to add more topic than the limit");
+        }
+
+        /// <summary>
         /// Check the builder's ability to add a valid topic
         /// </summary>
         [Fact]
