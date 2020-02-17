@@ -323,5 +323,76 @@ namespace MqttTopicBuilderUnitTests
                 .Be(expected,
                     "because all wildcards must have been cleared");
         }
+
+        /// <summary>
+        /// Check if a topic is correctly created from the static method
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_ParseAValidRawString()
+        {
+            // Arrange
+            var fixture = new Fixture();
+
+            var topicDepth = fixture.Create<int>();
+            topicDepth = topicDepth > Topics.MaxDepth
+                ? Topics.MaxDepth
+                : topicDepth;
+
+            var topic = "";
+            for (var i = 0; i < topicDepth; ++i)
+            {
+                topic += "MqttTopicBuilder";
+
+                if (i + 1 != topicDepth)
+                {
+                    topic += Topics.Separator;
+                }
+            }
+
+            // Act
+            var actual = Topic.Parse(topic);
+
+            // Arrange
+            actual.Path.Should()
+                .Be(topic,
+                    "because the topic must have been correctly built by the static method");
+        }
+
+        /// <summary>
+        /// Check if a topic is correctly created from the static method
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_TryParseAValidRawString()
+        {
+            // Arrange
+            var fixture = new Fixture();
+
+            var topicDepth = fixture.Create<int>();
+            topicDepth = topicDepth > Topics.MaxDepth
+                ? Topics.MaxDepth
+                : topicDepth;
+
+            var rawTopic = "";
+            for (var i = 0; i < topicDepth; ++i)
+            {
+                rawTopic += "MqttTopicBuilder";
+
+                if (i + 1 != topicDepth)
+                {
+                    rawTopic += Topics.Separator;
+                }
+            }
+
+            // Act
+            var result = Topic.TryParse(rawTopic, out var topic);
+
+            // Arrange
+            topic.Path.Should()
+                .Be(rawTopic,
+                    "because the topic should not have been altered during the process");
+
+            result.Should()
+                .BeTrue("because the topic is valid and must not have raise any error");
+        }
     }
 }

@@ -117,12 +117,44 @@ namespace MqttTopicBuilder
         }
 
         /// <summary>
-        /// Returns the topic's path
+        /// Create a <see cref="Topic"/> from a raw string
+        /// </summary>
+        /// <param name="rawTopic">The raw MQTT topic</param>
+        /// <returns></returns>
+        public static Topic Parse(string rawTopic)
+        {
+            return new Topic(rawTopic);
+        }
+
+        /// <summary>
+        /// Return the topic's path
         /// </summary>
         /// <returns>The topic's path</returns>
         public override string ToString()
         {
             return Path;
+        }
+
+        /// <summary>
+        /// Attempt to create a <see cref="Topic"/> from a raw string
+        /// </summary>
+        /// <param name="rawTopic">The raw MQTT topic</param>
+        /// <param name="result">A <see cref="Topic"/> instance to override with a newly created Topic from the rawString parameter</param>
+        /// <returns>True on success; false otherwise</returns>
+        public static bool TryParse(string rawTopic, out Topic result)
+        {
+            result = null;
+
+            try
+            {
+                result = new Topic(rawTopic);
+            }
+            catch (BaseException)
+            {
+                // No action performed
+            }
+
+            return result != null;
         }
     }
 }
