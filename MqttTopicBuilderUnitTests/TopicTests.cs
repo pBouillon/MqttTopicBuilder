@@ -325,10 +325,135 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Ensure that the topic is correctly raising an error when creating a topic containing a global wildcard
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_CreateTopicFromRawStringContainingMultiLevelWildcard()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var rawTopic = $"mqtt{Topics.Separator}" +
+                        $"topic{Topics.Separator}" +
+                        $"{Wildcards.MultiLevel}{Topics.Separator}" +
+                        $"builder";
+
+            // Act
+            Action attemptingToBuildTopicContainingMultiLevelWildcard = ()
+                => Topic.Parse(rawTopic);
+
+            // Arrange
+            attemptingToBuildTopicContainingMultiLevelWildcard.Should()
+                .Throw<IllegalTopicConstructionException>(
+                    "because a topic containing multi level wildcard should not be a valid one");
+        }
+
+        /// <summary>
+        /// Ensure that the topic is correctly raising an error when creating a topic containing a global wildcard
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_CreateTopicFromRawStringContainingSingleLevelWildcard()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var rawTopic = $"mqtt{Topics.Separator}" +
+                        $"topic{Topics.Separator}" +
+                        $"{Wildcards.SingleLevel}{Topics.Separator}" +
+                        $"builder";
+
+            // Act
+            Action attemptingToBuildTopicContainingMultiLevelWildcard = ()
+                => Topic.Parse(rawTopic);
+
+            // Arrange
+            attemptingToBuildTopicContainingMultiLevelWildcard.Should()
+                .NotThrow<IllegalTopicConstructionException>(
+                    "because a topic containing single level wildcards should be valid");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on a topic made of whitespaces
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_EmptyTopicExceptionOnBlankTopic()
+        {
+            // Arrange
+            var baseTopic = " \t ";
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => Topic.Parse(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<EmptyTopicException>(
+                    "because a topic made of spaces is not a valid topic");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on an empty topic
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_EmptyTopicExceptionOnEmptyTopic()
+        {
+            // Arrange
+            var baseTopic = string.Empty;
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => Topic.Parse(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<EmptyTopicException>(
+                    "because an empty string must throw an exception");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on a null topic
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_EmptyTopicExceptionOnNullTopic()
+        {
+            // Arrange
+            var baseTopic = $"{Topics.Separator}{Topics.Separator}";
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => Topic.Parse(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<EmptyTopicException>(
+                    "because a null topic is not be considered as valid");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on too long slice of it
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_TooLongTopicExceptionOnTooLongTopic()
+        {
+            // Arrange
+            var baseTopic = $"mqtt{Topics.Separator}" +
+                            $"topic{Topics.Separator}" +
+                            $"{new string('*', Topics.MaxSliceLength + 1)}{Topics.Separator}" +
+                            $"builder";
+
+            // Act
+            Action createTopicFromEmptyString = ()
+                => Topic.Parse(baseTopic);
+
+            // Assert
+            createTopicFromEmptyString.Should()
+                .Throw<TooLongTopicException>(
+                    "because a topic with a slice exceeding the `Topics.MaxSliceLength` length should not be considered as valid");
+        }
+
+        /// <summary>
         /// Check if a topic is correctly created from the static method
         /// </summary>
         [Fact]
-        public void Topic_Parse_ParseAValidRawString()
+        public void Topic_Parse_ValidRawString()
         {
             // Arrange
             var fixture = new Fixture();
