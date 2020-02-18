@@ -31,7 +31,7 @@ namespace MqttTopicBuilderUnitTests
         {
             // Arrange
             var fixture = new Fixture();
-            
+
             var topicDepth = fixture.Create<int>();
             topicDepth = topicDepth > Topics.MaxDepth
                 ? Topics.MaxDepth
@@ -41,7 +41,7 @@ namespace MqttTopicBuilderUnitTests
             for (var i = 0; i < topicDepth; ++i)
             {
                 topic += "MqttTopicBuilder";
-                
+
                 if (i + 1 != topicDepth)
                 {
                     topic += Topics.Separator;
@@ -99,7 +99,7 @@ namespace MqttTopicBuilderUnitTests
             // Arrange
             attemptingToBuildTopicContainingMultiLevelWildcard.Should()
                 .NotThrow<IllegalTopicConstructionException>(
-                    "because a topic containing multi level wildcard should not be a valid one");
+                    "because a topic containing single level wildcards should be valid");
         }
 
         /// <summary>
@@ -359,10 +359,150 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Ensure that the topic is correctly raising an error when creating a topic containing a global wildcard
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_CreateTopicFromRawStringContainingMultiLevelWildcard()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var rawTopic = $"mqtt{Topics.Separator}" +
+                        $"topic{Topics.Separator}" +
+                        $"{Wildcards.MultiLevel}{Topics.Separator}" +
+                        $"builder";
+
+            // Act
+            var result = Topic.TryParse(rawTopic, out var topic);
+
+            // Assert
+            result.Should()
+                .BeFalse(
+                    "because a `IllegalTopicConstructionException` should have been raised but silenced");
+
+            topic.Should()
+                .BeNull(
+                    "because no instantiation should have been done");
+        }
+
+        /// <summary>
+        /// Ensure that the topic is correctly raising an error when creating a topic containing a global wildcard
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_CreateTopicFromRawStringContainingSingleLevelWildcard()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var rawTopic = $"mqtt{Topics.Separator}" +
+                        $"topic{Topics.Separator}" +
+                        $"{Wildcards.SingleLevel}{Topics.Separator}" +
+                        $"builder";
+
+            // Act
+            Action attemptingToBuildTopicContainingMultiLevelWildcard = ()
+                => Topic.TryParse(rawTopic, out var topic);
+
+            // Arrange
+            attemptingToBuildTopicContainingMultiLevelWildcard.Should()
+                .NotThrow<IllegalTopicConstructionException>(
+                    "because a topic containing single level wildcards should be valid");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on a topic made of whitespaces
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_EmptyTopicExceptionOnBlankTopic()
+        {
+            // Arrange
+            var baseTopic = " \t ";
+
+            // Act
+            var result = Topic.TryParse(baseTopic, out var topic);
+
+            // Assert
+            result.Should()
+                .BeFalse(
+                    "because a `EmptyTopicException` should have been raised but silenced");
+
+            topic.Should()
+                .BeNull(
+                    "because no instantiation should have been done");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on an empty topic
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_EmptyTopicExceptionOnEmptyTopic()
+        {
+            // Arrange
+            var baseTopic = string.Empty;
+
+            // Act
+            var result = Topic.TryParse(baseTopic, out var topic);
+
+            // Assert
+            result.Should()
+                .BeFalse(
+                    "because a `EmptyTopicException` should have been raised but silenced");
+
+            topic.Should()
+                .BeNull(
+                    "because no instantiation should have been done");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on a null topic
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_EmptyTopicExceptionOnNullTopic()
+        {
+            // Arrange
+            var baseTopic = $"{Topics.Separator}{Topics.Separator}";
+
+            // Act
+            var result = Topic.TryParse(baseTopic, out var topic);
+
+            // Assert
+            result.Should()
+                .BeFalse(
+                    "because a `EmptyTopicException` should have been raised but silenced");
+
+            topic.Should()
+                .BeNull(
+                    "because no instantiation should have been done");
+        }
+
+        /// <summary>
+        /// Check if the topic correctly raises an exception on too long slice of it
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_TooLongTopicExceptionOnTooLongTopic()
+        {
+            // Arrange
+            var baseTopic = $"mqtt{Topics.Separator}" +
+                            $"topic{Topics.Separator}" +
+                            $"{new string('*', Topics.MaxSliceLength + 1)}{Topics.Separator}" +
+                            $"builder";
+
+            // Act
+            var result = Topic.TryParse(baseTopic, out var topic);
+
+            // Assert
+            result.Should()
+                .BeFalse(
+                    "because a `TooLongTopicException` should have been raised but silenced");
+
+            topic.Should()
+                .BeNull(
+                    "because no instantiation should have been done");
+        }
+
+        /// <summary>
         /// Check if a topic is correctly created from the static method
         /// </summary>
         [Fact]
-        public void Topic_TryParse_TryParseAValidRawString()
+        public void Topic_TryParse_ValidRawString()
         {
             // Arrange
             var fixture = new Fixture();

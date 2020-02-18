@@ -286,7 +286,13 @@ namespace MqttTopicBuilderUnitTests
             
             var topics = new Queue<string>();
 
-            for (var i = 0; i < _fixture.Create<int>(); ++i)
+            var topicDepth = _fixture.Create<int>();
+            if (topicDepth > Topics.MaxDepth)
+            {
+                topicDepth = Topics.MaxDepth;
+            }
+
+            for (var i = 0; i < topicDepth; ++i)
             {
                 topics.Enqueue(_fixture.Create<string>());
             }
@@ -302,6 +308,9 @@ namespace MqttTopicBuilderUnitTests
             // Assert
             builder.Level.Should()
                 .Be(builder.Build().Level, 
+                    "because there should be as much elements as elements added in the builder")
+                .And
+                .Be(topicDepth,
                     "because there should be as much elements as elements added");
 
             builder.Build().Path.Should()
@@ -318,10 +327,11 @@ namespace MqttTopicBuilderUnitTests
             // Arrange
             var fixture = new Fixture();
 
-            var topicDepth = fixture.Create<int>();
-            topicDepth = topicDepth > Topics.MaxDepth
-                ? Topics.MaxDepth
-                : topicDepth;
+            var topicDepth = _fixture.Create<int>();
+            if (topicDepth > Topics.MaxDepth)
+            {
+                topicDepth = Topics.MaxDepth;
+            }
 
             var topicBuilder = new TopicBuilder();
             for (var i = 0; i < topicDepth; ++i)
@@ -368,10 +378,11 @@ namespace MqttTopicBuilderUnitTests
             // Arrange
             var fixture = new Fixture();
 
-            var topicDepth = fixture.Create<int>();
-            topicDepth = topicDepth > Topics.MaxDepth
-                ? Topics.MaxDepth
-                : topicDepth;
+            var topicDepth = _fixture.Create<int>();
+            if (topicDepth > Topics.MaxDepth)
+            {
+                topicDepth = Topics.MaxDepth;
+            }
 
             var topicsCollection = new Queue<string>();
             for (var i = 0; i < topicDepth; ++i)
