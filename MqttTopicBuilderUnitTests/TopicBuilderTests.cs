@@ -92,6 +92,48 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Check if an exception is correctly raised when adding the <see cref="Topics.NullCharacter"/> in a topic
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddTopic_NullCharacter()
+        {
+            // Arrange
+            var builder = new TopicBuilder();
+            var invalidTopic = _fixture.Create<string>() 
+                        + Topics.NullCharacter 
+                        + _fixture.Create<string>();
+
+            // Act
+            Action addingANewCharacterInATopic = ()
+                => builder.AddTopic(invalidTopic);
+
+            // Assert
+            addingANewCharacterInATopic.Should()
+                .Throw<EmptyTopicException>(
+                    "because a valid topic should not contain the null character");
+        }
+
+        /// <summary>
+        /// Check if an exception is correctly raised when adding the <see cref="Topics.NullCharacter"/> as a topic
+        /// </summary>
+        [Fact]
+        public void TopicBuilder_AddTopic_NullCharacterAlone()
+        {
+            // Arrange
+            var builder = new TopicBuilder();
+            const char nullChar = Topics.NullCharacter;
+
+            // Act
+            Action addingANewCharacterInATopic = ()
+                => builder.AddTopic(nullChar.ToString());
+
+            // Assert
+            addingANewCharacterInATopic.Should()
+                .Throw<EmptyTopicException>(
+                    "because a valid topic should not contain the null character");
+        }
+
+        /// <summary>
         /// Check if an exception is correctly raised when adding too much data to the builder
         /// </summary>
         [Fact]

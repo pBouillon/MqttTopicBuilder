@@ -141,6 +141,25 @@ namespace MqttTopicBuilderUnitTests
         }
 
         /// <summary>
+        /// Check if an exception is correctly raised when creating a topic containing the <see cref="Topics.NullCharacter"/>
+        /// </summary>
+        [Fact]
+        public void Topic_EmptyTopicExceptionOnNullChar()
+        {
+            // Arrange
+            const char rawTopic = Topics.NullCharacter;
+
+            // Act
+            Action creatingATopicFromNullCharacter = ()
+                => new Topic(rawTopic.ToString());
+
+            // Arrange
+            creatingATopicFromNullCharacter.Should()
+                .Throw<EmptyTopicException>(
+                    "because a valid topic should not contain the null character");
+        }
+
+        /// <summary>
         /// Check if the topic correctly raises an exception on a null topic
         /// </summary>
         [Fact]
@@ -345,6 +364,25 @@ namespace MqttTopicBuilderUnitTests
             attemptingToBuildTopicContainingMultiLevelWildcard.Should()
                 .Throw<IllegalTopicConstructionException>(
                     "because a topic containing multi level wildcard should not be a valid one");
+        }
+
+        /// <summary>
+        /// Check if an exception is correctly raised when creating a topic containing the <see cref="Topics.NullCharacter"/>
+        /// </summary>
+        [Fact]
+        public void Topic_Parse_NullCharacter()
+        {
+            // Arrange
+            const char rawTopic = Topics.NullCharacter;
+
+            // Act
+            Action creatingATopicFromNullCharacter = ()
+                => Topic.Parse(rawTopic.ToString());
+
+            // Arrange
+            creatingATopicFromNullCharacter.Should()
+                .Throw<EmptyTopicException>(
+                    "because a valid topic should not contain the null character");
         }
 
         /// <summary>
@@ -596,6 +634,28 @@ namespace MqttTopicBuilderUnitTests
             topic.Should()
                 .BeNull(
                     "because no instantiation should have been done");
+        }
+
+        /// <summary>
+        /// Check if an exception is correctly raised when creating a topic containing the <see cref="Topics.NullCharacter"/>
+        /// </summary>
+        [Fact]
+        public void Topic_TryParse_NullCharacter()
+        {
+            // Arrange
+            const char nullChar = Topics.NullCharacter;
+
+            // Act
+            var result = Topic.TryParse(nullChar.ToString(), out var topic);
+
+            // Arrange
+            result.Should()
+                .BeFalse(
+                    "because a `EmptyTopicException` should have been raised but silenced");
+
+            topic.Should()
+                .BeNull(
+                    "because a valid topic should not contain the null character");
         }
 
         /// <summary>
