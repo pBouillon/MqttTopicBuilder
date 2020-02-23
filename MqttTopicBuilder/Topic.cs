@@ -71,6 +71,12 @@ namespace MqttTopicBuilder
                 return;
             }
 
+            // Looking for the forbidden null character
+            if (rawTopic.Contains(Topics.NullCharacter))
+            {
+                throw new EmptyTopicException("Illegal null character found");
+            }
+
             // Starting checks
             var isMultiLevelWildcardEncountered = false;
 

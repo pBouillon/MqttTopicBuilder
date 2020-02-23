@@ -28,6 +28,11 @@ namespace MqttTopicBuilder.MqttUtils
         public const int MaxSliceLength = 10_240;
 
         /// <summary>
+        /// Encoding of the forbidden null character
+        /// </summary>
+        public const char NullCharacter = (char) 0;
+
+        /// <summary>
         /// Default MQTT topic's separator
         /// </summary>
         public const char Separator = '/';

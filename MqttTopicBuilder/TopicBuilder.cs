@@ -120,7 +120,8 @@ namespace MqttTopicBuilder
 
             // A topic can't be blank
             if (string.IsNullOrEmpty(topic)
-                || string.IsNullOrWhiteSpace(topic))
+                || string.IsNullOrWhiteSpace(topic)
+                || topic.Contains(Topics.NullCharacter))
             {
                 throw new EmptyTopicException();
             }
