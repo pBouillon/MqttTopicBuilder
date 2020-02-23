@@ -45,6 +45,11 @@ namespace MqttTopicBuilder
             => StagedTopics.Count;
 
         /// <summary>
+        /// Maximum depth of the topic to be build
+        /// </summary>
+        public int MaxDepth { get; set; }
+
+        /// <summary>
         /// The staged topics who will result in the topic's path
         /// </summary>
         public Queue<string> StagedTopics { get; }
@@ -52,21 +57,51 @@ namespace MqttTopicBuilder
         /// <summary>
         /// Default constructor
         /// </summary>
-        /// <param name="maxLength">Maximum topics to add allowed</param>
-        public TopicBuilder(int maxLength = Topics.MaxDepth)
+        /// <param name="maxDepth">Maximum topics to add allowed</param>
+        public TopicBuilder(int maxDepth = Topics.MaxDepth)
         {
-            StagedTopics = new Queue<string>(maxLength);
+            StagedTopics = new Queue<string>(maxDepth);
+            MaxDepth = maxDepth;
         }
 
         /// <summary>
         /// Constructor to initialize the builder with an existing topic
         /// </summary>
         /// <param name="topicBase">The existing topic to add to the staged ones</param>
-        /// <param name="maxLength">Maximum topics to add allowed</param>
-        public TopicBuilder(string topicBase, int maxLength = Topics.MaxDepth)
-            : this(maxLength)
+        /// <param name="maxDepth">Maximum topics to add allowed</param>
+        public TopicBuilder(string topicBase, int maxDepth = Topics.MaxDepth)
+            : this(maxDepth)
         {
-            foreach (var slice in topicBase.Split(Topics.Separator))
+            var slices = topicBase.Split(Topics.Separator);
+
+            if (slices.Count() > MaxDepth)
+            {
+                MaxDepth = slices.Count();
+            }
+
+            foreach (var slice in slices)
+            {
+                AddTopic(slice);
+            }
+        }
+
+        /// <summary>
+        /// Constructor to initialize the builder with a collection of existing topics
+        /// </summary>
+        /// <param name="topicsBase">The existing collection of topics to add to the staged ones</param>
+        /// <param name="maxDepth">Maximum topics to add allowed</param>
+        public TopicBuilder(IEnumerable<string> topicsBase, int maxDepth = Topics.MaxDepth)
+            : this(maxDepth)
+        {
+            var slices = topicsBase as string[] 
+                         ?? topicsBase.ToArray();
+
+            if (slices.Count() > MaxDepth)
+            {
+                MaxDepth = slices.Count();
+            }
+
+            foreach (var slice in slices)
             {
                 AddTopic(slice);
             }
@@ -85,7 +120,8 @@ namespace MqttTopicBuilder
 
             // A topic can't be blank
             if (string.IsNullOrEmpty(topic)
-                || string.IsNullOrWhiteSpace(topic))
+                || string.IsNullOrWhiteSpace(topic)
+                || topic.Contains(Topics.NullCharacter))
             {
                 throw new EmptyTopicException();
             }
@@ -158,10 +194,25 @@ namespace MqttTopicBuilder
         /// </summary>
         private void CheckAppendingAllowance()
         {
+            // Check if the appending is allowed
             if (IsAppendingForbidden)
             {
                 throw new IllegalTopicConstructionException();
             }
+
+            // Check if the depth limit is reached
+            if (StagedTopics.Count == MaxDepth)
+            {
+                throw new TopicBuilderOverflowException();
+            }
+        }
+
+        /// <summary>
+        /// Removes all staged topics
+        /// </summary>
+        public void Clear()
+        {
+            StagedTopics.Clear();
         }
     }
 }

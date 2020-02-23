@@ -95,21 +95,23 @@ Regarding what your request is, please provide at least the following informatio
 <summary>
 Improvement or request
 </summary>
-<p>
-- What you think is missing
-- Why do you think it is missing and has its place in this project
-- Any resources to help to its development (documentation, PoC, existing sources, etc.)
-</p>
+<p><ul>
+<li>What you think is missing</li>
+<li>Why do you think it is missing and has its place in this project</li>
+<li>Any resources to help to its development (documentation, PoC, existing sources, etc.)</li>
+</ul></p>
+</details>
 
+<details>
 <summary>
 Bug report
 </summary>
-<p>
-- Comprehensive and descriptive description of the bug
-- Clear examples and steps to demonstrate this bug
-- The expected outcome and the actual result
-- If possible, the stack trace of the error
-</p>
+<p><ul>
+<li>Comprehensive and descriptive description of the bug</li>
+<li>Clear examples and steps to demonstrate this bug</li>
+<li>The expected outcome and the actual result</li>
+<li>If possible, the stack trace of the error</li>
+</ul></p>
 </details>
 
 ### Working on an existing issue
