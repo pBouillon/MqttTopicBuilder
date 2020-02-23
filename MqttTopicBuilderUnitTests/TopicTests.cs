@@ -9,10 +9,9 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using AutoFixture;
-
 namespace MqttTopicBuilderUnitTests
 {
+    using AutoFixture;
     using FluentAssertions;
     using MqttTopicBuilder;
     using MqttTopicBuilder.Exceptions;
@@ -24,15 +23,19 @@ namespace MqttTopicBuilderUnitTests
     public class TopicTests
     {
         /// <summary>
+        /// AutoFixture's object to generate fixtures
+        /// </summary>
+        /// <see cref="Fixture"/>
+        private readonly Fixture _fixture = new Fixture();
+
+        /// <summary>
         /// Ensure that the topic is correctly built from a valid topic
         /// </summary>
         [Fact]
         public void Topic_CreateTopicFromValidRawString()
         {
             // Arrange
-            var fixture = new Fixture();
-
-            var topicDepth = fixture.Create<int>();
+            var topicDepth = _fixture.Create<int>();
             topicDepth = topicDepth > Topics.MaxDepth
                 ? Topics.MaxDepth
                 : topicDepth;
@@ -63,7 +66,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_CreateTopicFromRawStringContainingMultiLevelWildcard()
         {
             // Arrange
-            var fixture = new Fixture();
             var topic = $"mqtt{Topics.Separator}" +
                         $"topic{Topics.Separator}" +
                         $"{Wildcards.MultiLevel}{Topics.Separator}" +
@@ -86,7 +88,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_CreateTopicFromRawStringContainingSingleLevelWildcard()
         {
             // Arrange
-            var fixture = new Fixture();
             var topic = $"mqtt{Topics.Separator}" +
                         $"topic{Topics.Separator}" +
                         $"{Wildcards.SingleLevel}{Topics.Separator}" +
@@ -109,7 +110,7 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_EmptyTopicExceptionOnBlankTopic()
         {
             // Arrange
-            var baseTopic = " \t ";
+            const string baseTopic = " \t ";
 
             // Act
             Action createTopicFromEmptyString = ()
@@ -350,7 +351,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_Parse_CreateTopicFromRawStringContainingMultiLevelWildcard()
         {
             // Arrange
-            var fixture = new Fixture();
             var rawTopic = $"mqtt{Topics.Separator}" +
                         $"topic{Topics.Separator}" +
                         $"{Wildcards.MultiLevel}{Topics.Separator}" +
@@ -392,7 +392,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_Parse_CreateTopicFromRawStringContainingSingleLevelWildcard()
         {
             // Arrange
-            var fixture = new Fixture();
             var rawTopic = $"mqtt{Topics.Separator}" +
                         $"topic{Topics.Separator}" +
                         $"{Wildcards.SingleLevel}{Topics.Separator}" +
@@ -415,7 +414,7 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_Parse_EmptyTopicExceptionOnBlankTopic()
         {
             // Arrange
-            var baseTopic = " \t ";
+            const string baseTopic = " \t ";
 
             // Act
             Action createTopicFromEmptyString = ()
@@ -494,9 +493,7 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_Parse_ValidRawString()
         {
             // Arrange
-            var fixture = new Fixture();
-
-            var topicDepth = fixture.Create<int>();
+            var topicDepth = _fixture.Create<int>();
             topicDepth = topicDepth > Topics.MaxDepth
                 ? Topics.MaxDepth
                 : topicDepth;
@@ -528,7 +525,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_TryParse_CreateTopicFromRawStringContainingMultiLevelWildcard()
         {
             // Arrange
-            var fixture = new Fixture();
             var rawTopic = $"mqtt{Topics.Separator}" +
                         $"topic{Topics.Separator}" +
                         $"{Wildcards.MultiLevel}{Topics.Separator}" +
@@ -554,7 +550,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_TryParse_CreateTopicFromRawStringContainingSingleLevelWildcard()
         {
             // Arrange
-            var fixture = new Fixture();
             var rawTopic = $"mqtt{Topics.Separator}" +
                         $"topic{Topics.Separator}" +
                         $"{Wildcards.SingleLevel}{Topics.Separator}" +
@@ -577,7 +572,7 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_TryParse_EmptyTopicExceptionOnBlankTopic()
         {
             // Arrange
-            var baseTopic = " \t ";
+            const string baseTopic = " \t ";
 
             // Act
             var result = Topic.TryParse(baseTopic, out var topic);
@@ -690,9 +685,7 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_TryParse_ValidRawString()
         {
             // Arrange
-            var fixture = new Fixture();
-
-            var topicDepth = fixture.Create<int>();
+            var topicDepth = _fixture.Create<int>();
             topicDepth = topicDepth > Topics.MaxDepth
                 ? Topics.MaxDepth
                 : topicDepth;

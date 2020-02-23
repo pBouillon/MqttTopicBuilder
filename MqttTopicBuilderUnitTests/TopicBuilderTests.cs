@@ -303,7 +303,7 @@ namespace MqttTopicBuilderUnitTests
         /// Check if the smallest topic is built when the builder does not contains any data
         /// </summary>
         [Fact]
-        public void TopicBuilder_Build_BuildFromEmptyTopic()
+        public void TopicBuilder_Build_EmptyTopicBuilder()
         {
             // Arrange
             var builder = new TopicBuilder();
@@ -367,8 +367,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_Clear()
         {
             // Arrange
-            var fixture = new Fixture();
-
             var topicDepth = _fixture.Create<int>();
             if (topicDepth > Topics.MaxDepth)
             {
@@ -378,7 +376,7 @@ namespace MqttTopicBuilderUnitTests
             var topicBuilder = new TopicBuilder();
             for (var i = 0; i < topicDepth; ++i)
             {
-                topicBuilder.AddTopic(fixture.Create<string>());
+                topicBuilder.AddTopic(_fixture.Create<string>());
             }
 
             // Act
@@ -418,8 +416,6 @@ namespace MqttTopicBuilderUnitTests
         public void Topic_Constructor_CreateTopicFromValidCollection()
         {
             // Arrange
-            var fixture = new Fixture();
-
             var topicDepth = _fixture.Create<int>();
             if (topicDepth > Topics.MaxDepth)
             {
@@ -429,7 +425,7 @@ namespace MqttTopicBuilderUnitTests
             var topicsCollection = new Queue<string>();
             for (var i = 0; i < topicDepth; ++i)
             {
-                topicsCollection.Enqueue(fixture.Create<string>());
+                topicsCollection.Enqueue(_fixture.Create<string>());
             }
 
             // Act
