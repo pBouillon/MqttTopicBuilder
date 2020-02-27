@@ -11,8 +11,8 @@
 
 namespace MqttTopicBuilder
 {
+    using Constants;
     using Exceptions;
-    using MqttUtils;
     
     /// <summary>
     /// Stores data and logic belonging to MQTT topics

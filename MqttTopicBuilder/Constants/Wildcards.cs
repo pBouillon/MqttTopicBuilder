@@ -9,10 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.MqttUtils
+namespace MqttTopicBuilder.Constants
 {
     /// <summary>
-    /// References MQTT's wildcard constants
+    /// References MQTT's wildcard Constants
     /// </summary>
     public class Wildcards
     {

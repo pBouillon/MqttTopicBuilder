@@ -11,7 +11,7 @@
 
 namespace MqttTopicBuilder.Exceptions
 {
-    using MqttUtils;
+    using Constants;
     using System;
 
     /// <summary>

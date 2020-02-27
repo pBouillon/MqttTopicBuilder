@@ -11,8 +11,8 @@
 
 namespace MqttTopicBuilder
 {
+    using Constants;
     using Exceptions;
-    using MqttUtils;
     using System.Collections.Generic;
     using System.Linq;
 

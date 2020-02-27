@@ -9,7 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.MqttUtils
+namespace MqttTopicBuilder.Constants
 {
     /// <summary>
     /// References MQTT topic's constants

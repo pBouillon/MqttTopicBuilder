@@ -15,7 +15,7 @@ namespace MqttTopicBuilderUnitTests
     using FluentAssertions;
     using MqttTopicBuilder;
     using MqttTopicBuilder.Exceptions;
-    using MqttTopicBuilder.MqttUtils;
+    using MqttTopicBuilder.Constants;
     using System;
     using System.Collections.Generic;
     using System.Text;
