@@ -19,7 +19,7 @@ namespace MqttTopicBuilder.Core.Constants
         /// <summary>
         /// Default maximum topic length (level)
         /// </summary>
-        public const int MaximumAllowedDepth = 32;
+        public const int MaximumAllowedLevels = 32;
 
         /// <summary>
         /// Default maximum topic slice length (in char)
