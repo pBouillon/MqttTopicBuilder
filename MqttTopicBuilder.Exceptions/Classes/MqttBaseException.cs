@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,34 +9,28 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Exceptions
+using System;
+
+namespace MqttTopicBuilder.Exceptions.Classes
 {
-    using System;
-
     /// <summary>
-    /// Exception thrown on an operation on an empty Topic
+    /// Custom exception base with default constructors
     /// </summary>
-    public class EmptyTopicException : BaseException
+    public abstract class MqttBaseException : Exception
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public EmptyTopicException()
-            : base(ExceptionMessages.EmptyTopic) { }
-
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
-        public EmptyTopicException(string message)
-            : base($"{ExceptionMessages.EmptyTopic}: {message}") { }
+        protected MqttBaseException(string message)
+            : base(message) { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        public EmptyTopicException(string message, Exception inner)
-            : base($"{ExceptionMessages.EmptyTopic}: {message}", inner) { }
+        protected MqttBaseException(string message, System.Exception inner)
+            : base(message, inner) { }
     }
 }

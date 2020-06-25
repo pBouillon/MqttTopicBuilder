@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,7 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Constants
+namespace MqttTopicBuilder.Core.Constants
 {
     /// <summary>
     /// References MQTT topic's constants
@@ -19,7 +19,7 @@ namespace MqttTopicBuilder.Constants
         /// <summary>
         /// Default maximum topic length (level)
         /// </summary>
-        public const int MaxDepth = 32;
+        public const int MaximumAllowedDepth = 32;
 
         /// <summary>
         /// Default maximum topic slice length (in char)

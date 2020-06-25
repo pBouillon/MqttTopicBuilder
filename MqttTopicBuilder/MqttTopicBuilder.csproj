@@ -17,22 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.10.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Exceptions\ExceptionMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Exceptions\ExceptionMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\MqttTopicBuilder.Core\MqttTopicBuilder.Core.csproj" />
+    <ProjectReference Include="..\MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj" />
   </ItemGroup>
 
 </Project>

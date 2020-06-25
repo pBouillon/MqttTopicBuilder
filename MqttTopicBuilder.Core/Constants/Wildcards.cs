@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,7 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Constants
+namespace MqttTopicBuilder.Core.Constants
 {
     /// <summary>
     /// References MQTT's wildcard Constants
@@ -19,11 +19,11 @@ namespace MqttTopicBuilder.Constants
         /// <summary>
         /// MQTT's multi-level wildcard
         /// </summary>
-        public const char MultiLevel = '#';
+        public const string MultiLevel = "#";
 
         /// <summary>
         /// MQTT's single-level wildcard
         /// </summary>
-        public const char SingleLevel = '+';
+        public const string SingleLevel = "+";
     }
 }

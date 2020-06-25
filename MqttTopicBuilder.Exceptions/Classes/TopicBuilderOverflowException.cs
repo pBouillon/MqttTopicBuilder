@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,14 +9,12 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Exceptions
+namespace MqttTopicBuilder.Exceptions.Classes
 {
-    using System;
-
     /// <summary>
     /// Exception thrown when adding a topic to a filled TopicBuilder
     /// </summary>
-    public class TopicBuilderOverflowException : BaseException
+    public class TopicBuilderOverflowException : MqttBaseException
     {
         /// <summary>
         /// Default constructor
@@ -36,7 +34,7 @@ namespace MqttTopicBuilder.Exceptions
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        public TopicBuilderOverflowException(string message, Exception inner)
+        public TopicBuilderOverflowException(string message, System.Exception inner)
             : base($"{ExceptionMessages.TopicBuilderOverflow}: {message}", inner) { }
     }
 }

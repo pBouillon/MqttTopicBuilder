@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,11 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder
+using MqttTopicBuilder.Core.Constants;
+
+namespace MqttTopicBuilder.Core
 {
-    using Constants;
-    using Exceptions;
-    
     /// <summary>
     /// Stores data and logic belonging to MQTT topics
     /// </summary>

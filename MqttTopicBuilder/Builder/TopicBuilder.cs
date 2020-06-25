@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,17 +9,17 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder
-{
-    using Constants;
-    using Exceptions;
-    using System.Collections.Generic;
-    using System.Linq;
+using System.Collections.Generic;
+using System.Linq;
+using MqttTopicBuilder.Core;
+using MqttTopicBuilder.Core.Constants;
 
+namespace MqttTopicBuilder.Builder
+{
     /// <summary>
     /// Implements a builder to construct topics
     /// </summary>
-    public class TopicBuilder
+    public class TopicBuilder : ITopicBuilder
     {
         /// <summary>
         /// Check if the appending is forbidden
@@ -32,33 +32,25 @@ namespace MqttTopicBuilder
                 .Last()
                 .Equals(Wildcards.MultiLevel.ToString());
 
-        /// <summary>
-        /// Check if there is any staged topics
-        /// </summary>
+        /// <inheritdoc cref="ITopicBuilder.IsEmpty"/>
         public bool IsEmpty
             => StagedTopics.Count == 0;
 
-        /// <summary>
-        /// Count all topics added
-        /// </summary>
+        /// <inheritdoc cref="ITopicBuilder.Level"/>
         public int Level
             => StagedTopics.Count;
 
-        /// <summary>
-        /// Maximum depth of the topic to be build
-        /// </summary>
+        /// <inheritdoc cref="ITopicBuilder.MaxDepth"/>
         public int MaxDepth { get; set; }
 
-        /// <summary>
-        /// The staged topics who will result in the topic's path
-        /// </summary>
+        /// <inheritdoc cref="ITopicBuilder.StagedTopics"/>
         public Queue<string> StagedTopics { get; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="maxDepth">Maximum topics to add allowed</param>
-        public TopicBuilder(int maxDepth = Topics.MaxDepth)
+        public TopicBuilder(int maxDepth = Topics.MaximumAllowedDepth)
         {
             StagedTopics = new Queue<string>(maxDepth);
             MaxDepth = maxDepth;
@@ -69,7 +61,7 @@ namespace MqttTopicBuilder
         /// </summary>
         /// <param name="topicBase">The existing topic to add to the staged ones</param>
         /// <param name="maxDepth">Maximum topics to add allowed</param>
-        public TopicBuilder(string topicBase, int maxDepth = Topics.MaxDepth)
+        public TopicBuilder(string topicBase, int maxDepth = Topics.MaximumAllowedDepth)
             : this(maxDepth)
         {
             var slices = topicBase.Split(Topics.Separator);
@@ -90,7 +82,7 @@ namespace MqttTopicBuilder
         /// </summary>
         /// <param name="topicsBase">The existing collection of topics to add to the staged ones</param>
         /// <param name="maxDepth">Maximum topics to add allowed</param>
-        public TopicBuilder(IEnumerable<string> topicsBase, int maxDepth = Topics.MaxDepth)
+        public TopicBuilder(IEnumerable<string> topicsBase, int maxDepth = Topics.MaximumAllowedDepth)
             : this(maxDepth)
         {
             var slices = topicsBase as string[] 
@@ -107,14 +99,8 @@ namespace MqttTopicBuilder
             }
         }
 
-        /// <summary>
-        /// Add a topic to the staged ones
-        /// </summary>
-        /// <param name="topic">Topic to add</param>
-        /// <exception cref="EmptyTopicException">Raised if the topic is blank or empty</exception>
-        /// <exception cref="InvalidTopicException">Raised if the topic is malformed</exception>
-        /// <returns>The builder itself (Fluent pattern)</returns>
-        public TopicBuilder AddTopic(string topic)
+        /// <inheritdoc cref="ITopicBuilder.AddTopic"/>
+        public ITopicBuilder AddTopic(string topic)
         {
             CheckAppendingAllowance();
 
@@ -146,11 +132,8 @@ namespace MqttTopicBuilder
             return this;
         }
 
-        /// <summary>
-        /// Add a single-level wildcard to the staged topics
-        /// </summary>
-        /// <returns>The builder itself (Fluent pattern)</returns>
-        public TopicBuilder AddWildcardSingleLevel()
+        /// <inheritdoc cref="ITopicBuilder.AddWildcardSingleLevel"/>
+        public ITopicBuilder AddWildcardSingleLevel()
         {
             CheckAppendingAllowance();
 
@@ -160,11 +143,8 @@ namespace MqttTopicBuilder
             return this;
         }
 
-        /// <summary>
-        /// Add a multi-level wildcard to the staged topics
-        /// </summary>
-        /// <returns>The builder itself (Fluent pattern)</returns>
-        public TopicBuilder AddWildcardMultiLevel()
+        /// <inheritdoc cref="ITopicBuilder.AddWildcardMultiLevel"/>
+        public ITopicBuilder AddWildcardMultiLevel()
         {
             CheckAppendingAllowance();
 

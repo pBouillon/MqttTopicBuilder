@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttTopicBuilder", "MqttTopicBuilder\MqttTopicBuilder.csproj", "{432CFDB6-152A-41FD-BADB-3F2024D7036A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttTopicBuilderUnitTests", "MqttTopicBuilderUnitTests\MqttTopicBuilderUnitTests.csproj", "{38DE1527-0949-4AE5-959B-4865AD5CC7A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttTopicBuilder.Core", "MqttTopicBuilder.Core\MqttTopicBuilder.Core.csproj", "{F6E44C7B-F194-43BE-B952-6076219E5654}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttTopicBuilder.Extensions", "MqttTopicBuilder.Extensions\MqttTopicBuilder.Extensions.csproj", "{8B0B513A-2A0E-466C-9307-4233FDD860A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttTopicBuilder.Exceptions", "MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj", "{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttTopicBuilder.UnitTests", "MqttTopicBuilder.UnitTests\MqttTopicBuilder.UnitTests.csproj", "{16E24C3D-CF4A-4D59-81CD-983A588C60CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +23,22 @@ Global
 		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38DE1527-0949-4AE5-959B-4865AD5CC7A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38DE1527-0949-4AE5-959B-4865AD5CC7A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38DE1527-0949-4AE5-959B-4865AD5CC7A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38DE1527-0949-4AE5-959B-4865AD5CC7A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6E44C7B-F194-43BE-B952-6076219E5654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E44C7B-F194-43BE-B952-6076219E5654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6E44C7B-F194-43BE-B952-6076219E5654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E44C7B-F194-43BE-B952-6076219E5654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B0B513A-2A0E-466C-9307-4233FDD860A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B0B513A-2A0E-466C-9307-4233FDD860A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B0B513A-2A0E-466C-9307-4233FDD860A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B0B513A-2A0E-466C-9307-4233FDD860A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
