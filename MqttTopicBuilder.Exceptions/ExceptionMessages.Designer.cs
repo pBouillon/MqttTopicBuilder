@@ -97,20 +97,20 @@ namespace MqttTopicBuilder.Exceptions {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à The current TopicBuilder instance if full and can not add any other element.
+        /// </summary>
+        internal static string TooManyTopicsAppending {
+            get {
+                return ResourceManager.GetString("TooManyTopicsAppending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Impossible to add a topic after a multilevel wildcard.
         /// </summary>
         internal static string TopicAfterWildcard {
             get {
                 return ResourceManager.GetString("TopicAfterWildcard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à The current TopicBuilder instance if full and can not add any other element.
-        /// </summary>
-        internal static string TopicBuilderOverflow {
-            get {
-                return ResourceManager.GetString("TopicBuilderOverflow", resourceCulture);
             }
         }
     }

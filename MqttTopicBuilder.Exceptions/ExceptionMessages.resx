@@ -129,10 +129,10 @@
   <data name="TooLongTopic" xml:space="preserve">
     <value>MQTT clients can only handle up to 10 240 characters per level</value>
   </data>
+  <data name="TooManyTopicsAppending" xml:space="preserve">
+    <value>The current TopicBuilder instance if full and can not add any other element</value>
+  </data>
   <data name="TopicAfterWildcard" xml:space="preserve">
     <value>Impossible to add a topic after a multilevel wildcard</value>
-  </data>
-  <data name="TopicBuilderOverflow" xml:space="preserve">
-    <value>The current TopicBuilder instance if full and can not add any other element</value>
   </data>
 </root>

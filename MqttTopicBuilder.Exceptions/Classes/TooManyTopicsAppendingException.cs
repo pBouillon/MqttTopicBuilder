@@ -14,27 +14,27 @@ namespace MqttTopicBuilder.Exceptions.Classes
     /// <summary>
     /// Exception thrown when adding a topic to a filled TopicBuilder
     /// </summary>
-    public class TopicBuilderOverflowException : MqttBaseException
+    public class TooManyTopicsAppendingException : MqttBaseException
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TopicBuilderOverflowException()
-            : base(ExceptionMessages.InvalidTopic) { }
+        public TooManyTopicsAppendingException()
+            : base(ExceptionMessages.TooManyTopicsAppending) { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
-        public TopicBuilderOverflowException(string message)
-            : base($"{ExceptionMessages.TopicBuilderOverflow}: {message}") { }
+        public TooManyTopicsAppendingException(string message)
+            : base($"{ExceptionMessages.TooManyTopicsAppending}: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        public TopicBuilderOverflowException(string message, System.Exception inner)
-            : base($"{ExceptionMessages.TopicBuilderOverflow}: {message}", inner) { }
+        public TooManyTopicsAppendingException(string message, System.Exception inner)
+            : base($"{ExceptionMessages.TooManyTopicsAppending}: {message}", inner) { }
     }
 }
