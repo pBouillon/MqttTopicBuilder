@@ -36,7 +36,7 @@ namespace MqttTopicBuilder.Builder
         /// <summary>
         /// Maximum level of the topic to be built and allowed to be built with the builder
         /// </summary>
-        public int MaxLevel { get; }
+        int MaxLevel { get; }
 
         /// <summary>
         /// Add a multi-level wildcard to the builder

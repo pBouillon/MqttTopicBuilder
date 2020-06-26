@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttTopicBuilder", "MqttTopicBuilder\MqttTopicBuilder.csproj", "{432CFDB6-152A-41FD-BADB-3F2024D7036A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttTopicBuilder.Exceptions", "MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj", "{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttTopicBuilder.UnitTests", "MqttTopicBuilder.UnitTests\MqttTopicBuilder.UnitTests.csproj", "{16E24C3D-CF4A-4D59-81CD-983A588C60CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttTopicBuilder", "MqttTopicBuilder\MqttTopicBuilder.csproj", "{44C488A2-54BB-4604-86A2-D4F3D2BA74F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{432CFDB6-152A-41FD-BADB-3F2024D7036A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6210C6D-3B77-4E81-8E9C-B0141F2707A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E24C3D-CF4A-4D59-81CD-983A588C60CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C488A2-54BB-4604-86A2-D4F3D2BA74F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C488A2-54BB-4604-86A2-D4F3D2BA74F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C488A2-54BB-4604-86A2-D4F3D2BA74F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C488A2-54BB-4604-86A2-D4F3D2BA74F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
