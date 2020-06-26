@@ -36,6 +36,42 @@ namespace MqttTopicBuilder.Topic
         }
 
         /// <summary>
+        /// Validate a topic to be appended to a longer one
+        /// </summary>
+        /// <param name="topic">Topic value to be checked</param>
+        /// <exception cref="EmptyTopicException">If the topic is blank or empty</exception>
+        /// <exception cref="InvalidTopicException">If the topic is malformed</exception>
+        public static void ValidateForTopicAppending(this string topic)
+        {
+            CheckNotBlank(topic);
+
+            // Manually adding separators is forbidden
+            if (topic.Contains(Mqtt.Topic.Separator))
+            {
+                throw new InvalidTopicException(
+                    $"A topic should not contains the MQTT separator \"{Mqtt.Topic.Separator}\"");
+            }
+
+            // Wildcard must only be used to denote a level and shouldn't be used to denote multiple
+            // characters
+            if (topic.Length > 1
+                && (topic.Contains(Mqtt.Wildcard.MultiLevel)
+                    || topic.Contains(Mqtt.Wildcard.SingleLevel)))
+            {
+                throw new InvalidTopicException(
+                    $"A topic value should not hold any wildcard " +
+                    $"(\"{Mqtt.Wildcard.MultiLevel}\", \"{Mqtt.Wildcard.SingleLevel}\")");
+            }
+
+            // Ensure that the topic is not longer than the allowed size
+            if (topic.Length > Mqtt.Topic.MaxSubTopicLength)
+            {
+                throw new TooLongTopicException(
+                    $"Topics must not exceed {Mqtt.Topic.MaxSubTopicLength} characters (attempted to add {topic.Length})");
+            }
+        }
+
+        /// <summary>
         /// Validate a fully built topic
         /// </summary>
         /// <param name="topic">Topic value to be checked</param>
@@ -79,43 +115,7 @@ namespace MqttTopicBuilder.Topic
             // Validate each of the sub topics from which the main one is made
             topic.Split(Mqtt.Topic.Separator)
                 .ToList()
-                .ForEach(ValidateTopicAppending);
-        }
-
-        /// <summary>
-        /// Validate a topic to be appended to a longer one
-        /// </summary>
-        /// <param name="topic">Topic value to be checked</param>
-        /// <exception cref="EmptyTopicException">If the topic is blank or empty</exception>
-        /// <exception cref="InvalidTopicException">If the topic is malformed</exception>
-        public static void ValidateTopicAppending(this string topic)
-        {
-            CheckNotBlank(topic);
-
-            // Manually adding separators is forbidden
-            if (topic.Contains(Mqtt.Topic.Separator))
-            {
-                throw new InvalidTopicException(
-                    $"A topic should not contains the MQTT separator \"{Mqtt.Topic.Separator}\"");
-            }
-
-            // Wildcard must only be used to denote a level and shouldn't be used to denote multiple
-            // characters
-            if (topic.Length > 1
-                && (topic.Contains(Mqtt.Wildcard.MultiLevel)
-                    || topic.Contains(Mqtt.Wildcard.SingleLevel)))
-            {
-                throw new InvalidTopicException(
-                    $"A topic value should not hold any wildcard " +
-                    $"(\"{Mqtt.Wildcard.MultiLevel}\", \"{Mqtt.Wildcard.SingleLevel}\")");
-            }
-
-            // Ensure that the topic is not longer than the allowed size
-            if (topic.Length > Mqtt.Topic.MaxSubTopicLength)
-            {
-                throw new TooLongTopicException(
-                    $"Topics must not exceed {Mqtt.Topic.MaxSubTopicLength} characters (attempted to add {topic.Length})");
-            }
+                .ForEach(ValidateForTopicAppending);
         }
     }
 }

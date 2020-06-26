@@ -27,6 +27,99 @@ namespace MqttTopicBuilder.UnitTests.Topic
     /// </summary>
     public class TopicValidatorUnitTests
     {
+        /// <summary>
+        /// Ensure that a blank topic is not allowed
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnBlankTopic()
+        {
+            // Arrange
+            var blankTopic = string.Empty;
+
+            // Act
+            Action validatingBlankTopic = () =>
+                blankTopic.ValidateForTopicAppending();
+
+            // Assert
+            validatingBlankTopic.Should()
+                .Throw<EmptyTopicException>("because a topic can not be empty");
+        }
+
+        /// <summary>
+        /// Ensure that appending a multi-level wildcard is allowed
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnMultiLevelWildcard()
+        {
+            // Arrange
+            var multiLevelWildcard = Mqtt.Wildcard.MultiLevel.ToString();
+
+            // Act
+            Action validatingTopic = () =>
+                multiLevelWildcard.ValidateForTopicAppending();
+
+            // Assert
+            validatingTopic.Should()
+                .NotThrow<MqttBaseException>("because a single wildcard is allowed to be appended");
+        }
+
+        /// <summary>
+        /// Ensure that a single separator is not a valid topic to be appended
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnSeparator()
+        {
+            // Arrange
+            var separatorTopic = Mqtt.Topic.Separator.ToString();
+
+            // Act
+            Action validatingSeparator = () =>
+                separatorTopic.ValidateForTopicAppending();
+
+            // Assert
+            validatingSeparator.Should()
+                .Throw<InvalidTopicException>("because appending the separator will result in an empty level");
+        }
+
+        /// <summary>
+        /// Ensure that no more than one wildcard can be used at the time
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnSeveralWildcards()
+        {
+            // Arrange
+            var mixedWildcards = $"{Mqtt.Wildcard.SingleLevel}{Mqtt.Wildcard.SingleLevel}";
+
+            // Act
+            Action validatingTopic = () =>
+                mixedWildcards.ValidateForTopicAppending();
+
+            // Assert
+            validatingTopic.Should()
+                .Throw<InvalidTopicException>("because only one wildcard may be used on a single level");
+        }
+
+        /// <summary>
+        /// Ensure that appending a single-level wildcard is allowed
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnSingleLevelWildcard()
+        {
+            // Arrange
+            var singleLevelWildcard = Mqtt.Wildcard.SingleLevel.ToString();
+
+            // Act
+            Action validatingTopic = () =>
+                singleLevelWildcard.ValidateForTopicAppending();
+
+            // Assert
+            validatingTopic.Should()
+                .NotThrow<MqttBaseException>("because a single wildcard is allowed to be appended");
+        }
+
+        /// <summary>
+        /// Ensure that a blank topic is not allowed
+        /// </summary>
         [Fact]
         public void ValidateTopic_OnBlankTopic()
         {

@@ -108,7 +108,7 @@ namespace MqttTopicBuilder.Collection
                 throw new TooManyTopicsAppendingException();
             }
 
-            topic.ValidateTopicAppending();
+            topic.ValidateForTopicAppending();
         }
 
         /// <inheritdoc cref="ITopicCollection.Clear"/>
