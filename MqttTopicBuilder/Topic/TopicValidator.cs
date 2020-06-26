@@ -22,6 +22,20 @@ namespace MqttTopicBuilder.Topic
     public static class TopicValidator
     {
         /// <summary>
+        /// Ensure that the provided topic is neither null, empty or blank
+        /// </summary>
+        /// <param name="topic">Topic to be checked</param>
+        /// <exception cref="EmptyTopicException">If the topic is blank or empty</exception>
+        private static void CheckNotBlank(string topic)
+        {
+            if (string.IsNullOrWhiteSpace(topic)
+                || topic.Contains(Mqtt.Topic.NullCharacter))
+            {
+                throw new EmptyTopicException();
+            }
+        }
+
+        /// <summary>
         /// Validate a fully built topic
         /// </summary>
         /// <param name="topic">Topic value to be checked</param>
@@ -30,6 +44,8 @@ namespace MqttTopicBuilder.Topic
         /// <exception cref="InvalidTopicException">If the topic is malformed</exception>
         public static void ValidateTopic(string topic)
         {
+            CheckNotBlank(topic);
+
             // Allows minimal (and deprecated) MQTT topic: "/"
             if (topic == Mqtt.Topic.Separator.ToString())
             {
@@ -44,6 +60,12 @@ namespace MqttTopicBuilder.Topic
             {
                 throw new IllegalTopicConstructionException(
                     ExceptionMessages.IllegalMultiLevelWildcardUsage);
+            }
+
+            // Remove trailing "/" if any
+            if (topic.Last() == Mqtt.Topic.Separator)
+            {
+                topic = topic.Remove(topic.Length - 1);
             }
 
             // Ensuring that if there is any multi-level wildcard, no values are after it
@@ -68,13 +90,7 @@ namespace MqttTopicBuilder.Topic
         /// <exception cref="InvalidTopicException">If the topic is malformed</exception>
         public static void ValidateTopicAppending(this string topic)
         {
-            // A topic can't be blank
-            if (string.IsNullOrEmpty(topic)
-                || string.IsNullOrWhiteSpace(topic)
-                || topic.Contains(Mqtt.Topic.NullCharacter))
-            {
-                throw new EmptyTopicException();
-            }
+            CheckNotBlank(topic);
 
             // Manually adding separators is forbidden
             if (topic.Contains(Mqtt.Topic.Separator))

@@ -72,7 +72,7 @@ namespace MqttTopicBuilder.Builder
             // FIXME: empty topic
             var content = IsEmpty
                 ? Mqtt.Topic.Separator.ToString()
-                : string.Join(Mqtt.Topic.Separator, _topicCollection.ToArray());
+                : string.Join(Mqtt.Topic.Separator.ToString(), _topicCollection.ToArray());
 
             return new Topic.Topic(content);
         }
