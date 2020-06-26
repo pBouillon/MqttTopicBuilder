@@ -12,7 +12,6 @@
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MqttTopicBuilder.Builder
 {
@@ -21,59 +20,53 @@ namespace MqttTopicBuilder.Builder
     /// </summary>
     public class TopicBuilder : ITopicBuilder
     {
+        /// <summary>
+        /// Inner-collection on which relies the builder for topic creation
+        /// </summary>
         private readonly ITopicCollection _topicCollection;
 
+        /// <inheritdoc cref="ITopicBuilder.IsAppendingAllowed"/>
         public bool IsAppendingAllowed
             => _topicCollection.IsAppendingAllowed;
 
+        /// <inheritdoc cref="ITopicBuilder.IsEmpty"/>
         public bool IsEmpty
             => _topicCollection.IsEmpty;
 
-        public int MaxDepth { get; }
+        /// <inheritdoc cref="ITopicBuilder.MaxLevel"/>
+        public int MaxLevel
+            => _topicCollection.MaxLevel;
 
         public TopicBuilder()
-            => (MaxDepth, _topicCollection)
-                = (Mqtt.Topic.MaximumAllowedLevels, new TopicCollection(MaxDepth));
+            => _topicCollection = new TopicCollection(Mqtt.Topic.MaximumAllowedLevels);
 
-        public TopicBuilder(int maxDepth)
-            => (MaxDepth, _topicCollection)
-                = (maxDepth, new TopicCollection(MaxDepth));
+        public TopicBuilder(int maxLevel)
+            => _topicCollection = new TopicCollection(maxLevel);
 
-        private TopicBuilder(int maxDepth, ITopicCollection topicCollection)
-            => (MaxDepth, _topicCollection) = (maxDepth, topicCollection);
+        private TopicBuilder(ITopicCollection topicCollection)
+            => _topicCollection = topicCollection;
 
+        /// <inheritdoc cref="ITopicBuilder.AddMultiLevelWildcard"/>
         public ITopicBuilder AddMultiLevelWildcard()
-        {
-            // Check max-level
+            => new TopicBuilder(_topicCollection.AddMultiLevelWildcard());
 
-            return new TopicBuilder(MaxDepth, _topicCollection.AddMultiLevelWildcard());
-        }
-
+        /// <inheritdoc cref="ITopicBuilder.AddTopic"/>
         public ITopicBuilder AddTopic(string topic)
-        {
-            // Check max-level
+            => new TopicBuilder(_topicCollection.AddTopic(topic));
 
-            return new TopicBuilder(MaxDepth, _topicCollection.AddTopic(topic));
-        }
-
+        /// <inheritdoc cref="ITopicBuilder.AddTopics(IEnumerable&lt;string&gt;)"/>
         public ITopicBuilder AddTopics(IEnumerable<string> topics)
-        {
-            // Check max-level
+            => new TopicBuilder(_topicCollection.AddTopics(topics));
 
-            return new TopicBuilder(MaxDepth, _topicCollection.AddTopics(topics));
-        }
-
+        /// <inheritdoc cref="ITopicBuilder.AddTopics(string[])"/>
         public ITopicBuilder AddTopics(params string[] topics)
             => AddTopics(topics as IEnumerable<string>);
 
+        /// <inheritdoc cref="ITopicBuilder.AddSingleLevelWildcard"/>
         public ITopicBuilder AddSingleLevelWildcard()
-        {
-            // Check max-level
+            => new TopicBuilder(_topicCollection.AddSingleLevelWildcard());
 
-            return new TopicBuilder(MaxDepth, _topicCollection.AddSingleLevelWildcard());
-        }
-
-        /// FIXME: empty topic
+        /// <inheritdoc cref="ITopicBuilder.Build"/>
         public Topic.Topic Build()
         {
             // FIXME: empty topic
@@ -84,10 +77,8 @@ namespace MqttTopicBuilder.Builder
             return new Topic.Topic(content);
         }
 
-        public void Clear()
-            => new TopicBuilder(MaxDepth);
-
+        /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()
-            => new TopicBuilder(MaxDepth, _topicCollection);
+            => new TopicBuilder(_topicCollection);
     }
 }

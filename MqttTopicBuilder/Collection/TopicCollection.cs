@@ -9,12 +9,12 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Topic;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MqttTopicBuilder.Collection
 {
@@ -91,6 +91,11 @@ namespace MqttTopicBuilder.Collection
                 (ITopicCollection) this, (current, topic) => 
                     current.AddTopic(topic));
 
+        /// <summary>
+        /// Check whether it is possible or not to append the provided topic to the current collection.
+        /// Will throw exception on failing checks
+        /// </summary>
+        /// <param name="topic">Topic to be appended</param>
         private void CheckAppendingAllowanceFor(string topic)
         {
             if (!IsAppendingAllowed)
