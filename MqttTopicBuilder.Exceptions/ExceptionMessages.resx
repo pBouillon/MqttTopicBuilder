@@ -123,6 +123,9 @@
   <data name="IllegalTopicConstruction" xml:space="preserve">
     <value>Impossible to add a topic at this place</value>
   </data>
+  <data name="IllegalMultiLevelWildcardUsage" xml:space="preserve">
+    <value>More than one multi-level wildcard encountered</value>
+  </data>
   <data name="InvalidTopic" xml:space="preserve">
     <value>Invalid topic name</value>
   </data>

@@ -22,7 +22,7 @@ namespace MqttTopicBuilder.Exceptions {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ExceptionMessages {
+    public class ExceptionMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace MqttTopicBuilder.Exceptions {
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MqttTopicBuilder.Exceptions.ExceptionMessages", typeof(ExceptionMessages).Assembly);
@@ -51,7 +51,7 @@ namespace MqttTopicBuilder.Exceptions {
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,16 +63,25 @@ namespace MqttTopicBuilder.Exceptions {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Null topic level is not allowed.
         /// </summary>
-        internal static string EmptyTopic {
+        public static string EmptyTopic {
             get {
                 return ResourceManager.GetString("EmptyTopic", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à More than one multi-level wildcard encountered.
+        /// </summary>
+        public static string IllegalMultiLevelWildcardUsage {
+            get {
+                return ResourceManager.GetString("IllegalMultiLevelWildcardUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Impossible to add a topic at this place.
         /// </summary>
-        internal static string IllegalTopicConstruction {
+        public static string IllegalTopicConstruction {
             get {
                 return ResourceManager.GetString("IllegalTopicConstruction", resourceCulture);
             }
@@ -81,7 +90,7 @@ namespace MqttTopicBuilder.Exceptions {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Invalid topic name.
         /// </summary>
-        internal static string InvalidTopic {
+        public static string InvalidTopic {
             get {
                 return ResourceManager.GetString("InvalidTopic", resourceCulture);
             }
@@ -90,7 +99,7 @@ namespace MqttTopicBuilder.Exceptions {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à MQTT clients can only handle up to 10 240 characters per level.
         /// </summary>
-        internal static string TooLongTopic {
+        public static string TooLongTopic {
             get {
                 return ResourceManager.GetString("TooLongTopic", resourceCulture);
             }
@@ -99,7 +108,7 @@ namespace MqttTopicBuilder.Exceptions {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à The current TopicBuilder instance if full and can not add any other element.
         /// </summary>
-        internal static string TooManyTopicsAppending {
+        public static string TooManyTopicsAppending {
             get {
                 return ResourceManager.GetString("TooManyTopicsAppending", resourceCulture);
             }
@@ -108,7 +117,7 @@ namespace MqttTopicBuilder.Exceptions {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Impossible to add a topic after a multilevel wildcard.
         /// </summary>
-        internal static string TopicAfterWildcard {
+        public static string TopicAfterWildcard {
             get {
                 return ResourceManager.GetString("TopicAfterWildcard", resourceCulture);
             }

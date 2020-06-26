@@ -15,7 +15,7 @@
   <ItemGroup>
     <EmbeddedResource Update="ExceptionMessages.resx">
       <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
