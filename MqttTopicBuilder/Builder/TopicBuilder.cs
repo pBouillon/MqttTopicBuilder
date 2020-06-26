@@ -9,190 +9,85 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using MqttTopicBuilder.Collection;
+using MqttTopicBuilder.Constants;
 using System.Collections.Generic;
 using System.Linq;
-using MqttTopicBuilder.Core;
-using MqttTopicBuilder.Core.Constants;
 
 namespace MqttTopicBuilder.Builder
 {
     /// <summary>
-    /// Implements a builder to construct topics
+    /// Immutable builder to build <see cref="Topic.Topic"/>
     /// </summary>
     public class TopicBuilder : ITopicBuilder
     {
-        /// <summary>
-        /// Check if the appending is forbidden
-        /// Appending is locked if the queue is not empty
-        /// And if the last element is not a multi-level wildcard
-        /// </summary>
-        private bool IsAppendingForbidden
-            => !IsEmpty 
-            && StagedTopics
-                .Last()
-                .Equals(Wildcards.MultiLevel.ToString());
+        private readonly ITopicCollection _topicCollection;
 
-        /// <inheritdoc cref="ITopicBuilder.IsEmpty"/>
+        public bool IsAppendingAllowed
+            => _topicCollection.IsAppendingAllowed;
+
         public bool IsEmpty
-            => StagedTopics.Count == 0;
+            => _topicCollection.IsEmpty;
 
-        /// <inheritdoc cref="ITopicBuilder.Level"/>
-        public int Level
-            => StagedTopics.Count;
+        public int MaxDepth { get; }
 
-        /// <inheritdoc cref="ITopicBuilder.MaxDepth"/>
-        public int MaxDepth { get; set; }
+        public TopicBuilder()
+            => (MaxDepth, _topicCollection)
+                = (Mqtt.Topic.MaximumAllowedLevels, new TopicCollection(MaxDepth));
 
-        /// <inheritdoc cref="ITopicBuilder.StagedTopics"/>
-        public Queue<string> StagedTopics { get; }
+        public TopicBuilder(int maxDepth)
+            => (MaxDepth, _topicCollection)
+                = (maxDepth, new TopicCollection(MaxDepth));
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="maxDepth">Maximum topics to add allowed</param>
-        public TopicBuilder(int maxDepth = Topics.MaximumAllowedLevels)
+        private TopicBuilder(int maxDepth, ITopicCollection topicCollection)
+            => (MaxDepth, _topicCollection) = (maxDepth, topicCollection);
+
+        public ITopicBuilder AddMultiLevelWildcard()
         {
-            StagedTopics = new Queue<string>(maxDepth);
-            MaxDepth = maxDepth;
+            // Check max-level
+
+            return new TopicBuilder(MaxDepth, _topicCollection.AddMultiLevelWildcard());
         }
 
-        /// <summary>
-        /// Constructor to initialize the builder with an existing topic
-        /// </summary>
-        /// <param name="topicBase">The existing topic to add to the staged ones</param>
-        /// <param name="maxDepth">Maximum topics to add allowed</param>
-        public TopicBuilder(string topicBase, int maxDepth = Topics.MaximumAllowedLevels)
-            : this(maxDepth)
-        {
-            var slices = topicBase.Split(Topics.Separator);
-
-            if (slices.Count() > MaxDepth)
-            {
-                MaxDepth = slices.Count();
-            }
-
-            foreach (var slice in slices)
-            {
-                AddTopic(slice);
-            }
-        }
-
-        /// <summary>
-        /// Constructor to initialize the builder with a collection of existing topics
-        /// </summary>
-        /// <param name="topicsBase">The existing collection of topics to add to the staged ones</param>
-        /// <param name="maxDepth">Maximum topics to add allowed</param>
-        public TopicBuilder(IEnumerable<string> topicsBase, int maxDepth = Topics.MaximumAllowedLevels)
-            : this(maxDepth)
-        {
-            var slices = topicsBase as string[] 
-                         ?? topicsBase.ToArray();
-
-            if (slices.Count() > MaxDepth)
-            {
-                MaxDepth = slices.Count();
-            }
-
-            foreach (var slice in slices)
-            {
-                AddTopic(slice);
-            }
-        }
-
-        /// <inheritdoc cref="ITopicBuilder.AddTopic"/>
         public ITopicBuilder AddTopic(string topic)
         {
-            CheckAppendingAllowance();
+            // Check max-level
 
-            // A topic can't be blank
-            if (string.IsNullOrEmpty(topic)
-                || string.IsNullOrWhiteSpace(topic)
-                || topic.Contains(Topics.NullCharacter))
-            {
-                throw new EmptyTopicException();
-            }
-
-            // Manually adding separators is forbidden
-            if (topic.Contains(Topics.Separator))
-            {
-                throw new InvalidTopicException("A topic should not contains a separator");
-            }
-
-            // Wildcard must only be used to denote a level and 
-            // shouldn't be used to denote multiple characters
-            if (topic.Length > 1 
-                && (topic.Contains(Wildcards.MultiLevel)
-                || topic.Contains(Wildcards.SingleLevel)))
-            {
-                throw new InvalidTopicException("A topic should not contains a wildcard in its name");
-            }
-
-            StagedTopics.Enqueue(topic);
-
-            return this;
+            return new TopicBuilder(MaxDepth, _topicCollection.AddTopic(topic));
         }
 
-        /// <inheritdoc cref="ITopicBuilder.AddWildcardSingleLevel"/>
-        public ITopicBuilder AddWildcardSingleLevel()
+        public ITopicBuilder AddTopics(IEnumerable<string> topics)
         {
-            CheckAppendingAllowance();
+            // Check max-level
 
-            StagedTopics.Enqueue(
-                Wildcards.SingleLevel.ToString());
-
-            return this;
+            return new TopicBuilder(MaxDepth, _topicCollection.AddTopics(topics));
         }
 
-        /// <inheritdoc cref="ITopicBuilder.AddWildcardMultiLevel"/>
-        public ITopicBuilder AddWildcardMultiLevel()
+        public ITopicBuilder AddTopics(params string[] topics)
+            => AddTopics(topics as IEnumerable<string>);
+
+        public ITopicBuilder AddSingleLevelWildcard()
         {
-            CheckAppendingAllowance();
+            // Check max-level
 
-            StagedTopics.Enqueue(
-                Wildcards.MultiLevel.ToString());
-
-            return this;
+            return new TopicBuilder(MaxDepth, _topicCollection.AddSingleLevelWildcard());
         }
 
-        /// <summary>
-        /// Build the topic from the staged ones
-        /// </summary>
-        /// <returns>The newly formed topic as a Topic object</returns>
-        /// <see cref="Topic"/>
-        public Topic Build()
+        /// FIXME: empty topic
+        public Topic.Topic Build()
         {
-            // An empty builder will result in the construction of the smallest topic possible ('/')
-            var generatedTopic = IsEmpty
-                ? Topics.Separator.ToString()
-                : string.Join(Topics.Separator, StagedTopics);
+            // FIXME: empty topic
+            var content = IsEmpty
+                ? Mqtt.Topic.Separator.ToString()
+                : string.Join(Mqtt.Topic.Separator, _topicCollection.ToArray());
 
-            return new Topic(generatedTopic);
+            return new Topic.Topic(content);
         }
 
-        /// <summary>
-        /// Check the ability for the user to add a new topic
-        /// </summary>
-        private void CheckAppendingAllowance()
-        {
-            // Check if the appending is allowed
-            if (IsAppendingForbidden)
-            {
-                throw new IllegalTopicConstructionException();
-            }
-
-            // Check if the depth limit is reached
-            if (StagedTopics.Count == MaxDepth)
-            {
-                throw new TopicBuilderOverflowException();
-            }
-        }
-
-        /// <summary>
-        /// Removes all staged topics
-        /// </summary>
         public void Clear()
-        {
-            StagedTopics.Clear();
-        }
+            => new TopicBuilder(MaxDepth);
+
+        public ITopicBuilder Clone()
+            => new TopicBuilder(MaxDepth, _topicCollection);
     }
 }
