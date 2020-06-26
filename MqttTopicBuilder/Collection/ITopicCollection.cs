@@ -11,7 +11,7 @@
 
 using System.Collections.Generic;
 
-namespace MqttTopicBuilder.Collections
+namespace MqttTopicBuilder.Collection
 {
     /// <summary>
     /// Represent a custom topics collection
@@ -69,6 +69,21 @@ namespace MqttTopicBuilder.Collections
         /// added topic
         /// </returns>
         ITopicCollection AddTopic(string topic);
+
+        /// <summary>
+        /// Add several topics to the staged ones
+        /// </summary>
+        /// <param name="topics">Topics to be added</param>
+        /// <returns>
+        /// A new instance of <see cref="ITopicCollection"/> holding the newly
+        /// added topics
+        /// </returns>
+        ITopicCollection AddTopics(IEnumerable<string> topics);
+
+        /// <summary>
+        /// Remove all staged topics
+        /// </summary>
+        void Clear();
 
         /// <summary>
         /// Retrieve all the staged topics in an array

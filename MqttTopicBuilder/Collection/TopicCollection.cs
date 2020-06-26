@@ -9,15 +9,18 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using MqttTopicBuilder.Core.Constants;
-using MqttTopicBuilder.Exceptions.Classes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MqttTopicBuilder.Utils;
+using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions.Classes;
+using MqttTopicBuilder.Topic;
 
-namespace MqttTopicBuilder.Collections
+namespace MqttTopicBuilder.Collection
 {
+    /// <summary>
+    /// Immutable implementation of an <see cref="ITopicCollection"/>
+    /// </summary>
     /// <inheritdoc cref="ITopicCollection"/>
     internal class TopicCollection : ITopicCollection
     {
@@ -28,7 +31,7 @@ namespace MqttTopicBuilder.Collections
 
         /// <inheritdoc cref="ITopicCollection.IsAppendingAllowed"/>
         public bool IsAppendingAllowed
-            => _stagedTopics.Last() != Wildcards.MultiLevel;
+            => _stagedTopics.Last() != Mqtt.Wildcard.MultiLevel.ToString();
 
         /// <inheritdoc cref="ITopicCollection.IsEmpty"/>
         public bool IsEmpty
@@ -44,12 +47,8 @@ namespace MqttTopicBuilder.Collections
         /// <summary>
         /// Create a new collection with a predefined maximum level
         /// </summary>
-        /// <param name="maxLevel"></param>
-        /// <remarks>
-        /// By default, <paramref name="maxLevel"/> has the maximum allowed
-        /// value <see cref="Topics.MaximumAllowedLevels"/>
-        /// </remarks>
-        public TopicCollection(int maxLevel = Topics.MaximumAllowedLevels)
+        /// <param name="maxLevel">Maximum number of items allowed in the collection</param>
+        public TopicCollection(int maxLevel)
             => _stagedTopics = new Queue<string>(maxLevel);
 
         /// <summary>
@@ -66,14 +65,33 @@ namespace MqttTopicBuilder.Collections
 
         /// <inheritdoc cref="ITopicCollection.AddMultiLevelWildcard"/>
         public ITopicCollection AddMultiLevelWildcard()
-            => AddTopic(Wildcards.MultiLevel);
+            => AddTopic(Mqtt.Wildcard.MultiLevel.ToString());
 
         /// <inheritdoc cref="ITopicCollection.AddSingleLevelWildcard"/>
         public ITopicCollection AddSingleLevelWildcard()
-            => AddTopic(Wildcards.SingleLevel);
+            => AddTopic(Mqtt.Wildcard.SingleLevel.ToString());
 
         /// <inheritdoc cref="ITopicCollection.AddTopic"/>
         public ITopicCollection AddTopic(string topic)
+        {
+            CheckAppendingAllowanceFor(topic);
+
+            // Creating a copy of the staged topics to add the new one
+            // (keeping the object "immutable")
+            var newStaged = new Queue<string>(_stagedTopics);
+            newStaged.Enqueue(topic);
+
+            // Return the new instance of the collection with the new topics collection
+            return new TopicCollection(newStaged, MaxLevel);
+        }
+
+        /// <inheritdoc cref="ITopicCollection.AddTopics"/>
+        public ITopicCollection AddTopics(IEnumerable<string> topics)
+            => topics.Aggregate(
+                (ITopicCollection) this, (current, topic) => 
+                    current.AddTopic(topic));
+
+        private void CheckAppendingAllowanceFor(string topic)
         {
             if (!IsAppendingAllowed)
             {
@@ -85,16 +103,12 @@ namespace MqttTopicBuilder.Collections
                 throw new TooManyTopicsAppendingException();
             }
 
-            topic.ValidateTopic();
-
-            // Creating a copy of the staged topics to add the new one
-            // (keeping the object "immutable")
-            var newStaged = new Queue<string>(_stagedTopics);
-            newStaged.Enqueue(topic);
-
-            // Return the new instance of the collection with the new topics collection
-            return new TopicCollection(newStaged, MaxLevel);
+            topic.ValidateTopicAppending();
         }
+
+        /// <inheritdoc cref="ITopicCollection.Clear"/>
+        public void Clear()
+            => _stagedTopics.Clear();
 
         /// <summary>
         /// Return an enumerator that iterates through the <see cref="TopicCollection"/>
