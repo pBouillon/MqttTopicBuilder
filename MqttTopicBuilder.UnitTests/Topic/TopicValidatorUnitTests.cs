@@ -28,6 +28,11 @@ namespace MqttTopicBuilder.UnitTests.Topic
     public class TopicValidatorUnitTests
     {
         /// <summary>
+        /// Private instance of <see cref="IFixture"/> for test data generation purposes
+        /// </summary>
+        private static readonly IFixture Fixture = new Fixture();
+
+        /// <summary>
         /// Ensure that a blank topic is not allowed
         /// </summary>
         [Fact]
@@ -97,6 +102,24 @@ namespace MqttTopicBuilder.UnitTests.Topic
             // Assert
             validatingTopic.Should()
                 .Throw<InvalidTopicException>("because only one wildcard may be used on a single level");
+        }
+
+        /// <summary>
+        /// Ensure that a topic can not exceed the size limit
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnTooLongTopic()
+        {
+            // Arrange
+            var tooLongTopic = new string(Fixture.Create<char>(), Mqtt.Topic.MaxSubTopicLength + 1);
+
+            // Act
+            Action validatingTooLongTopic = () =>
+                tooLongTopic.ValidateForTopicAppending();
+
+            // Assert
+            validatingTooLongTopic.Should()
+                .Throw<TooLongTopicException>("because a topic must not exceed the size limit");
         }
 
         /// <summary>
