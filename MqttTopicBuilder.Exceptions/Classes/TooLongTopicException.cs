@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,34 +9,33 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Exceptions
+namespace MqttTopicBuilder.Exceptions.Classes
 {
-    using System;
-
     /// <summary>
-    /// Exception thrown when adding a topic to a filled TopicBuilder
+    /// Exception thrown on a topic slice longer than the allowed size
     /// </summary>
-    public class TopicBuilderOverflowException : BaseException
+    /// <see cref="Topics.MaxSliceLength"/>
+    public class TooLongTopicException : MqttBaseException
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TopicBuilderOverflowException()
-            : base(ExceptionMessages.InvalidTopic) { }
+        public TooLongTopicException()
+            : base(ExceptionMessages.EmptyTopic) { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
-        public TopicBuilderOverflowException(string message)
-            : base($"{ExceptionMessages.TopicBuilderOverflow}: {message}") { }
+        public TooLongTopicException(string message)
+            : base($"{ExceptionMessages.TooLongTopic}: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        public TopicBuilderOverflowException(string message, Exception inner)
-            : base($"{ExceptionMessages.TopicBuilderOverflow}: {message}", inner) { }
+        public TooLongTopicException(string message, System.Exception inner)
+            : base($"{ExceptionMessages.TooLongTopic}: {message}", inner) { }
     }
 }

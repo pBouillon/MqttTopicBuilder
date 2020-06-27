@@ -1,38 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+    <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
     <Authors>pbouillon</Authors>
+    <Title>MqttTopicBuilder</Title>
     <PackageDescription>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</PackageDescription>
+    <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder/</RepositoryUrl>
+    <Version>2.0.0</Version>
+
     <IsPackable>true</IsPackable>
     <PackageId>MqttTopicBuilder</PackageId>
-    <PackageLicenseUrl>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicenseUrl>
-		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder/</PackageProjectUrl>
-    <PackageTags>mqtt,topic,topics,mqtt-topics,mqtt-tools</PackageTags>
+
+    <PackageLicenseUrl>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+
+    <PackageTags>mqtt,topic,mqtt-topic,mqtt-tools</PackageTags>
     <RepositoryType>github</RepositoryType>
-    <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder/</RepositoryUrl>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Title>MqttTopicBuilder</Title>
-    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.10.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Exceptions\ExceptionMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Exceptions\ExceptionMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj" />
   </ItemGroup>
 
 </Project>

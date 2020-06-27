@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,34 +9,32 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Exceptions
+namespace MqttTopicBuilder.Exceptions.Classes
 {
-    using System;
-
     /// <summary>
-    /// Exception thrown on the attempt to add an illegal topic operation
+    /// Exception thrown on an operation on an invalid topic
     /// </summary>
-    public class IllegalTopicConstructionException : BaseException
+    public class InvalidTopicException : MqttBaseException
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public IllegalTopicConstructionException()
-            : base(ExceptionMessages.IllegalTopicConstruction) { }
+        public InvalidTopicException()
+            : base(ExceptionMessages.InvalidTopic) { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
-        public IllegalTopicConstructionException(string message)
-            : base($"{ExceptionMessages.IllegalTopicConstruction}: {message}") { }
+        public InvalidTopicException(string message)
+            : base($"{ExceptionMessages.InvalidTopic}: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        public IllegalTopicConstructionException(string message, Exception inner)
-            : base($"{ExceptionMessages.IllegalTopicConstruction}: {message}", inner) { }
+        public InvalidTopicException(string message, System.Exception inner)
+            : base($"{ExceptionMessages.InvalidTopic}: {message}", inner) { }
     }
 }

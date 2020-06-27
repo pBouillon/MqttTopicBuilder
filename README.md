@@ -2,7 +2,9 @@
 
 ![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg) ![Nuget](https://img.shields.io/nuget/dt/MqttTopicBuilder?color=%2332ca55&label=Downloads%20on%20NuGet&logo=nuget)
 
-`MqttTopicBuilder` is a tool to build valid and verified MQTT topics.
+📮 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics
+
+The project is built using *.NET Standard 2.0* (compatible with *.NET Core 2* and *.NET Framework 4.6.1*)
 
 ## Installation
 
@@ -16,23 +18,22 @@ or, from the package manager:
 
 ## Usage
 
-> More detailed instructions and documentation is available in [the wiki](https://github.com/pBouillon/MqttTopicBuilder/wiki)
+> More detailed instructions and documentation is available in [the wiki](https://github.com/pBouillon/MqttTopicBuilder/wiki)  
+> For changelog, see [the changelog](./CHANGELOG.md)
 
 Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
 their veracity.
 
 ```csharp
-    var topicBuilder = new TopicBuilder();
+    var topic = new TopicBuilder()
+        .AddTopic("Hello")
+        .AddTopic("From")
+        .AddTopics("Mqtt", "Topic", "Builder")
+        .AddMultiLevelWildcard()
+        .Build();
 
-    topicBuilder.AddTopic("Hello")
-        .AddTopic("World")
-        .AddTopic("From GitHub")
-        .AddWildcardMultiLevel();
-
-    var resultingTopic = builder.Build();
-
-    Console.WriteLine(resultingTopic);
-    // output: "Hello/World/FromGitHub/#
+    Console.WriteLine(topic);
+    // -> "Hello/From/Mqtt/Topic/Builder/#"
 ```
 
 The built object is a `Topic` object. It can be used to both access the topic
@@ -41,13 +42,36 @@ but also gather informations about it such as its level.
 ```csharp
     var topic = new TopicBuilder()
         .AddTopic("Hello")
-        .AddTopic("World");
+        .AddTopic("World")
+        .Build();
 
-    Console.WriteLine(resultingTopic.Level);
-    // output: 2
+    Console.WriteLine(topic.Value);
+    // -> "Hello/World"
 
-    Console.WriteLine(resultingTopic.Path);
-    // output: Hello/World
+    Console.WriteLine(topic.Levels);
+    // -> 2
+```
+
+Topics can also be built using the regular constructor or the extension method:
+
+```csharp
+    var topic = Topic.FromString("Hello/World");
+
+    Console.WriteLine(topic.Value);
+    // -> "Hello/World"
+
+    Console.WriteLine(topic.Levels);
+    // -> 2
+```
+
+Topic integrity can also be checked using the `TopicValidator` methods
+
+```csharp
+    TopicValidator.ValidateTopic("a/wrong/#/Topic");
+    // Will throw an exception since no topic is allowed after '#'
+
+    "wrong+Topic".ValidateForTopicAppending();
+    // Will throw an exception since '+' is not allowed in a topic
 ```
 
 ## Dependencies

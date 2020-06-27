@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -9,33 +9,32 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Exceptions
+namespace MqttTopicBuilder.Exceptions.Classes
 {
-    using System;
-
     /// <summary>
-    /// Custom exception base with default constructors
+    /// Exception thrown when adding a topic to a filled TopicBuilder
     /// </summary>
-    public abstract class BaseException : Exception
+    public class TooManyTopicsAppendingException : MqttBaseException
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        protected BaseException() { }
+        public TooManyTopicsAppendingException()
+            : base(ExceptionMessages.TooManyTopicsAppending) { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
-        protected BaseException(string message)
-            : base(message) { }
+        public TooManyTopicsAppendingException(string message)
+            : base($"{ExceptionMessages.TooManyTopicsAppending}: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        protected BaseException(string message, Exception inner)
-            : base(message, inner) { }
+        public TooManyTopicsAppendingException(string message, System.Exception inner)
+            : base($"{ExceptionMessages.TooManyTopicsAppending}: {message}", inner) { }
     }
 }
