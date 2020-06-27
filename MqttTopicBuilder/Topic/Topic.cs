@@ -9,6 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using System.Linq;
 using MqttTopicBuilder.Constants;
 
 namespace MqttTopicBuilder.Topic
@@ -22,7 +23,11 @@ namespace MqttTopicBuilder.Topic
         /// Number of levels of this topic
         /// </summary>
         public int Levels
-            => Value.Split(Mqtt.Topic.Separator)
+            => Value == Mqtt.Topic.Separator.ToString()
+            // If the topic is the smallest one allowed, its level is one
+            ? 1
+            // Otherwise, its the number of parts of the topic
+            : Value.Split(Mqtt.Topic.Separator)
                 .Length;
 
         /// <summary>
@@ -32,14 +37,32 @@ namespace MqttTopicBuilder.Topic
 
         /// <summary>
         /// Create a new MQTT Topic from a raw string
+        /// <para>
+        /// If <paramref name="rawTopic"/> is empty, the minimal topic will be created 
+        /// (made only of a single <see cref="Mqtt.Topic.Separator"/>)
+        /// </para>
         /// </summary>
         /// <param name="rawTopic">Raw MQTT topic</param>
         /// <remarks>
-        /// The raw string will be validated beforehand using <see cref="TopicValidator"/> methods
+        /// Any trailing separator will be removed
         /// </remarks>
         public Topic(string rawTopic)
         {
+            // Create minimal topic on empty string or already minimal raw string
+            if (string.IsNullOrEmpty(rawTopic)
+                || rawTopic == Mqtt.Topic.Separator.ToString())
+            {
+                Value = Mqtt.Topic.Separator.ToString();
+                return;
+            }
+
             TopicValidator.ValidateTopic(rawTopic);
+
+            // Remove trailing "/" if any
+            if (rawTopic.Last() == Mqtt.Topic.Separator)
+            {
+                rawTopic = rawTopic.Remove(rawTopic.Length - 1);
+            }
 
             Value = rawTopic;
         }
