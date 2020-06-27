@@ -68,14 +68,9 @@ namespace MqttTopicBuilder.Builder
 
         /// <inheritdoc cref="ITopicBuilder.Build"/>
         public Topic.Topic Build()
-        {
-            // FIXME: empty topic
-            var content = IsEmpty
-                ? Mqtt.Topic.Separator.ToString()
-                : string.Join(Mqtt.Topic.Separator.ToString(), _topicCollection.ToArray());
-
-            return new Topic.Topic(content);
-        }
+            => new Topic.Topic(
+                string.Join(
+                        Mqtt.Topic.Separator.ToString(), _topicCollection.ToArray()));
 
         /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()

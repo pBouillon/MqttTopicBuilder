@@ -111,7 +111,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
         public void ValidateForTopicAppending_OnTooLongTopic()
         {
             // Arrange
-            var tooLongTopic = new string(Fixture.Create<char>(), Mqtt.Topic.MaxSubTopicLength + 1);
+            var tooLongTopic = new string('_', Mqtt.Topic.MaxSubTopicLength + 1);
 
             // Act
             Action validatingTooLongTopic = () =>

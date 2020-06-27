@@ -86,6 +86,12 @@ namespace MqttTopicBuilder.Collection
         void Clear();
 
         /// <summary>
+        /// Clone the current topic collection
+        /// </summary>
+        /// <returns>A clone of the current instance</returns>
+        ITopicCollection Clone();
+
+        /// <summary>
         /// Retrieve all the staged topics in an array
         /// </summary>
         /// <returns>A string array of all the topics</returns>

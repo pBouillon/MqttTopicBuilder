@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Builder\" />
-    <Folder Include="Collection\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,6 +15,10 @@ using MqttTopicBuilder.Topic;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+// Allow unit test project to reach this class
+[assembly: InternalsVisibleTo("MqttTopicBuilder.UnitTests")]
 
 namespace MqttTopicBuilder.Collection
 {
@@ -31,7 +35,8 @@ namespace MqttTopicBuilder.Collection
 
         /// <inheritdoc cref="ITopicCollection.IsAppendingAllowed"/>
         public bool IsAppendingAllowed
-            => _stagedTopics.Last() != Mqtt.Wildcard.MultiLevel.ToString();
+            => IsEmpty
+                || _stagedTopics.Last() != Mqtt.Wildcard.MultiLevel.ToString();
 
         /// <inheritdoc cref="ITopicCollection.IsEmpty"/>
         public bool IsEmpty
@@ -49,7 +54,7 @@ namespace MqttTopicBuilder.Collection
         /// </summary>
         /// <param name="maxLevel">Maximum number of items allowed in the collection</param>
         public TopicCollection(int maxLevel)
-            => _stagedTopics = new Queue<string>(maxLevel);
+            => (_stagedTopics, MaxLevel) = (new Queue<string>(maxLevel), maxLevel);
 
         /// <summary>
         /// Private constructor to create a copy of the current collection
@@ -114,6 +119,10 @@ namespace MqttTopicBuilder.Collection
         /// <inheritdoc cref="ITopicCollection.Clear"/>
         public void Clear()
             => _stagedTopics.Clear();
+
+        /// <inheritdoc cref="ITopicCollection.Clone"/>
+        public ITopicCollection Clone()
+            => new TopicCollection(_stagedTopics, MaxLevel);
 
         /// <summary>
         /// Return an enumerator that iterates through the <see cref="TopicCollection"/>
