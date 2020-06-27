@@ -33,6 +33,10 @@ namespace MqttTopicBuilder.Builder
         public bool IsEmpty
             => _topicCollection.IsEmpty;
 
+        /// <inheritdoc cref="ITopicBuilder.Levels"/>
+        public int Levels
+            => _topicCollection.Levels;
+
         /// <inheritdoc cref="ITopicBuilder.MaxLevel"/>
         public int MaxLevel
             => _topicCollection.MaxLevel;

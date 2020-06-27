@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Builder\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj" />
     <ProjectReference Include="..\MqttTopicBuilder\MqttTopicBuilder.csproj" />
   </ItemGroup>

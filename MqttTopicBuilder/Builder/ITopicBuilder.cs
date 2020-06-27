@@ -34,6 +34,11 @@ namespace MqttTopicBuilder.Builder
         bool IsEmpty { get; }
 
         /// <summary>
+        /// Count all topics added
+        /// </summary>
+        int Levels { get; }
+
+        /// <summary>
         /// Maximum level of the topic to be built and allowed to be built with the builder
         /// </summary>
         int MaxLevel { get; }

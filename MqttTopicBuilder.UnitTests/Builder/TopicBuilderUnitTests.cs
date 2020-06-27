@@ -11,7 +11,7 @@
 
 using AutoFixture;
 using FluentAssertions;
-using MqttTopicBuilder.Collection;
+using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
@@ -19,12 +19,12 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace MqttTopicBuilder.UnitTests.Collection
+namespace MqttTopicBuilder.UnitTests.Builder
 {
     /// <summary>
-    /// Unit test suite for <see cref="ITopicCollection"/>
+    /// Unit test suite for <see cref="ITopicBuilder"/>
     /// </summary>
-    public class TopicCollectionUnitTests
+    public class TopicBuilderUnitTests
     {
         /// <summary>
         /// Private instance of <see cref="IFixture"/> for test data generation purposes
@@ -38,17 +38,17 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void AddMultiLevelWildcard()
         {
             // Arrange
-            ITopicCollection collection = new TopicCollection(Fixture.Create<int>());
+            ITopicBuilder builder = new TopicBuilder();
 
             // Act
-            collection = collection.AddMultiLevelWildcard();
+            builder = builder.AddMultiLevelWildcard();
 
             // Assert
-            collection.Levels
+            builder.Levels
                 .Should()
                 .Be(1, "because the wildcard consist of one level");
 
-            collection.IsAppendingAllowed
+            builder.IsAppendingAllowed
                 .Should()
                 .BeFalse("because no addition should be allowed after a multi-level wildcard");
         }
@@ -60,17 +60,17 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void AddSingleLevelWildcard()
         {
             // Arrange
-            ITopicCollection collection = new TopicCollection(Fixture.Create<int>());
+            ITopicBuilder builder = new TopicBuilder();
 
             // Act
-            collection = collection.AddSingleLevelWildcard();
+            builder = builder.AddSingleLevelWildcard();
 
             // Assert
-            collection.Levels
+            builder.Levels
                 .Should()
                 .Be(1, "because the wildcard consist of one level");
 
-            collection.IsAppendingAllowed
+            builder.IsAppendingAllowed
                 .Should()
                 .BeTrue("because a single level wildcard should not block topic appending");
         }
@@ -82,11 +82,11 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void AddTopic_OnBlankTopic()
         {
             // Arrange
-            ITopicCollection collection = new TopicCollection(Fixture.Create<int>());
+            ITopicBuilder builder = new TopicBuilder();
 
             // Act
             Action appendingEmptyTopic = () =>
-                collection.AddTopic(string.Empty);
+                builder.AddTopic(string.Empty);
 
             // Assert
             appendingEmptyTopic.Should()
@@ -101,18 +101,18 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void AddTopic_OnMultiLevelWildcard()
         {
             // Arrange
-            ITopicCollection collection = new TopicCollection(Fixture.Create<int>());
+            ITopicBuilder builder = new TopicBuilder();
 
             // Act
-            collection = collection.AddTopic(
+            builder = builder.AddTopic(
                 Mqtt.Wildcard.MultiLevel.ToString());
 
             // Assert
-            collection.Levels
+            builder.Levels
                 .Should()
                 .Be(1, "because the wildcard consist of one level");
 
-            collection.IsAppendingAllowed
+            builder.IsAppendingAllowed
                 .Should()
                 .BeFalse("because no addition should be allowed after a multi-level wildcard");
         }
@@ -125,18 +125,18 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void AddTopic_OnSingleLevelWildcard()
         {
             // Arrange
-            ITopicCollection collection = new TopicCollection(Fixture.Create<int>());
+            ITopicBuilder builder = new TopicBuilder();
 
             // Act
-            collection = collection.AddTopic(
+            builder = builder.AddTopic(
                 Mqtt.Wildcard.SingleLevel.ToString());
 
             // Assert
-            collection.Levels
+            builder.Levels
                 .Should()
                 .Be(1, "because the wildcard consist of one level");
 
-            collection.IsAppendingAllowed
+            builder.IsAppendingAllowed
                 .Should()
                 .BeTrue("because a topic appending is allowed after a single-level wildcard");
         }
@@ -148,11 +148,11 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void AddTopic_OnTopicSeparator()
         {
             // Arrange
-            ITopicCollection collection = new TopicCollection(Fixture.Create<int>());
+            ITopicBuilder builder = new TopicBuilder();
 
             // Act
             Action appendingTopic = () =>
-                collection.AddTopic(
+                builder.AddTopic(
                     Mqtt.Topic.Separator.ToString());
 
             // Assert
@@ -168,16 +168,16 @@ namespace MqttTopicBuilder.UnitTests.Collection
         {
             // Arrange
             var addCount = Fixture.Create<int>();
-            ITopicCollection collection = new TopicCollection(addCount + 1);
+            ITopicBuilder builder = new TopicBuilder(addCount + 1);
 
             // Act
             for (var i = 0; i < addCount; ++i)
             {
-                collection = collection.AddTopic(Fixture.Create<string>());
+                builder = builder.AddTopic(Fixture.Create<string>());
             }
 
             // Assert
-            collection.Levels
+            builder.Levels
                 .Should()
                 .Be(addCount,
                     "because there should be as many levels as topics added");
@@ -193,12 +193,12 @@ namespace MqttTopicBuilder.UnitTests.Collection
             var topics = Fixture.Create<List<string>>();
             topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
             topics.AddRange(Fixture.Create<List<string>>());
-            
-            ITopicCollection collection = new TopicCollection(topics.Count + 1);
+
+            ITopicBuilder builder = new TopicBuilder(topics.Count + 1);
 
             // Act
             Action addTopicsWithAMultiLevelWildcard = () =>
-                collection.AddTopics(topics);
+                builder.AddTopics(topics);
 
             // Assert
             addTopicsWithAMultiLevelWildcard.Should()
@@ -214,21 +214,40 @@ namespace MqttTopicBuilder.UnitTests.Collection
         {
             // Arrange
             var topics = Fixture.Create<string[]>();
-            ITopicCollection collection = new TopicCollection(topics.Length + 1);
+            ITopicBuilder builder = new TopicBuilder(topics.Length + 1);
 
             // Act
-            collection = collection.AddTopics(topics);
+            builder = builder.AddTopics(topics);
 
             // Assert
-            collection.Levels
+            builder.Levels
                 .Should()
                 .Be(topics.Length,
                     "because all topics should have been added");
+        }
 
-            collection.ToArray()
+        /// <summary>
+        /// Ensure that the building behaviour is valid
+        /// </summary>
+        [Fact]
+        public void Build()
+        {
+            // Arrange
+            ITopicBuilder builder = Fixture.Create<TopicBuilder>();
+
+            for (var i = 0; i < Fixture.Create<int>() % builder.MaxLevel; ++i)
+            { 
+                builder = builder.AddTopic(Fixture.Create<string>());
+            }
+
+            // Act
+            var topic = builder.Build();
+
+            // Assert
+            topic.Levels
                 .Should()
-                .Contain(topics,
-                    "because the same topics as the ones provided should have been added");
+                .Be(builder.Levels,
+                    "because the content of the topic should not be altered");
         }
 
         /// <summary>
@@ -238,7 +257,7 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void Clone()
         {
             // Arrange
-            var initial = Fixture.Create<TopicCollection>();
+            var initial = Fixture.Create<TopicBuilder>();
 
             // Act
             var clone = initial.Clone();
@@ -251,10 +270,6 @@ namespace MqttTopicBuilder.UnitTests.Collection
             clone.Levels.Should()
                 .Be(initial.Levels, 
                     "because the content level count should also have been cloned");
-
-            clone.ToArray().Should()
-                .BeEquivalentTo(initial.ToArray(), 
-                    "because all elements should also have been clones");
         }
 
         /// <summary>
@@ -264,7 +279,7 @@ namespace MqttTopicBuilder.UnitTests.Collection
         public void Clone_OnAlteredOriginalInstance()
         {
             // Arrange
-            var initial = Fixture.Create<TopicCollection>();
+            var initial = Fixture.Create<TopicBuilder>();
             var clone = initial.Clone();
             var initialCount = initial.Levels;
 
@@ -275,23 +290,6 @@ namespace MqttTopicBuilder.UnitTests.Collection
             clone.Levels.Should()
                 .Be(initialCount,
                     "because altering the origin should not alter the cloned instance");
-        }
-
-        /// <summary>
-        /// Ensure that the maximum level is successfully set
-        /// </summary>
-        [Fact]
-        public void TopicCollection_MaxLevel()
-        {
-            // Arrange
-            var maxLevel = Fixture.Create<int>();
-
-            // Act
-            var collection = new TopicCollection(maxLevel);
-
-            // Assert
-            collection.MaxLevel.Should()
-                .Be(maxLevel, "because the provided value should be the upper bound");
         }
     }
 }
