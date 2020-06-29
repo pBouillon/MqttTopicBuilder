@@ -235,7 +235,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
             // Arrange
             ITopicBuilder builder = Fixture.Create<TopicBuilder>();
 
-            for (var i = 0; i < Fixture.Create<int>() % builder.MaxLevel; ++i)
+            for (var i = 0; i < Fixture.Create<int>() % builder.MaxLevel + 1; ++i)
             { 
                 builder = builder.AddTopic(Fixture.Create<string>());
             }

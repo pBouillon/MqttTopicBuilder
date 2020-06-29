@@ -21,7 +21,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj" />
+    <Compile Update="Exceptions\ExceptionMessages.Designer.cs">
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Exceptions\ExceptionMessages.resx">
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
