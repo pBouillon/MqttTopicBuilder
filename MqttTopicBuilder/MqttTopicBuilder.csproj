@@ -13,7 +13,7 @@
     <PackageId>MqttTopicBuilder</PackageId>
     <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder/</PackageProjectUrl>
 
-    <PackageLicenseUrl>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicense>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 
     <PackageTags>mqtt,topic,mqtt-topic,mqtt-tools</PackageTags>
