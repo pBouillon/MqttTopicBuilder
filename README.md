@@ -1,6 +1,6 @@
 # MqttTopicBuilder  
 
-![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/.NET%20Core/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg) ![Nuget](https://img.shields.io/nuget/dt/MqttTopicBuilder?color=%2332ca55&label=Downloads%20on%20NuGet&logo=nuget)
+![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/Build/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg) ![Nuget](https://img.shields.io/nuget/dt/MqttTopicBuilder?color=%2332ca55&label=Downloads%20on%20NuGet&logo=nuget)
 
 📮 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics
 

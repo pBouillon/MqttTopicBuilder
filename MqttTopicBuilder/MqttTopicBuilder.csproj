@@ -7,13 +7,13 @@
     <Title>MqttTopicBuilder</Title>
     <PackageDescription>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</PackageDescription>
     <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder/</RepositoryUrl>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
 
     <IsPackable>true</IsPackable>
     <PackageId>MqttTopicBuilder</PackageId>
     <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder/</PackageProjectUrl>
 
-    <PackageLicenseUrl>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicense>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 
     <PackageTags>mqtt,topic,mqtt-topic,mqtt-tools</PackageTags>
@@ -21,7 +21,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MqttTopicBuilder.Exceptions\MqttTopicBuilder.Exceptions.csproj" />
+    <Compile Update="Exceptions\ExceptionMessages.Designer.cs">
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Exceptions\ExceptionMessages.resx">
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
