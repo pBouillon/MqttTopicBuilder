@@ -44,7 +44,7 @@ namespace MqttTopicBuilder.Topic
         /// <param name="value">String to be checked</param>
         /// <returns>True if the string can be encoded using UTF-8</returns>
         private static bool IsUtf8(string value)
-            => Encoding.Unicode.GetByteCount(value) != Encoding.UTF8.GetByteCount(value);
+            => Encoding.ASCII.GetByteCount(value) == Encoding.UTF8.GetByteCount(value);
 
         /// <summary>
         /// Validate a topic to be appended to a longer one
