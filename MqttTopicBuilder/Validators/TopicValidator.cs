@@ -15,7 +15,7 @@ using MqttTopicBuilder.Exceptions.Classes;
 using System.Linq;
 using System.Text;
 
-namespace MqttTopicBuilder.Topic
+namespace MqttTopicBuilder.Validators
 {
     /// <summary>
     /// Validates MQTT topic rules

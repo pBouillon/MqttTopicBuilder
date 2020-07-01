@@ -9,10 +9,11 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Validators;
+using System.Linq;
 
-namespace MqttTopicBuilder.Topic
+namespace MqttTopicBuilder.Builder
 {
     /// <summary>
     /// Represent an MQTT topic
