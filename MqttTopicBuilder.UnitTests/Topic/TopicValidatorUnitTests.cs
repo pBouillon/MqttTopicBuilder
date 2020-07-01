@@ -69,6 +69,24 @@ namespace MqttTopicBuilder.UnitTests.Topic
         }
 
         /// <summary>
+        /// Ensure that a topic that is not UTF-8 is not valid
+        /// </summary>
+        [Fact]
+        public void ValidateForTopicAppending_OnNonUtf8Topic()
+        {
+            // Arrange
+            const string nonUtf8Topic = "non🌱utf🛠8🐛";
+
+            // Act
+            Action validatingNonUtf8Topic = () =>
+                nonUtf8Topic.ValidateForTopicAppending();
+
+            // Assert
+            validatingNonUtf8Topic.Should()
+                .Throw<InvalidTopicException>();
+        }
+
+        /// <summary>
         /// Ensure that a single separator is not a valid topic to be appended
         /// </summary>
         [Fact]
@@ -174,6 +192,24 @@ namespace MqttTopicBuilder.UnitTests.Topic
             // Assert
             validatingTopic.Should()
                 .NotThrow<MqttBaseException>("because the topic is minimal yet allowed");
+        }
+
+        /// <summary>
+        /// Ensure that a topic containing non-UTF-8 chars is not valid
+        /// </summary>
+        [Fact]
+        public void ValidateTopic_OnNonUtf8Topic()
+        {
+            // Arrange
+            const string nonUtf8Topic = "non/🌱/utf/🛠/8/🐛";
+
+            // Act
+            Action validatingNonUtf8Topic = () =>
+                TopicValidator.ValidateTopic(nonUtf8Topic);
+
+            // Assert
+            validatingNonUtf8Topic.Should()
+                .Throw<InvalidTopicException>();
         }
 
         /// <summary>
