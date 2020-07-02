@@ -37,7 +37,7 @@ namespace MqttTopicBuilder.Validators.Rules
             // If the topic is using the wildcard last char is not the wildcard
             // Then the multi level wildcard usage is violated
             return ! (multiLevelWildcardsCount == 1
-                && value.Last() != Mqtt.Wildcard.MultiLevel) ;
+                && value.Last() != Mqtt.Wildcard.MultiLevel);
         }
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
