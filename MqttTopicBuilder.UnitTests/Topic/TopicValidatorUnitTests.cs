@@ -14,10 +14,10 @@ using FluentAssertions;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
-using MqttTopicBuilder.Topic;
 using MqttTopicBuilder.UnitTests.Utils;
 using System;
 using System.Linq;
+using MqttTopicBuilder.Validators;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Topic

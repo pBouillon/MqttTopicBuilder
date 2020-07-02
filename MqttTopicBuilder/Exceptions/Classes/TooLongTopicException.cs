@@ -9,12 +9,14 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using MqttTopicBuilder.Constants;
+
 namespace MqttTopicBuilder.Exceptions.Classes
 {
     /// <summary>
     /// Exception thrown on a topic slice longer than the allowed size
     /// </summary>
-    /// <see cref="Topics.MaxSliceLength"/>
+    /// <see cref="Mqtt.Topic.MaxSubTopicLength"/>
     public class TooLongTopicException : MqttBaseException
     {
         /// <summary>

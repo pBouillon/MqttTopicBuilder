@@ -16,7 +16,7 @@ using System.Collections.Generic;
 namespace MqttTopicBuilder.Builder
 {
     /// <summary>
-    /// Immutable builder to build <see cref="Topic.Topic"/>
+    /// Immutable builder to build <see cref="Topic"/>
     /// </summary>
     public class TopicBuilder : ITopicBuilder
     {
@@ -71,8 +71,8 @@ namespace MqttTopicBuilder.Builder
             => new TopicBuilder(_topicCollection.AddSingleLevelWildcard());
 
         /// <inheritdoc cref="ITopicBuilder.Build"/>
-        public Topic.Topic Build()
-            => new Topic.Topic(
+        public Topic Build()
+            => new Topic(
                 string.Join(
                         Mqtt.Topic.Separator.ToString(), _topicCollection.ToArray()));
 

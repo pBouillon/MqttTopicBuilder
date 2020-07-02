@@ -11,16 +11,16 @@
 
 using System;
 using FluentAssertions;
+using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using Xunit;
-using MqttTopic = MqttTopicBuilder.Topic;
 
 namespace MqttTopicBuilder.UnitTests.Topic
 {
     /// <summary>
-    /// Unit test suite for <see cref="MqttTopic.Topic"/>
+    /// Unit test suite for <see cref="Topic"/>
     /// </summary>
     public class TopicUnitTests
     {
@@ -34,7 +34,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var emptyTopic = string.Empty;
 
             // Act
-            var topicBuilt = new MqttTopic.Topic(emptyTopic);
+            var topicBuilt = new MqttTopicBuilder.Builder.Topic(emptyTopic);
 
             // Assert
             topicBuilt.Value
@@ -58,7 +58,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
 
             // Act
             Action creatingInvalidTopic = () =>
-                _ = MqttTopic.Topic.FromString(invalidRawTopic);
+                _ = MqttTopicBuilder.Builder.Topic.FromString(invalidRawTopic);
 
             // Assert
             creatingInvalidTopic.Should()
@@ -75,7 +75,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var minimalRawTopic = Mqtt.Topic.Separator.ToString();
 
             // Act
-            var minimalTopic = MqttTopic.Topic.FromString(minimalRawTopic);
+            var minimalTopic = MqttTopicBuilder.Builder.Topic.FromString(minimalRawTopic);
 
             // Assert
             minimalTopic.Value
@@ -93,7 +93,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopic = TestUtils.GenerateValidTopic();
 
             // Act
-            var validTopic = MqttTopic.Topic.FromString(validRawTopic);
+            var validTopic = MqttTopicBuilder.Builder.Topic.FromString(validRawTopic);
 
             // Assert
             validTopic.Value.Should()
@@ -116,7 +116,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopicWithTrailingSeparator = validRawTopic + Mqtt.Topic.Separator;
 
             // Act
-            var validTopic = MqttTopic.Topic.FromString(validRawTopicWithTrailingSeparator);
+            var validTopic = MqttTopicBuilder.Builder.Topic.FromString(validRawTopicWithTrailingSeparator);
 
             // Assert
             validTopic.Value.Should()
@@ -138,7 +138,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var emptyTopic = string.Empty;
 
             // Act
-            var topicBuilt = new MqttTopic.Topic(emptyTopic);
+            var topicBuilt = new MqttTopicBuilder.Builder.Topic(emptyTopic);
 
             // Assert
             topicBuilt.Value
@@ -162,7 +162,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
 
             // Act
             Action creatingInvalidTopic = () =>
-                _ = new MqttTopic.Topic(invalidRawTopic);
+                _ = new MqttTopicBuilder.Builder.Topic(invalidRawTopic);
 
             // Assert
             creatingInvalidTopic.Should()
@@ -179,7 +179,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var minimalRawTopic = Mqtt.Topic.Separator.ToString();
 
             // Act
-            var minimalTopic = new MqttTopic.Topic(minimalRawTopic);
+            var minimalTopic = new MqttTopicBuilder.Builder.Topic(minimalRawTopic);
 
             // Assert
             minimalTopic.Value
@@ -197,7 +197,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopic = TestUtils.GenerateValidTopic();
 
             // Act
-            var validTopic = new MqttTopic.Topic(validRawTopic);
+            var validTopic = new MqttTopicBuilder.Builder.Topic(validRawTopic);
 
             // Assert
             validTopic.Value.Should()
@@ -220,7 +220,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopicWithTrailingSeparator = validRawTopic + Mqtt.Topic.Separator;
 
             // Act
-            var validTopic = new MqttTopic.Topic(validRawTopicWithTrailingSeparator);
+            var validTopic = new MqttTopicBuilder.Builder.Topic(validRawTopicWithTrailingSeparator);
 
             // Assert
             validTopic.Value.Should()

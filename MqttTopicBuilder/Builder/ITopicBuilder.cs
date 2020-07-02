@@ -80,9 +80,9 @@ namespace MqttTopicBuilder.Builder
         /// Create the topic from the builder's content
         /// </summary>
         /// <returns>
-        /// An instance of <see cref="Topic.Topic"/> build based on the <see cref="ITopicBuilder"/> content
+        /// An instance of <see cref="Topic"/> build based on the <see cref="ITopicBuilder"/> content
         /// </returns>
-        Topic.Topic Build();
+        Topic Build();
 
         /// <summary>
         /// Clone the current instance of <see cref="ITopicBuilder"/>

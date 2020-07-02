@@ -11,7 +11,7 @@
 
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
-using MqttTopicBuilder.Topic;
+using MqttTopicBuilder.Validators;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
