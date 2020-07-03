@@ -59,7 +59,7 @@ namespace MqttTopicBuilder.Validators
         /// <param name="topic">Topic value to be checked</param>
         /// <exception cref="EmptyTopicException">If the topic is blank or empty</exception>
         /// <exception cref="InvalidTopicException">If the topic is malformed</exception>
-        public static void ValidateForTopicAppending(this string topic)
+        public static void ValidateTopicForAppending(this string topic)
             => ValidatorFactory.GetSingleRawTopicValidator()
                 .Validate(topic);
     }
