@@ -9,11 +9,11 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Validators.Rules
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
     /// Set of rules to be applied to raw (string) topics
     /// </summary>
     /// <inheritdoc cref="Rule{T}"/>
-    public abstract class RawTopicRule : Rule<string> { }
+    public abstract class BaseRawTopicRule : Rule<string> { }
 }

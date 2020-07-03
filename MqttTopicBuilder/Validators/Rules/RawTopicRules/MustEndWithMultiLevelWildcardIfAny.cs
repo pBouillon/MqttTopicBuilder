@@ -9,18 +9,18 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
-using System.Linq;
 
-namespace MqttTopicBuilder.Validators.Rules
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
     /// Rule to ensure that a topic using a <see cref="Mqtt.Wildcard.MultiLevel"/>
     /// does not have any value after it
     /// </summary>
-    public class MustEndWithMultiLevelWildcardIfAny : RawTopicRule
+    public class MustEndWithMultiLevelWildcardIfAny : BaseRawTopicRule
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)

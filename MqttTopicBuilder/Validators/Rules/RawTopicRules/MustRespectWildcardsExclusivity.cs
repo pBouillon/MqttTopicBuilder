@@ -9,17 +9,17 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
-using System.Linq;
 
-namespace MqttTopicBuilder.Validators.Rules
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
     /// Rule to ensure that if any wildcard is used in a single topic,
     /// then no other value than the wildcard itself should have been provided
     /// </summary>
-    public class MustRespectWildcardsExclusivity : RawTopicRule
+    public class MustRespectWildcardsExclusivity : BaseRawTopicRule
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
