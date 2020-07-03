@@ -9,7 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Validators.Rules;
+using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
+using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
 namespace MqttTopicBuilder.Validators
 {
@@ -45,5 +48,16 @@ namespace MqttTopicBuilder.Validators
                     new MustNotHaveSeparator(),
                     new MustRespectMaximumLength(),
                     new MustRespectWildcardsExclusivity());
+
+        /// <summary>
+        /// Get a validator with a set of rules to validate the ability for the collection
+        /// to hold another topic
+        /// </summary>
+        /// <returns>The validator to be used</returns>
+        public static Validator<ITopicCollection> GetTopicCollectionAppendingValidator()
+            => Validator<ITopicCollection>
+                .ForRulesInOrder(
+                    new MustAppendingBeAllowed(),
+                    new MustNotBeFull());
     }
 }
