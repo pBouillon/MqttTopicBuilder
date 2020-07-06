@@ -21,7 +21,7 @@ namespace MqttTopicBuilder.Validators.Rules.ITopicCollectionRules
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(ITopicCollection value)
-            => value.Levels <= value.MaxLevel;
+            => value.Levels < value.MaxLevel;
 
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override void OnError()

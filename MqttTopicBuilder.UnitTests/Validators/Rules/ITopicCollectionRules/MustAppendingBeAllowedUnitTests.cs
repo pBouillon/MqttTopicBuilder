@@ -9,12 +9,12 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System;
 using FluentAssertions;
 using Moq;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
+using System;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
@@ -29,7 +29,7 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
         /// will pass the rule
         /// </summary>
         [Fact]
-        public void IsValid_OnAppendingAllowed()
+        public void Validate_OnAppendingAllowed()
         {
             // Arrange
             var topicCollectionMock = new Mock<ITopicCollection>();
@@ -54,7 +54,7 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
         /// will not pass the rule
         /// </summary>
         [Fact]
-        public void IsValid_OnAppendingNotAllowed()
+        public void Validate_OnAppendingNotAllowed()
         {
             // Arrange
             var topicCollectionMock = new Mock<ITopicCollection>();
