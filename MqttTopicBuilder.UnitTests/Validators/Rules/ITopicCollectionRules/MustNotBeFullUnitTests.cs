@@ -51,12 +51,12 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
             var topicCollection = topicCollectionMock.Object;
 
             // Act
-            Action validatingCollectionAppendingAllowance = () =>
+            Action validatingCollectionStatus = () =>
                 new MustNotBeFull()
                     .Validate(topicCollection);
 
             // Assert
-            validatingCollectionAppendingAllowance.Should()
+            validatingCollectionStatus.Should()
                 .Throw<TooManyTopicsAppendingException>(
                     "because the collection has as many levels as it can contains");
         }
@@ -81,12 +81,12 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
             var topicCollection = topicCollectionMock.Object;
 
             // Act
-            Action validatingCollectionAppendingAllowance = () =>
+            Action validatingCollectionStatus = () =>
                 new MustNotBeFull()
                     .Validate(topicCollection);
 
             // Assert
-            validatingCollectionAppendingAllowance.Should()
+            validatingCollectionStatus.Should()
                 .NotThrow<TooManyTopicsAppendingException>(
                     "because the collection has less levels than it can contains");
         }
