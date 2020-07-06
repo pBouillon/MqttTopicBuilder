@@ -250,10 +250,7 @@ namespace MqttTopicBuilder.UnitTests.Validators
 
             // Assert
             validatingMultiLevelWildcardTopic.Should()
-                .Throw<IllegalTopicConstructionException>()
-                .Where(_ => 
-                    _.Message.Contains(ExceptionMessages.IllegalMultiLevelWildcardUsage),
-                    "because a multi-level wildcard may be used only once");
+                .Throw<IllegalTopicConstructionException>();
         }
 
         /// <summary>

@@ -34,10 +34,21 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
             var multiLevelWildcardsCount = value.Count(_ =>
                 _ == Mqtt.Wildcard.MultiLevel);
 
-            // If the topic is using the wildcard last char is not the wildcard
-            // Then the multi level wildcard usage is violated
-            return ! (multiLevelWildcardsCount == 1
-                && value.Last() != Mqtt.Wildcard.MultiLevel);
+            // If there is more than one multi-level wildcard, then its usage
+            // is violated and not valid
+            if (multiLevelWildcardsCount >= 2)
+            {
+                return false;
+            }
+
+            // If there is a wildcard, it should be the last character
+            if (multiLevelWildcardsCount == 1)
+            {
+                return value.Last() == Mqtt.Wildcard.MultiLevel;
+            }
+
+            // Last case is no multi-level wildcard, which is allowed
+            return true;
         }
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
