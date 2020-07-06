@@ -9,7 +9,6 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using AutoFixture;
 using FluentAssertions;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
@@ -20,7 +19,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace MqttTopicBuilder.UnitTests.Topic
+namespace MqttTopicBuilder.UnitTests.Validators
 {
     /// <summary>
     /// Unit test suite for <see cref="TopicValidator"/>
