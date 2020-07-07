@@ -9,10 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
+using System.Linq;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
