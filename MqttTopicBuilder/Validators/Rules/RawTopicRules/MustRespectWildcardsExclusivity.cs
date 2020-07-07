@@ -23,9 +23,18 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
-        => ! (value.Length > 1 
-              && (value.Contains(Mqtt.Wildcard.MultiLevel)
-                  || value.Contains(Mqtt.Wildcard.SingleLevel)));
+        {
+            // If there is less than 2 chars, no conflict can ever happen
+            if (value.Length < 2)
+            {
+                return true;
+            }
+
+            // Otherwise, a longer topic can not hold any wildcard
+            // in addition to another value
+            return ! (value.Contains(Mqtt.Wildcard.MultiLevel)
+                   || value.Contains(Mqtt.Wildcard.SingleLevel));
+        }
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()
