@@ -9,9 +9,9 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
+using System.Linq;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -27,6 +27,7 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()
-            => throw new IllegalTopicConstructionException("The null character is not allowed in a topic");
+            => throw new IllegalTopicConstructionException(
+                "The null character is not allowed in a topic");
     }
 }

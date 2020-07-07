@@ -9,12 +9,12 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System;
 using AutoFixture;
 using FluentAssertions;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
+using System;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules
@@ -29,6 +29,9 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules
         /// </summary>
         private static readonly IFixture Fixture = new Fixture();
 
+        /// <summary>
+        /// Ensure that a topic containing only whitespaces will break the rule
+        /// </summary>
         [Fact]
         public void Validate_OnBlankString()
         {
@@ -48,6 +51,9 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules
                     "because a blank topic should break the rule");
         }
 
+        /// <summary>
+        /// Ensure that an empty topic will break the rule
+        /// </summary>
         [Fact]
         public void Validate_OnEmptyString()
         {
@@ -66,6 +72,9 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules
                     "because an empty topic should break the rule");
         }
 
+        /// <summary>
+        /// Ensure that a well formed topic will not break the rule
+        /// </summary>
         [Fact]
         public void Validate_OnNonEmptyString()
         {
@@ -83,6 +92,9 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules
                     "because a topic with a valid value should not break the rule");
         }
 
+        /// <summary>
+        /// Ensure that a null value will break the rule
+        /// </summary>
         [Fact]
         public void Validate_OnNullString()
         {
