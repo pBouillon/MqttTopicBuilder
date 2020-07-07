@@ -10,7 +10,6 @@
  */
 
 using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Validators;
 using System.Collections;
 using System.Collections.Generic;
@@ -98,22 +97,14 @@ namespace MqttTopicBuilder.Collection
 
         /// <summary>
         /// Check whether it is possible or not to append the provided topic to the current collection.
-        /// Will throw exception on failing checks
         /// </summary>
         /// <param name="topic">Topic to be appended</param>
         private void CheckAppendingAllowanceFor(string topic)
         {
-            if (!IsAppendingAllowed)
-            {
-                throw new IllegalTopicConstructionException();
-            }
+            ValidatorFactory.GetTopicCollectionAppendingValidator()
+                .Validate(this);
 
-            if (Levels + 1 >= MaxLevel)
-            {
-                throw new TooManyTopicsAppendingException();
-            }
-
-            topic.ValidateForTopicAppending();
+            topic.ValidateTopicForAppending();
         }
 
         /// <inheritdoc cref="ITopicCollection.Clear"/>

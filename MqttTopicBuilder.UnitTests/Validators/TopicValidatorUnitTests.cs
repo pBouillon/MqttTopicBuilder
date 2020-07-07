@@ -9,18 +9,17 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using AutoFixture;
 using FluentAssertions;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
+using MqttTopicBuilder.Validators;
 using System;
 using System.Linq;
-using MqttTopicBuilder.Validators;
 using Xunit;
 
-namespace MqttTopicBuilder.UnitTests.Topic
+namespace MqttTopicBuilder.UnitTests.Validators
 {
     /// <summary>
     /// Unit test suite for <see cref="TopicValidator"/>
@@ -28,22 +27,17 @@ namespace MqttTopicBuilder.UnitTests.Topic
     public class TopicValidatorUnitTests
     {
         /// <summary>
-        /// Private instance of <see cref="IFixture"/> for test data generation purposes
-        /// </summary>
-        private static readonly IFixture Fixture = new Fixture();
-
-        /// <summary>
         /// Ensure that a blank topic is not allowed
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnBlankTopic()
+        public void ValidateTopicForAppending_OnBlankTopic()
         {
             // Arrange
             var blankTopic = string.Empty;
 
             // Act
             Action validatingBlankTopic = () =>
-                blankTopic.ValidateForTopicAppending();
+                blankTopic.ValidateTopicForAppending();
 
             // Assert
             validatingBlankTopic.Should()
@@ -54,14 +48,14 @@ namespace MqttTopicBuilder.UnitTests.Topic
         /// Ensure that appending a multi-level wildcard is allowed
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnMultiLevelWildcard()
+        public void ValidateTopicForAppending_OnMultiLevelWildcard()
         {
             // Arrange
             var multiLevelWildcard = Mqtt.Wildcard.MultiLevel.ToString();
 
             // Act
             Action validatingTopic = () =>
-                multiLevelWildcard.ValidateForTopicAppending();
+                multiLevelWildcard.ValidateTopicForAppending();
 
             // Assert
             validatingTopic.Should()
@@ -72,14 +66,14 @@ namespace MqttTopicBuilder.UnitTests.Topic
         /// Ensure that a topic that is not UTF-8 is not valid
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnNonUtf8Topic()
+        public void ValidateTopicForAppending_OnNonUtf8Topic()
         {
             // Arrange
             const string nonUtf8Topic = "non🌱utf🛠8🐛";
 
             // Act
             Action validatingNonUtf8Topic = () =>
-                nonUtf8Topic.ValidateForTopicAppending();
+                nonUtf8Topic.ValidateTopicForAppending();
 
             // Assert
             validatingNonUtf8Topic.Should()
@@ -90,14 +84,14 @@ namespace MqttTopicBuilder.UnitTests.Topic
         /// Ensure that a single separator is not a valid topic to be appended
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnSeparator()
+        public void ValidateTopicForAppending_OnSeparator()
         {
             // Arrange
             var separatorTopic = Mqtt.Topic.Separator.ToString();
 
             // Act
             Action validatingSeparator = () =>
-                separatorTopic.ValidateForTopicAppending();
+                separatorTopic.ValidateTopicForAppending();
 
             // Assert
             validatingSeparator.Should()
@@ -108,14 +102,14 @@ namespace MqttTopicBuilder.UnitTests.Topic
         /// Ensure that no more than one wildcard can be used at the time
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnSeveralWildcards()
+        public void ValidateTopicForAppending_OnSeveralWildcards()
         {
             // Arrange
             var mixedWildcards = $"{Mqtt.Wildcard.SingleLevel}{Mqtt.Wildcard.SingleLevel}";
 
             // Act
             Action validatingTopic = () =>
-                mixedWildcards.ValidateForTopicAppending();
+                mixedWildcards.ValidateTopicForAppending();
 
             // Assert
             validatingTopic.Should()
@@ -126,14 +120,14 @@ namespace MqttTopicBuilder.UnitTests.Topic
         /// Ensure that a topic can not exceed the size limit
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnTooLongTopic()
+        public void ValidateTopicForAppending_OnTooLongTopic()
         {
             // Arrange
             var tooLongTopic = new string('_', Mqtt.Topic.MaxSubTopicLength + 1);
 
             // Act
             Action validatingTooLongTopic = () =>
-                tooLongTopic.ValidateForTopicAppending();
+                tooLongTopic.ValidateTopicForAppending();
 
             // Assert
             validatingTooLongTopic.Should()
@@ -144,14 +138,14 @@ namespace MqttTopicBuilder.UnitTests.Topic
         /// Ensure that appending a single-level wildcard is allowed
         /// </summary>
         [Fact]
-        public void ValidateForTopicAppending_OnSingleLevelWildcard()
+        public void ValidateTopicForAppending_OnSingleLevelWildcard()
         {
             // Arrange
             var singleLevelWildcard = Mqtt.Wildcard.SingleLevel.ToString();
 
             // Act
             Action validatingTopic = () =>
-                singleLevelWildcard.ValidateForTopicAppending();
+                singleLevelWildcard.ValidateTopicForAppending();
 
             // Assert
             validatingTopic.Should()
@@ -256,10 +250,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
 
             // Assert
             validatingMultiLevelWildcardTopic.Should()
-                .Throw<IllegalTopicConstructionException>()
-                .Where(_ => 
-                    _.Message.Contains(ExceptionMessages.IllegalMultiLevelWildcardUsage),
-                    "because a multi-level wildcard may be used only once");
+                .Throw<IllegalTopicConstructionException>();
         }
 
         /// <summary>

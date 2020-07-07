@@ -9,23 +9,32 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
-using System.Linq;
 
-namespace MqttTopicBuilder.Validators.Rules
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
     /// Rule to ensure that if any wildcard is used in a single topic,
     /// then no other value than the wildcard itself should have been provided
     /// </summary>
-    public class MustRespectWildcardsExclusivity : RawTopicRule
+    public class MustRespectWildcardsExclusivity : BaseRawTopicRule
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
-        => ! (value.Length > 1 
-              && (value.Contains(Mqtt.Wildcard.MultiLevel)
-                  || value.Contains(Mqtt.Wildcard.SingleLevel)));
+        {
+            // If there is less than 2 chars, no conflict can ever happen
+            if (value.Length < 2)
+            {
+                return true;
+            }
+
+            // Otherwise, a longer topic can not hold any wildcard
+            // in addition to another value
+            return ! (value.Contains(Mqtt.Wildcard.MultiLevel)
+                   || value.Contains(Mqtt.Wildcard.SingleLevel));
+        }
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()

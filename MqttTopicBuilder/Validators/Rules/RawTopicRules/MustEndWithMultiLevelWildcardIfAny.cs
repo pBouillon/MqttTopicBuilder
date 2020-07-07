@@ -9,18 +9,18 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
-using System.Linq;
 
-namespace MqttTopicBuilder.Validators.Rules
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
     /// Rule to ensure that a topic using a <see cref="Mqtt.Wildcard.MultiLevel"/>
     /// does not have any value after it
     /// </summary>
-    public class MustEndWithMultiLevelWildcardIfAny : RawTopicRule
+    public class MustEndWithMultiLevelWildcardIfAny : BaseRawTopicRule
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
@@ -34,10 +34,21 @@ namespace MqttTopicBuilder.Validators.Rules
             var multiLevelWildcardsCount = value.Count(_ =>
                 _ == Mqtt.Wildcard.MultiLevel);
 
-            // If the topic is using the wildcard last char is not the wildcard
-            // Then the multi level wildcard usage is violated
-            return ! (multiLevelWildcardsCount == 1
-                && value.Last() != Mqtt.Wildcard.MultiLevel);
+            // If there is more than one multi-level wildcard, then its usage
+            // is violated and not valid
+            if (multiLevelWildcardsCount >= 2)
+            {
+                return false;
+            }
+
+            // If there is a wildcard, it should be the last character
+            if (multiLevelWildcardsCount == 1)
+            {
+                return value.Last() == Mqtt.Wildcard.MultiLevel;
+            }
+
+            // Last case is no multi-level wildcard, which is allowed
+            return true;
         }
 
         /// <inheritdoc cref="Rule{T}.OnError"/>

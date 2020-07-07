@@ -9,22 +9,21 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Text;
+using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 
-namespace MqttTopicBuilder.Validators.Rules
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
-    /// Rule to ensure that a topic is correctly encoded using UTF-8
-    /// as specified in the documentation:
-    /// https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_UTF-8_Encoded_String
+    /// Rule to ensure that a single raw topic does not contains any separator
+    /// <see cref="Mqtt.Topic.Separator"/>
     /// </summary>
-    public class MustBeUtf8 : RawTopicRule
+    public class MustNotHaveSeparator : BaseRawTopicRule
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
-            => Encoding.ASCII.GetByteCount(value) == Encoding.UTF8.GetByteCount(value);
+            => ! value.Contains(Mqtt.Topic.Separator);
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()

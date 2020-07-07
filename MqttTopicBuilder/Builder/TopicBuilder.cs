@@ -41,12 +41,26 @@ namespace MqttTopicBuilder.Builder
         public int MaxLevel
             => _topicCollection.MaxLevel;
 
+        /// <summary>
+        /// Create a new <see cref="ITopicCollection"/>
+        /// </summary>
+        /// <remarks>
+        /// The maximum capacity will be <see cref="Mqtt.Topic.MaximumAllowedLevels"/>
+        /// </remarks>
         public TopicBuilder()
             => _topicCollection = new TopicCollection(Mqtt.Topic.MaximumAllowedLevels);
 
+        /// <summary>
+        /// Create a new <see cref="ITopicCollection"/> with a maximum capacity
+        /// </summary>
+        /// <param name="maxLevel">Maximum number of topics that the collection can contains</param>
         public TopicBuilder(int maxLevel)
             => _topicCollection = new TopicCollection(maxLevel);
 
+        /// <summary>
+        /// Create a new instance of <see cref="ITopicCollection"/> from an existing one
+        /// </summary>
+        /// <param name="topicCollection">Existing collection, seeding this one</param>
         private TopicBuilder(ITopicCollection topicCollection)
             => _topicCollection = topicCollection;
 

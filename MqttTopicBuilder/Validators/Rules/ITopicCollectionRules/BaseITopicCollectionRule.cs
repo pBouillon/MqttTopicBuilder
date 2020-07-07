@@ -9,11 +9,13 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-namespace MqttTopicBuilder.Validators.Rules
+using MqttTopicBuilder.Collection;
+
+namespace MqttTopicBuilder.Validators.Rules.ITopicCollectionRules
 {
     /// <summary>
-    /// Set of rules to be applied to raw (string) topics
+    /// Set of rules to be applied to <see cref="ITopicCollection"/>
     /// </summary>
     /// <inheritdoc cref="Rule{T}"/>
-    public abstract class RawTopicRule : Rule<string> { }
+    public abstract class BaseITopicCollectionRule : Rule<ITopicCollection> { }
 }
