@@ -10,7 +10,6 @@
  */
 
 using MqttTopicBuilder.Collection;
-using MqttTopicBuilder.Validators.Rules;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
