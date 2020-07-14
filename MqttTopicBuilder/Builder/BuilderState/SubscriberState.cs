@@ -17,7 +17,7 @@ namespace MqttTopicBuilder.Builder.BuilderState
     /// Specialized <see cref="IBuilderState"/> for topic construction
     /// when the consumer is <see cref="TopicConsumer.Subscriber"/>
     /// </summary>
-    public class SubscriberState : BuilderState
+    internal class SubscriberState : BuilderState
     {
         /// <summary>
         /// Default constructor

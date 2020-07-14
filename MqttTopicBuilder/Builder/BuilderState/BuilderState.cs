@@ -16,7 +16,7 @@ namespace MqttTopicBuilder.Builder.BuilderState
     /// <summary>
     /// Abstract implementation of <see cref="IBuilderState"/>
     /// </summary>
-    public abstract class BuilderState : IBuilderState
+    internal abstract class BuilderState : IBuilderState
     {
         /// <summary>
         /// State's context

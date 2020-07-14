@@ -17,7 +17,7 @@ namespace MqttTopicBuilder.Builder.BuilderState
     /// <see cref="ITopicBuilder"/> inner state for method's behavior
     /// modifications
     /// </summary>
-    public interface IBuilderState
+    internal interface IBuilderState
     {
         /// <summary>
         /// Add a multi-level wildcard to the builder
