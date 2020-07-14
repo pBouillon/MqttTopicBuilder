@@ -9,6 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using MqttTopicBuilder.Collection;
 using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Builder
@@ -29,6 +30,11 @@ namespace MqttTopicBuilder.Builder
         bool IsAppendingAllowed { get; }
 
         /// <summary>
+        /// Consumer type of the topic to be built (PUBLISH / SUBSCRIBE)
+        /// </summary>
+        TopicConsumer Consumer { get; }
+        
+        /// <summary>
         /// Indicate whether or not the builder is empty
         /// </summary>
         bool IsEmpty { get; }
@@ -42,6 +48,8 @@ namespace MqttTopicBuilder.Builder
         /// Maximum level of the topic to be built and allowed to be built with the builder
         /// </summary>
         int MaxLevel { get; }
+
+        ITopicCollection TopicCollection { get; }
 
         /// <summary>
         /// Add a multi-level wildcard to the builder
