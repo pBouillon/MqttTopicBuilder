@@ -38,7 +38,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         public void AddMultiLevelWildcard()
         {
             // Arrange
-            ITopicBuilder builder = new TopicBuilder();
+            ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
             // Act
             builder = builder.AddMultiLevelWildcard();
@@ -60,7 +60,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         public void AddSingleLevelWildcard()
         {
             // Arrange
-            ITopicBuilder builder = new TopicBuilder();
+            ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
             // Act
             builder = builder.AddSingleLevelWildcard();
@@ -82,7 +82,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         public void AddTopic_OnBlankTopic()
         {
             // Arrange
-            ITopicBuilder builder = new TopicBuilder();
+            ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
             // Act
             Action appendingEmptyTopic = () =>
@@ -101,7 +101,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         public void AddTopic_OnMultiLevelWildcard()
         {
             // Arrange
-            ITopicBuilder builder = new TopicBuilder();
+            ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
             // Act
             builder = builder.AddTopic(
@@ -125,7 +125,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         public void AddTopic_OnSingleLevelWildcard()
         {
             // Arrange
-            ITopicBuilder builder = new TopicBuilder();
+            ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
             // Act
             builder = builder.AddTopic(
@@ -148,7 +148,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         public void AddTopic_OnTopicSeparator()
         {
             // Arrange
-            ITopicBuilder builder = new TopicBuilder();
+            ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
             // Act
             Action appendingTopic = () =>
@@ -168,7 +168,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         {
             // Arrange
             var addCount = Fixture.Create<int>();
-            ITopicBuilder builder = new TopicBuilder(addCount + 1);
+            ITopicBuilder builder = new TopicBuilder(addCount + 1, TopicConsumer.Subscriber);
 
             // Act
             for (var i = 0; i < addCount; ++i)
@@ -194,7 +194,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
             topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
             topics.AddRange(Fixture.Create<List<string>>());
 
-            ITopicBuilder builder = new TopicBuilder(topics.Count + 1);
+            ITopicBuilder builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber);
 
             // Act
             Action addTopicsWithAMultiLevelWildcard = () =>
@@ -214,7 +214,7 @@ namespace MqttTopicBuilder.UnitTests.Builder
         {
             // Arrange
             var topics = Fixture.Create<string[]>();
-            ITopicBuilder builder = new TopicBuilder(topics.Length + 1);
+            ITopicBuilder builder = new TopicBuilder(topics.Length + 1, TopicConsumer.Subscriber);
 
             // Act
             builder = builder.AddTopics(topics);
