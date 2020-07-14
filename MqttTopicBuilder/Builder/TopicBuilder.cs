@@ -9,8 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
+using System;
 using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Builder
@@ -23,75 +25,113 @@ namespace MqttTopicBuilder.Builder
         /// <summary>
         /// Inner-collection on which relies the builder for topic creation
         /// </summary>
-        private readonly ITopicCollection _topicCollection;
+        public ITopicCollection TopicCollection { get; }
 
         /// <inheritdoc cref="ITopicBuilder.IsAppendingAllowed"/>
         public bool IsAppendingAllowed
-            => _topicCollection.IsAppendingAllowed;
+            => TopicCollection.IsAppendingAllowed;
+
+        /// <inheritdoc cref="ITopicBuilder.Consumer"/>
+        public TopicConsumer Consumer { get; }
 
         /// <inheritdoc cref="ITopicBuilder.IsEmpty"/>
         public bool IsEmpty
-            => _topicCollection.IsEmpty;
+            => TopicCollection.IsEmpty;
 
         /// <inheritdoc cref="ITopicBuilder.Levels"/>
         public int Levels
-            => _topicCollection.Levels;
+            => TopicCollection.Levels;
 
         /// <inheritdoc cref="ITopicBuilder.MaxLevel"/>
         public int MaxLevel
-            => _topicCollection.MaxLevel;
+            => TopicCollection.MaxLevel;
+
+        /// <summary>
+        /// Inner <see cref="IBuilderState"/> of the builder
+        /// </summary>
+        private readonly IBuilderState _state;
+
+        /// <summary>
+        /// [DEPRECATED] - Create a new <see cref="TopicBuilder"/> with <see cref="TopicConsumer.Subscriber"/>
+        /// as its consumer
+        /// </summary>
+        [Obsolete(
+            "This constructor will be removed. Use TopicBuilder(TopicConsumer topicConsumer) instead")]
+        public TopicBuilder()
+            : this (TopicConsumer.Subscriber) { }
+
+        /// <summary>
+        /// [DEPRECATED] - Create a new <see cref="TopicBuilder"/> with <see cref="TopicConsumer.Subscriber"/>
+        /// as its consumer
+        /// </summary>
+        /// <param name="maxLevel">Maximum number of topics that the collection can contains</param>
+        [Obsolete(
+            "This constructor will be removed. Use TopicBuilder(int maxLevel, TopicConsumer topicConsumer) instead")]
+        public TopicBuilder(int maxLevel)
+            : this(maxLevel, TopicConsumer.Subscriber) { }
 
         /// <summary>
         /// Create a new <see cref="ITopicCollection"/>
         /// </summary>
+        /// <param name="topicConsumer">Context where this topic will be consumed</param>
         /// <remarks>
         /// The maximum capacity will be <see cref="Mqtt.Topic.MaximumAllowedLevels"/>
         /// </remarks>
-        public TopicBuilder()
-            => _topicCollection = new TopicCollection(Mqtt.Topic.MaximumAllowedLevels);
+        public TopicBuilder(TopicConsumer topicConsumer)
+            : this(Mqtt.Topic.MaximumAllowedLevels, topicConsumer) { }
 
         /// <summary>
         /// Create a new <see cref="ITopicCollection"/> with a maximum capacity
         /// </summary>
         /// <param name="maxLevel">Maximum number of topics that the collection can contains</param>
-        public TopicBuilder(int maxLevel)
-            => _topicCollection = new TopicCollection(maxLevel);
+        /// <param name="topicConsumer">Context where this topic will be consumed</param>
+        public TopicBuilder(int maxLevel, TopicConsumer topicConsumer)
+            : this(new TopicCollection(maxLevel), topicConsumer) { }
 
         /// <summary>
         /// Create a new instance of <see cref="ITopicCollection"/> from an existing one
         /// </summary>
         /// <param name="topicCollection">Existing collection, seeding this one</param>
-        private TopicBuilder(ITopicCollection topicCollection)
-            => _topicCollection = topicCollection;
+        /// <param name="topicConsumer">Context where this topic will be consumed</param>
+        public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer = TopicConsumer.Subscriber)
+        {
+            TopicCollection = topicCollection;
+            
+            Consumer = topicConsumer;
+
+            _state = topicConsumer == TopicConsumer.Publisher
+                ? (IBuilderState) new PublisherState(this)
+                : new SubscriberState(this);
+        }
 
         /// <inheritdoc cref="ITopicBuilder.AddMultiLevelWildcard"/>
         public ITopicBuilder AddMultiLevelWildcard()
-            => new TopicBuilder(_topicCollection.AddMultiLevelWildcard());
+            => _state.AddMultiLevelWildcard();
 
         /// <inheritdoc cref="ITopicBuilder.AddTopic"/>
         public ITopicBuilder AddTopic(string topic)
-            => new TopicBuilder(_topicCollection.AddTopic(topic));
+            => _state.AddTopic(topic);
 
         /// <inheritdoc cref="ITopicBuilder.AddTopics(IEnumerable&lt;string&gt;)"/>
         public ITopicBuilder AddTopics(IEnumerable<string> topics)
-            => new TopicBuilder(_topicCollection.AddTopics(topics));
+            => _state.AddTopics(topics);
 
         /// <inheritdoc cref="ITopicBuilder.AddTopics(string[])"/>
         public ITopicBuilder AddTopics(params string[] topics)
-            => AddTopics(topics as IEnumerable<string>);
+            => _state.AddTopics(topics);
 
         /// <inheritdoc cref="ITopicBuilder.AddSingleLevelWildcard"/>
         public ITopicBuilder AddSingleLevelWildcard()
-            => new TopicBuilder(_topicCollection.AddSingleLevelWildcard());
+            => _state.AddSingleLevelWildcard();
 
         /// <inheritdoc cref="ITopicBuilder.Build"/>
         public Topic Build()
             => new Topic(
                 string.Join(
-                        Mqtt.Topic.Separator.ToString(), _topicCollection.ToArray()));
+                        Mqtt.Topic.Separator.ToString(), TopicCollection.ToArray()));
 
         /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()
-            => new TopicBuilder(_topicCollection);
+            => new TopicBuilder(TopicCollection);
     }
 }

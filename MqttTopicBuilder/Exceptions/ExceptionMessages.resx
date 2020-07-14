@@ -138,4 +138,7 @@
   <data name="TopicAfterWildcard" xml:space="preserve">
     <value>Impossible to add a topic after a multilevel wildcard</value>
   </data>
+  <data name="IllegalStateOperation" xml:space="preserve">
+    <value>Impossible to perform this operation in the current state</value>
+  </data>
 </root>

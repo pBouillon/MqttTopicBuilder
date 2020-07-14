@@ -9,48 +9,16 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using MqttTopicBuilder.Collection;
 using System.Collections.Generic;
 
-namespace MqttTopicBuilder.Builder
+namespace MqttTopicBuilder.Builder.BuilderState
 {
     /// <summary>
-    /// Builder for MQTT topic dynamic creation
+    /// <see cref="ITopicBuilder"/> inner state for method's behavior
+    /// modifications
     /// </summary>
-    public interface ITopicBuilder
+    internal interface IBuilderState
     {
-        /// <summary>
-        /// Indicate whether or not it is allowed to append one more topic
-        /// to the builder
-        /// </summary>
-        /// <remarks>
-        /// Adding a topic when this property is <c>false</c> will throw an
-        /// exception
-        /// </remarks>
-        bool IsAppendingAllowed { get; }
-
-        /// <summary>
-        /// Consumer type of the topic to be built (PUBLISH / SUBSCRIBE)
-        /// </summary>
-        TopicConsumer Consumer { get; }
-        
-        /// <summary>
-        /// Indicate whether or not the builder is empty
-        /// </summary>
-        bool IsEmpty { get; }
-
-        /// <summary>
-        /// Count all topics added
-        /// </summary>
-        int Levels { get; }
-
-        /// <summary>
-        /// Maximum level of the topic to be built and allowed to be built with the builder
-        /// </summary>
-        int MaxLevel { get; }
-
-        ITopicCollection TopicCollection { get; }
-
         /// <summary>
         /// Add a multi-level wildcard to the builder
         /// </summary>
@@ -83,19 +51,5 @@ namespace MqttTopicBuilder.Builder
         /// </summary>
         /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended wildcard</returns>
         ITopicBuilder AddSingleLevelWildcard();
-
-        /// <summary>
-        /// Create the topic from the builder's content
-        /// </summary>
-        /// <returns>
-        /// An instance of <see cref="Topic"/> build based on the <see cref="ITopicBuilder"/> content
-        /// </returns>
-        Topic Build();
-
-        /// <summary>
-        /// Clone the current instance of <see cref="ITopicBuilder"/>
-        /// </summary>
-        /// <returns>A new instance of <see cref="ITopicBuilder"/></returns>
-        ITopicBuilder Clone();
     }
 }

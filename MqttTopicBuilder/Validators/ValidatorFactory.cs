@@ -10,7 +10,6 @@
  */
 
 using MqttTopicBuilder.Collection;
-using MqttTopicBuilder.Validators.Rules;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
@@ -22,6 +21,16 @@ namespace MqttTopicBuilder.Validators
     public static class ValidatorFactory
     {
         /// <summary>
+        /// Get a validator with a set of rule to validate that a topic
+        /// can be used on PUBLISH mode
+        /// </summary>
+        /// <returns>The validator to be used</returns>
+        public static Validator<string> GetPublishedTopicValidator()
+            => Validator<string>
+                .CreatePipelineWith(
+                    new MustNotContainWildcard());
+
+        /// <summary>
         /// Get a validator with a set of rules to validate a topic
         /// </summary>
         /// <returns>The validator to be used</returns>
@@ -30,7 +39,7 @@ namespace MqttTopicBuilder.Validators
         /// </remarks>
         public static Validator<string> GetRawTopicValidator()
             => Validator<string>
-                .ForRulesInOrder(
+                .CreatePipelineWith(
                     new MustNotBeBlank(),
                     new MustEndWithMultiLevelWildcardIfAny(),
                     new MustHaveAtMostOneMultiLevelWildcard());
@@ -41,7 +50,7 @@ namespace MqttTopicBuilder.Validators
         /// <returns>The validator to be used</returns>
         public static Validator<string> GetSingleRawTopicValidator()
             => Validator<string>
-                .ForRulesInOrder(
+                .CreatePipelineWith(
                     new MustNotBeBlank(),
                     new MustBeUtf8(),
                     new MustNotHaveNullChar(),
@@ -56,7 +65,7 @@ namespace MqttTopicBuilder.Validators
         /// <returns>The validator to be used</returns>
         public static Validator<ITopicCollection> GetTopicCollectionAppendingValidator()
             => Validator<ITopicCollection>
-                .ForRulesInOrder(
+                .CreatePipelineWith(
                     new MustAppendingBeAllowed(),
                     new MustNotBeFull());
     }
