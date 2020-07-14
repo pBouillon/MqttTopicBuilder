@@ -39,7 +39,7 @@ namespace MqttTopicBuilder.Validators
         /// </summary>
         /// <param name="rules">Rules to be validated</param>
         /// <returns>A new instance of <see cref="Validator{T}"/></returns>
-        public static Validator<T> ForRulesInOrder(params Rule<T>[] rules)
+        public static Validator<T> CreatePipelineWith(params Rule<T>[] rules)
             => new Validator<T>(rules);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace MqttTopicBuilder.Validators
         /// <param name="value">Value to be validated</param>
         public void Validate(T value)
             => _rules.ToList()
-                .ForEach(rule => 
+                .ForEach(rule =>
                     rule.Validate(value));
     }
 }
