@@ -14,7 +14,6 @@ using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using System;
-using MqttTopicBuilder.Common;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Topic
@@ -24,6 +23,44 @@ namespace MqttTopicBuilder.UnitTests.Topic
     /// </summary>
     public class TopicUnitTests
     {
+        /// <summary>
+        /// Ensure that the implicit conversion of a string to a topic is valid
+        /// </summary>
+        [Fact]
+        public void Conversion_ExplicitFromTopic()
+        {
+            // Arrange
+            var rawTopic = TestUtils.GenerateValidTopic();
+            var topic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+
+            // Act
+            var rawTopicValue = (string) topic;
+
+            // Assert
+            rawTopicValue.Should()
+                .Be(rawTopic,
+                    "because a topic should have been created using the initial raw value");
+        }
+
+        /// <summary>
+        /// Ensure that the implicit conversion of a string to a topic is valid
+        /// </summary>
+        [Fact]
+        public void Conversion_ImplicitFromString()
+        {
+            // Arrange
+            var rawTopic = TestUtils.GenerateValidTopic();
+
+            // Act
+            var topic = (MqttTopicBuilder.Builder.Topic) rawTopic;
+
+            // Assert
+            topic.Value
+                .Should()
+                .Be(rawTopic,
+                    "because a topic should have been created using the initial raw value");
+        }
+
         /// <summary>
         /// Ensure that the minimal topic is safely built from an empty string
         /// </summary>
