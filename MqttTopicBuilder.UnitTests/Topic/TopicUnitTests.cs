@@ -9,12 +9,12 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System;
 using FluentAssertions;
-using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
+using System;
+using MqttTopicBuilder.Common;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Topic
@@ -126,6 +126,25 @@ namespace MqttTopicBuilder.UnitTests.Topic
                 .Be(
                     validRawTopicWithTrailingSeparator.Split(Mqtt.Topic.Separator).Length - 1,
                     "because the trailing separator has been removed");
+        }
+
+        /// <summary>
+        /// Ensure that both topics are treated as value object for equality checks
+        /// </summary>
+        [Fact]
+        public void Topic_EqualityCheckBasedOnValue()
+        {
+            // Arrange
+            var rawTopic = TestUtils.GenerateValidTopic();
+            var firstTopic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+            var secondTopic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+
+            // Act
+            var result = firstTopic == secondTopic;
+
+            // Assert
+            result.Should()
+                .BeTrue("because both topics are holding the same values");
         }
         
         /// <summary>
