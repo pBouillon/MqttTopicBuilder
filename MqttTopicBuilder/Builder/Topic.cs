@@ -39,6 +39,20 @@ namespace MqttTopicBuilder.Builder
         public readonly string Value;
 
         /// <summary>
+        /// Convert a <see cref="Topic"/> to a <see cref="string"/>
+        /// </summary>
+        /// <param name="topic"><see cref="Topic"/> to be converted</param>
+        public static explicit operator string(Topic topic)
+            => topic.Value;
+
+        /// <summary>
+        /// Convert a <see cref="string"/> to a <see cref="Topic"/>
+        /// </summary>
+        /// <param name="rawTopic">String to be converted</param>
+        public static implicit operator Topic(string rawTopic)
+            => new Topic(rawTopic);
+
+        /// <summary>
         /// Create a new MQTT Topic from a raw string
         /// <para>
         /// If <paramref name="rawTopic"/> is empty, the minimal topic will be created 
