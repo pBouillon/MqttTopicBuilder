@@ -20,7 +20,7 @@ namespace MqttTopicBuilder.Collection
     /// Most operation are returning a new instance instead of updating
     /// the current one
     /// </remarks>
-    internal interface ITopicCollection : IEnumerable<string>
+    public interface ITopicCollection : IEnumerable<string>
     {
         /// <summary>
         /// Check if it is possible to add a topic to the collection

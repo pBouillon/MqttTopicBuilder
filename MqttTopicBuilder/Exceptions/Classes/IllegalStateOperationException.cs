@@ -9,35 +9,33 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using MqttTopicBuilder.Constants;
-
 namespace MqttTopicBuilder.Exceptions.Classes
 {
     /// <summary>
-    /// Exception thrown on a topic slice longer than the allowed size
+    /// Exception thrown on an operation on a builder that is not allowed in its current
+    /// state
     /// </summary>
-    /// <see cref="Mqtt.Topic.MaxSubTopicLength"/>
-    public class TooLongTopicException : MqttBaseException
+    public class IllegalStateOperationException : MqttBaseException
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public TooLongTopicException()
-            : base(ExceptionMessages.EmptyTopic) { }
+        public IllegalStateOperationException()
+            : base(ExceptionMessages.IllegalStateOperation) { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
-        public TooLongTopicException(string message)
-            : base($"{ExceptionMessages.TooLongTopic}: {message}") { }
+        public IllegalStateOperationException(string message)
+            : base($"{ExceptionMessages.IllegalStateOperation}: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        public TooLongTopicException(string message, System.Exception inner)
-            : base($"{ExceptionMessages.TooLongTopic}: {message}", inner) { }
+        public IllegalStateOperationException(string message, System.Exception inner)
+            : base($"{ExceptionMessages.IllegalStateOperation}: {message}", inner) { }
     }
 }
