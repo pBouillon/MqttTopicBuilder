@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Author
  *      Pierre Bouillon - https://github.com/pBouillon
  *
@@ -44,6 +44,13 @@ namespace MqttTopicBuilder.Builder
         /// <param name="topic"><see cref="Topic"/> to be converted</param>
         public static explicit operator string(Topic topic)
             => topic.Value;
+
+        /// <summary>
+        /// Convert a <see cref="string"/> to a <see cref="Topic"/>
+        /// </summary>
+        /// <param name="rawTopic">String to be converted</param>
+        public static implicit operator Topic(string rawTopic)
+            => new Topic(rawTopic);
 
         /// <summary>
         /// Create a new MQTT Topic from a raw string
