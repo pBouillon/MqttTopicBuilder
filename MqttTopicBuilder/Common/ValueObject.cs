@@ -25,6 +25,24 @@ namespace MqttTopicBuilder.Common
     public abstract class ValueObject
     {
         /// <summary>
+        /// Checks whether or not two <see cref="ValueObject"/> are equals
+        /// </summary>
+        /// <param name="left">First value object</param>
+        /// <param name="right">Second value object</param>
+        /// <returns>True if they are equals by value</returns>
+        public static bool operator ==(ValueObject left, ValueObject right)
+            => EqualOperator(left, right);
+
+        /// <summary>
+        /// Checks whether or not two <see cref="ValueObject"/> are not equals
+        /// </summary>
+        /// <param name="left">First value object</param>
+        /// <param name="right">Second value object</param>
+        /// <returns>True if they are not equals by value</returns>
+        public static bool operator !=(ValueObject left, ValueObject right)
+            => NotEqualOperator(left, right);
+
+        /// <summary>
         /// Define a custom equality check for value objects
         /// </summary>
         /// <param name="left">First value object</param>
@@ -51,9 +69,7 @@ namespace MqttTopicBuilder.Common
         /// <param name="right">Second value object</param>
         /// <returns>True if they are not equals by value</returns>
         protected static bool NotEqualOperator(ValueObject left, ValueObject right)
-        {
-            return ! EqualOperator(left, right);
-        }
+            => ! EqualOperator(left, right);
 
         /// <summary>
         /// Retrieve all atomic values held by the value object
