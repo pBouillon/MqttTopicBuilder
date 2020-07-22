@@ -9,8 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using MqttTopicBuilder.Common;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Validators;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MqttTopicBuilder.Builder
@@ -18,7 +20,7 @@ namespace MqttTopicBuilder.Builder
     /// <summary>
     /// Represent an MQTT topic
     /// </summary>
-    public class Topic
+    public class Topic : ValueObject
     {
         /// <summary>
         /// Number of levels of this topic
@@ -78,6 +80,13 @@ namespace MqttTopicBuilder.Builder
         /// <returns>A new instance of the Topic</returns>
         public static Topic FromString(string rawTopic)
             => new Topic(rawTopic);
+
+        /// <inheritdoc cref="ValueObject.GetAtomicValues"/>
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Levels;
+            yield return Value;
+        }
 
         /// <summary>
         /// Returns the topic's value as a string, same as as <see cref="Value"/>
