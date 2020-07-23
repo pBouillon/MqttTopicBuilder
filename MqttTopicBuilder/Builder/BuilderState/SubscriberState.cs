@@ -10,6 +10,10 @@
  */
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+// Allow unit test project to reach this class
+[assembly: InternalsVisibleTo("MqttTopicBuilder.UnitTests")]
 
 namespace MqttTopicBuilder.Builder.BuilderState
 {

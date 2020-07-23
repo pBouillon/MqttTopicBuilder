@@ -13,6 +13,10 @@ using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Validators;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+// Allow unit test project to reach this class
+[assembly: InternalsVisibleTo("MqttTopicBuilder.UnitTests")]
 
 namespace MqttTopicBuilder.Builder.BuilderState
 {
@@ -32,7 +36,7 @@ namespace MqttTopicBuilder.Builder.BuilderState
         /// <inheritdoc cref="BuilderState.AddMultiLevelWildcard"/>
         public override ITopicBuilder AddMultiLevelWildcard()
             => throw new IllegalStateOperationException(
-                "multi-level wildcard are forbidden when publishing");
+                "multi-level wildcards are forbidden when publishing");
 
         /// <inheritdoc cref="BuilderState.AddTopic"/>
         public override ITopicBuilder AddTopic(string topic)
@@ -65,6 +69,6 @@ namespace MqttTopicBuilder.Builder.BuilderState
         /// <inheritdoc cref="BuilderState.AddSingleLevelWildcard"/>
         public override ITopicBuilder AddSingleLevelWildcard()
             => throw new IllegalStateOperationException(
-                "single-level wildcard are forbidden when publishing");
+                "single-level wildcards are forbidden when publishing");
     }
 }
