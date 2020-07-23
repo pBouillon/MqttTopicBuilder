@@ -13,11 +13,11 @@ using AutoFixture;
 using FluentAssertions;
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Builder.BuilderState;
+using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
+using MqttTopicBuilder.UnitTests.Utils;
 using System;
 using System.Collections.Generic;
-using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.UnitTests.Utils;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder.BuilderState
