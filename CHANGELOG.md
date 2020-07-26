@@ -9,15 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- WiP
+- Add [codefactor](https://www.codefactor.io/repository/github/pbouillon/mqtttopicbuilder) to CI for quality checks
+- Add UTF-8 check on topic creation
+- Add modes depending on the consumer of the topic builder (PUB/SUB)
 
 ### Changed
 
-- WiP
+- Rework topic validation using validation pipelines and rules
+- `Topic` can now be used as a value object
+- Set C# version to 8
 
-### Removed
+### Deprecated
 
-- WiP
+- `TopicBuilder` constructors that does not specify the type of the consumer
+  using it
+
+### Fixed
+
+- Fixed a unit test that would potentially fail on random values
 
 ## [2.0.2] - 2020-06-29
 
