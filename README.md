@@ -1,6 +1,10 @@
 # MqttTopicBuilder  
 
-![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/Build/badge.svg) ![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg) ![Nuget](https://img.shields.io/nuget/dt/MqttTopicBuilder?color=%2332ca55&label=Downloads%20on%20NuGet&logo=nuget)
+| Category | Status |
+|:--------:|:-------|
+| Package | [![NuGet Badge](https://buildstats.info/nuget/MqttTopicBuilder)](https://www.nuget.org/packages/MqttTopicBuilder/) |
+| Quality | [![CodeFactor](https://www.codefactor.io/repository/github/pbouillon/mqtttopicbuilder/badge)](https://www.codefactor.io/repository/github/pbouillon/mqtttopicbuilder) |
+| CI / CD | [![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/Build/badge.svg)](https://github.com/pBouillon/MqttTopicBuilder/actions?query=workflow%3ABuild) [![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg)](https://github.com/pBouillon/MqttTopicBuilder/actions?query=workflow%3A%22NuGet+package%22) |
 
 📮 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics
 
@@ -18,66 +22,74 @@ or, from the package manager:
 
 ## Usage
 
-> More detailed instructions and documentation is available in [the wiki](https://github.com/pBouillon/MqttTopicBuilder/wiki)  
+> More detailed instructions and documentation are available [here](https://pbouillon.gitbook.io/mqtttopicbuilder/)  
 > For changelog, see [the changelog](./CHANGELOG.md)
 
 Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
-their veracity.
+their validity regarding the way you are planning to use them.
 
 ```csharp
-    var topic = new TopicBuilder()
-        .AddTopic("Hello")
-        .AddTopic("From")
-        .AddTopics("Mqtt", "Topic", "Builder")
-        .AddMultiLevelWildcard()
-        .Build();
+var subscribeTo = new TopicBuilder(TopicConsumer.Subscriber)
+    .AddTopic("Hello")
+    .AddTopic("From")
+    .AddTopics("Mqtt", "Topic", "Builder")
+    .AddMultiLevelWildcard()
+    .Build();
 
-    Console.WriteLine(topic);
-    // -> "Hello/From/Mqtt/Topic/Builder/#"
+Console.WriteLine(subscribeTo);
+// -> "Hello/From/Mqtt/Topic/Builder/#"
+
+var publishTop = new TopicBuilder(TopicConsumer.Publisher)
+    .AddTopic("Hello")
+    .AddTopic("From")
+    .AddTopics("Mqtt", "Topic", "Builder")
+    .AddMultiLevelWildcard()
+    .Build();
+// Will throw an exception since wildcards are not allowed when publishing
+// on a topic
+
 ```
 
 The built object is a `Topic` object. It can be used to both access the topic
 but also gather informations about it such as its level.
 
 ```csharp
-    var topic = new TopicBuilder()
-        .AddTopic("Hello")
-        .AddTopic("World")
-        .Build();
+var topic = new TopicBuilder(TopicConsumer.Subscriber)
+    .AddTopic("Hello")
+    .AddTopic("World")
+    .Build();
 
-    Console.WriteLine(topic.Value);
-    // -> "Hello/World"
+Console.WriteLine(topic.Value);
+// -> "Hello/World"
 
-    Console.WriteLine(topic.Levels);
-    // -> 2
+Console.WriteLine(topic.Levels);
+// -> 2
 ```
 
 Topics can also be built using the regular constructor or the extension method:
 
 ```csharp
-    var topic = Topic.FromString("Hello/World");
+var topic = Topic.FromString("Hello/World");
+// or: var topic = (Topic) "Hello/World";
 
-    Console.WriteLine(topic.Value);
-    // -> "Hello/World"
+Console.WriteLine(topic.Value);
+// -> "Hello/World"
 
-    Console.WriteLine(topic.Levels);
-    // -> 2
+Console.WriteLine(topic.Levels);
+// -> 2
 ```
 
 Topic integrity can also be checked using the `TopicValidator` methods
 
 ```csharp
-    TopicValidator.ValidateTopic("a/wrong/#/Topic");
-    // Will throw an exception since no topic is allowed after '#'
+TopicValidator.ValidateTopic("a/wrong/#/Topic");
+// Will throw an exception since no topic is allowed after '#'
 
-    "wrong+Topic".ValidateForTopicAppending();
-    // Will throw an exception since '+' is not allowed in a topic
+"wrong+Topic".ValidateTopicForAppending();
+// Will throw an exception since '+' is not allowed in a topic
 ```
-
-## Dependencies
-
-This project is using [FluentAssertions](https://fluentassertions.com/) and [AutoFixture](https://github.com/AutoFixture/AutoFixture) for its unit tests.
 
 ## Contributions
 
-All contributions are welcome, please feel free to suggest pull requests ! You can read more about it in the [CONTRIBUTING.md](https://github.com/pBouillon/MqttTopicBuilder/blob/master/CONTRIBUTING.md).
+All contributions are welcome, please feel free to suggest pull requests !
+You can read more about it in the [CONTRIBUTING.md](https://github.com/pBouillon/MqttTopicBuilder/blob/master/CONTRIBUTING.md).

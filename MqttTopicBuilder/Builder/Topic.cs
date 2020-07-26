@@ -9,15 +9,18 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
+using MqttTopicBuilder.Common;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Validators;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace MqttTopicBuilder.Topic
+namespace MqttTopicBuilder.Builder
 {
     /// <summary>
     /// Represent an MQTT topic
     /// </summary>
-    public class Topic
+    public class Topic : ValueObject
     {
         /// <summary>
         /// Number of levels of this topic
@@ -34,6 +37,20 @@ namespace MqttTopicBuilder.Topic
         /// Value of the MQTT topic (e.g "a/b/c")
         /// </summary>
         public readonly string Value;
+
+        /// <summary>
+        /// Convert a <see cref="Topic"/> to a <see cref="string"/>
+        /// </summary>
+        /// <param name="topic"><see cref="Topic"/> to be converted</param>
+        public static explicit operator string(Topic topic)
+            => topic.Value;
+
+        /// <summary>
+        /// Convert a <see cref="string"/> to a <see cref="Topic"/>
+        /// </summary>
+        /// <param name="rawTopic">String to be converted</param>
+        public static implicit operator Topic(string rawTopic)
+            => new Topic(rawTopic);
 
         /// <summary>
         /// Create a new MQTT Topic from a raw string
@@ -77,6 +94,13 @@ namespace MqttTopicBuilder.Topic
         /// <returns>A new instance of the Topic</returns>
         public static Topic FromString(string rawTopic)
             => new Topic(rawTopic);
+
+        /// <inheritdoc cref="ValueObject.GetAtomicValues"/>
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Levels;
+            yield return Value;
+        }
 
         /// <summary>
         /// Returns the topic's value as a string, same as as <see cref="Value"/>

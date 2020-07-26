@@ -9,21 +9,58 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System;
 using FluentAssertions;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
+using System;
 using Xunit;
-using MqttTopic = MqttTopicBuilder.Topic;
 
 namespace MqttTopicBuilder.UnitTests.Topic
 {
     /// <summary>
-    /// Unit test suite for <see cref="MqttTopic.Topic"/>
+    /// Unit test suite for <see cref="Topic"/>
     /// </summary>
     public class TopicUnitTests
     {
+        /// <summary>
+        /// Ensure that the implicit conversion of a string to a topic is valid
+        /// </summary>
+        [Fact]
+        public void Conversion_ExplicitFromTopic()
+        {
+            // Arrange
+            var rawTopic = TestUtils.GenerateValidTopic();
+            var topic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+
+            // Act
+            var rawTopicValue = (string) topic;
+
+            // Assert
+            rawTopicValue.Should()
+                .Be(rawTopic,
+                    "because a topic should have been created using the initial raw value");
+        }
+
+        /// <summary>
+        /// Ensure that the implicit conversion of a string to a topic is valid
+        /// </summary>
+        [Fact]
+        public void Conversion_ImplicitFromString()
+        {
+            // Arrange
+            var rawTopic = TestUtils.GenerateValidTopic();
+
+            // Act
+            var topic = (MqttTopicBuilder.Builder.Topic) rawTopic;
+
+            // Assert
+            topic.Value
+                .Should()
+                .Be(rawTopic,
+                    "because a topic should have been created using the initial raw value");
+        }
+
         /// <summary>
         /// Ensure that the minimal topic is safely built from an empty string
         /// </summary>
@@ -34,7 +71,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var emptyTopic = string.Empty;
 
             // Act
-            var topicBuilt = new MqttTopic.Topic(emptyTopic);
+            var topicBuilt = new MqttTopicBuilder.Builder.Topic(emptyTopic);
 
             // Assert
             topicBuilt.Value
@@ -58,7 +95,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
 
             // Act
             Action creatingInvalidTopic = () =>
-                _ = MqttTopic.Topic.FromString(invalidRawTopic);
+                _ = MqttTopicBuilder.Builder.Topic.FromString(invalidRawTopic);
 
             // Assert
             creatingInvalidTopic.Should()
@@ -75,7 +112,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var minimalRawTopic = Mqtt.Topic.Separator.ToString();
 
             // Act
-            var minimalTopic = MqttTopic.Topic.FromString(minimalRawTopic);
+            var minimalTopic = MqttTopicBuilder.Builder.Topic.FromString(minimalRawTopic);
 
             // Assert
             minimalTopic.Value
@@ -93,7 +130,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopic = TestUtils.GenerateValidTopic();
 
             // Act
-            var validTopic = MqttTopic.Topic.FromString(validRawTopic);
+            var validTopic = MqttTopicBuilder.Builder.Topic.FromString(validRawTopic);
 
             // Assert
             validTopic.Value.Should()
@@ -116,7 +153,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopicWithTrailingSeparator = validRawTopic + Mqtt.Topic.Separator;
 
             // Act
-            var validTopic = MqttTopic.Topic.FromString(validRawTopicWithTrailingSeparator);
+            var validTopic = MqttTopicBuilder.Builder.Topic.FromString(validRawTopicWithTrailingSeparator);
 
             // Assert
             validTopic.Value.Should()
@@ -126,6 +163,25 @@ namespace MqttTopicBuilder.UnitTests.Topic
                 .Be(
                     validRawTopicWithTrailingSeparator.Split(Mqtt.Topic.Separator).Length - 1,
                     "because the trailing separator has been removed");
+        }
+
+        /// <summary>
+        /// Ensure that both topics are treated as value object for equality checks
+        /// </summary>
+        [Fact]
+        public void Topic_EqualityCheckBasedOnValue()
+        {
+            // Arrange
+            var rawTopic = TestUtils.GenerateValidTopic();
+            var firstTopic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+            var secondTopic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+
+            // Act
+            var result = firstTopic == secondTopic;
+
+            // Assert
+            result.Should()
+                .BeTrue("because both topics are holding the same values");
         }
         
         /// <summary>
@@ -138,7 +194,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var emptyTopic = string.Empty;
 
             // Act
-            var topicBuilt = new MqttTopic.Topic(emptyTopic);
+            var topicBuilt = new MqttTopicBuilder.Builder.Topic(emptyTopic);
 
             // Assert
             topicBuilt.Value
@@ -162,7 +218,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
 
             // Act
             Action creatingInvalidTopic = () =>
-                _ = new MqttTopic.Topic(invalidRawTopic);
+                _ = new MqttTopicBuilder.Builder.Topic(invalidRawTopic);
 
             // Assert
             creatingInvalidTopic.Should()
@@ -179,7 +235,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var minimalRawTopic = Mqtt.Topic.Separator.ToString();
 
             // Act
-            var minimalTopic = new MqttTopic.Topic(minimalRawTopic);
+            var minimalTopic = new MqttTopicBuilder.Builder.Topic(minimalRawTopic);
 
             // Assert
             minimalTopic.Value
@@ -197,7 +253,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopic = TestUtils.GenerateValidTopic();
 
             // Act
-            var validTopic = new MqttTopic.Topic(validRawTopic);
+            var validTopic = new MqttTopicBuilder.Builder.Topic(validRawTopic);
 
             // Assert
             validTopic.Value.Should()
@@ -220,7 +276,7 @@ namespace MqttTopicBuilder.UnitTests.Topic
             var validRawTopicWithTrailingSeparator = validRawTopic + Mqtt.Topic.Separator;
 
             // Act
-            var validTopic = new MqttTopic.Topic(validRawTopicWithTrailingSeparator);
+            var validTopic = new MqttTopicBuilder.Builder.Topic(validRawTopicWithTrailingSeparator);
 
             // Assert
             validTopic.Value.Should()

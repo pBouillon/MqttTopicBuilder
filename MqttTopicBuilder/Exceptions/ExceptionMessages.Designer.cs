@@ -79,6 +79,15 @@ namespace MqttTopicBuilder.Exceptions {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Impossible to perform this operation in the current state.
+        /// </summary>
+        public static string IllegalStateOperation {
+            get {
+                return ResourceManager.GetString("IllegalStateOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Impossible to add a topic at this place.
         /// </summary>
         public static string IllegalTopicConstruction {
