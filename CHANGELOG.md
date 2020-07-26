@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2020-06-26
+
+### Added
+
+- Add [codefactor](https://www.codefactor.io/repository/github/pbouillon/mqtttopicbuilder) to CI for quality checks
+- Add UTF-8 check on topic creation
+- Add modes depending on the consumer of the topic builder (PUB/SUB)
+
+### Changed
+
+- Rework topic validation using validation pipelines and rules
+- `Topic` can now be used as a value object
+- Set C# version to 8
+
+### Deprecated
+
+- `TopicBuilder` constructors that does not specify the type of the consumer
+  using it
+
+### Fixed
+
+- Fixed a unit test that would potentially fail on random values
+
 ## [2.0.2] - 2020-06-29
 
 ### Changed
