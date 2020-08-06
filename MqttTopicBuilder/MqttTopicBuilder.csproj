@@ -11,7 +11,7 @@
 
     <IsPackable>true</IsPackable>
     <PackageId>MqttTopicBuilder</PackageId>
-    <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder/</PackageProjectUrl>
+    <PackageProjectUrl>pbouillon.gitbook.io/mqtttopicbuilder/</PackageProjectUrl>
 
     <PackageLicense>https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE</PackageLicense>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
