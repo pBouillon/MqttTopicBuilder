@@ -50,25 +50,6 @@ namespace MqttTopicBuilder.Builder
         private readonly IBuilderState _state;
 
         /// <summary>
-        /// [DEPRECATED] - Create a new <see cref="TopicBuilder"/> with <see cref="TopicConsumer.Subscriber"/>
-        /// as its consumer
-        /// </summary>
-        [Obsolete(
-            "This constructor will be removed. Use TopicBuilder(TopicConsumer topicConsumer) instead")]
-        public TopicBuilder()
-            : this (TopicConsumer.Subscriber) { }
-
-        /// <summary>
-        /// [DEPRECATED] - Create a new <see cref="TopicBuilder"/> with <see cref="TopicConsumer.Subscriber"/>
-        /// as its consumer
-        /// </summary>
-        /// <param name="maxLevel">Maximum number of topics that the collection can contains</param>
-        [Obsolete(
-            "This constructor will be removed. Use TopicBuilder(int maxLevel, TopicConsumer topicConsumer) instead")]
-        public TopicBuilder(int maxLevel)
-            : this(maxLevel, TopicConsumer.Subscriber) { }
-
-        /// <summary>
         /// Create a new <see cref="ITopicCollection"/>
         /// </summary>
         /// <param name="topicConsumer">Context where this topic will be consumed</param>
