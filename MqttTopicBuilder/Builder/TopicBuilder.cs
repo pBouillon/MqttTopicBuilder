@@ -22,11 +22,6 @@ namespace MqttTopicBuilder.Builder
     /// </summary>
     public class TopicBuilder : ITopicBuilder
     {
-        /// <summary>
-        /// Inner-collection on which relies the builder for topic creation
-        /// </summary>
-        public ITopicCollection TopicCollection { get; }
-
         /// <inheritdoc cref="ITopicBuilder.IsAppendingAllowed"/>
         public bool IsAppendingAllowed
             => TopicCollection.IsAppendingAllowed;
@@ -45,6 +40,9 @@ namespace MqttTopicBuilder.Builder
         /// <inheritdoc cref="ITopicBuilder.MaxLevel"/>
         public int MaxLevel
             => TopicCollection.MaxLevel;
+
+        /// <inheritdoc cref="ITopicBuilder.TopicCollection"/>
+        public ITopicCollection TopicCollection { get; }
 
         /// <summary>
         /// Inner <see cref="IBuilderState"/> of the builder
@@ -129,6 +127,10 @@ namespace MqttTopicBuilder.Builder
             => new Topic(
                 string.Join(
                         Mqtt.Topic.Separator.ToString(), TopicCollection.ToArray()));
+
+        /// <inheritdoc cref="ITopicBuilder.Clear"/>
+        public ITopicBuilder Clear()
+            => new TopicBuilder(MaxLevel, Consumer);
 
         /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()

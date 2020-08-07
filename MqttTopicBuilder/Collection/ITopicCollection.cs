@@ -81,11 +81,6 @@ namespace MqttTopicBuilder.Collection
         ITopicCollection AddTopics(IEnumerable<string> topics);
 
         /// <summary>
-        /// Remove all staged topics
-        /// </summary>
-        void Clear();
-
-        /// <summary>
         /// Clone the current topic collection
         /// </summary>
         /// <returns>A clone of the current instance</returns>

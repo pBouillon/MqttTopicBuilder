@@ -107,10 +107,6 @@ namespace MqttTopicBuilder.Collection
             topic.ValidateTopicForAppending();
         }
 
-        /// <inheritdoc cref="ITopicCollection.Clear"/>
-        public void Clear()
-            => _stagedTopics.Clear();
-
         /// <inheritdoc cref="ITopicCollection.Clone"/>
         public ITopicCollection Clone()
             => new TopicCollection(_stagedTopics, MaxLevel);

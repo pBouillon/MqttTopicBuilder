@@ -49,6 +49,9 @@ namespace MqttTopicBuilder.Builder
         /// </summary>
         int MaxLevel { get; }
 
+        /// <summary>
+        /// Inner-collection on which relies the builder for topic creation
+        /// </summary>
         ITopicCollection TopicCollection { get; }
 
         /// <summary>
@@ -91,6 +94,14 @@ namespace MqttTopicBuilder.Builder
         /// An instance of <see cref="Topic"/> build based on the <see cref="ITopicBuilder"/> content
         /// </returns>
         Topic Build();
+
+        /// <summary>
+        /// Clear the <see cref="ITopicBuilder"/>
+        /// </summary>
+        /// <returns>
+        /// A clean instance of <see cref="ITopicBuilder"/>
+        /// </returns>
+        ITopicBuilder Clear();
 
         /// <summary>
         /// Clone the current instance of <see cref="ITopicBuilder"/>
