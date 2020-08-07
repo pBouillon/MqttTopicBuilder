@@ -9,6 +9,7 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using System.Runtime.InteropServices.ComTypes;
 using AutoFixture;
 using FluentAssertions;
 using MqttTopicBuilder.Builder;
@@ -52,6 +53,30 @@ namespace MqttTopicBuilder.UnitTests.Builder
                 .Should()
                 .Be(builder.Levels,
                     "because the content of the topic should not be altered");
+        }
+
+        /// <summary>
+        /// Ensure that the object's cleaning behaviour is valid
+        /// </summary>
+        [Fact]
+        public void Clear()
+        {
+            // Arrange
+            var builder = Fixture.Create<TopicBuilder>();
+
+            // Act
+            var cleaned = builder.Clear();
+
+            // Assert
+            cleaned.Levels
+                .Should()
+                .Be(0,
+                    "because the builder must not contain any level anymore");
+
+            cleaned.TopicCollection
+                .ToList()
+                .Should()
+                .BeEmpty("because the inner collection should have been cleaned");
         }
 
         /// <summary>
