@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add `ITopicBuilder.Clear` method
+- Add `TopicBuilder.FromTopic` method
+- Add `Topic.ToArray` method
 
 ### Removed
 
