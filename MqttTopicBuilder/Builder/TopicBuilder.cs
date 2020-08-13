@@ -12,7 +12,6 @@
 using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
-using System;
 using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Builder
@@ -116,5 +115,19 @@ namespace MqttTopicBuilder.Builder
         /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()
             => new TopicBuilder(TopicCollection);
+
+        /// <summary>
+        /// Create a new <see cref="ITopicBuilder"/> from an existing topic
+        /// </summary>
+        /// <param name="topic">
+        /// <see cref="Topic"/> used for seeding the new <see cref="ITopicBuilder"/> instance
+        /// </param>
+        /// <param name="topicConsumer">Context where this topic will be consumed</param>
+        /// <returns>A new <see cref="ITopicBuilder"/> instance seeded with the provided <see cref="Topic"/></returns>
+        public static ITopicBuilder FromTopic(Topic topic, TopicConsumer topicConsumer)
+            => new TopicBuilder(topic.Levels, topicConsumer)
+                // Adding topics *after* having set the TopicConsumer property will ensure that no illegal topics has
+                // been added in the builder
+                .AddTopics(topic.ToArray());
     }
 }
