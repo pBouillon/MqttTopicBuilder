@@ -71,7 +71,7 @@ namespace MqttTopicBuilder.Builder
         /// </summary>
         /// <param name="topicCollection">Existing collection, seeding this one</param>
         /// <param name="topicConsumer">Context where this topic will be consumed</param>
-        public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer = TopicConsumer.Subscriber)
+        public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer)
         {
             TopicCollection = topicCollection;
             
@@ -114,7 +114,7 @@ namespace MqttTopicBuilder.Builder
 
         /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()
-            => new TopicBuilder(TopicCollection);
+            => new TopicBuilder(TopicCollection, Consumer);
 
         /// <summary>
         /// Create a new <see cref="ITopicBuilder"/> from an existing topic
