@@ -9,14 +9,11 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System;
-using System.Collections.Generic;
 using AutoFixture;
 using FluentAssertions;
 using MqttTopicBuilder.Builder;
-using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Extensions;
+using System.Collections.Generic;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Extensions
@@ -30,6 +27,42 @@ namespace MqttTopicBuilder.UnitTests.Extensions
         /// Private instance of <see cref="IFixture"/> for test data generation purposes
         /// </summary>
         private static readonly IFixture Fixture = new Fixture();
+
+        /// <summary>
+        /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
+        /// <see cref="TopicConsumer.Publisher"/>
+        /// </summary>
+        [Fact]
+        public void ToPublisherBuilder_FromPublisherBuilder()
+        {
+            // Arrange
+            // Act
+            // Assert
+        }
+
+        /// <summary>
+        /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
+        /// <see cref="TopicConsumer.Subscriber"/> and contains no wildcard
+        /// </summary>
+        [Fact]
+        public void ToPublisherBuilder_FromSubscriberWithoutWildcards()
+        {
+            // Arrange
+            // Act
+            // Assert
+        }
+
+        /// <summary>
+        /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
+        /// <see cref="TopicConsumer.Subscriber"/> and contains wildcards
+        /// </summary>
+        [Fact]
+        public void ToPublisherBuilder_FromSubscriberWithWildcards()
+        {
+            // Arrange
+            // Act
+            // Assert
+        }
 
         /// <summary>
         /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
