@@ -16,11 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `ITopicBuilder.ToPublisherBuilder` extension method
 - Add `ITopicBuilder.ToSubscriberBuilder` extension method
 
+### Changed
+
+- `TopicBuilder` no longer use `TopicConsumer.Subscriber` by default
+
 ### Removed
 
 - Remove obsolete `TopicBuilder` constructors
 - Remove unused `ITopicCollection.Clear` method
-- Remove default `TopicConsumer` in `TopicBuilder` constructor
 
 ## [2.1.0] - 2020-06-26
 
