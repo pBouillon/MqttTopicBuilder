@@ -103,6 +103,13 @@ namespace MqttTopicBuilder.Builder
         }
 
         /// <summary>
+        /// Retrieve all atomic topics contained in the topic
+        /// </summary>
+        /// <returns>An array of those atomic topics</returns>
+        public string[] ToArray()
+            => Value.Split(Mqtt.Topic.Separator);
+
+        /// <summary>
         /// Returns the topic's value as a string, same as as <see cref="Value"/>
         /// </summary>
         /// <returns>The topic's value</returns>
