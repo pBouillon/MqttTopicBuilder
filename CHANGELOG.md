@@ -12,11 +12,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `ITopicBuilder.Clear` method
 - Add `TopicBuilder.FromTopic` method
 - Add `Topic.ToArray` method
+- Add `ITopicBuilder` creation from `Topic`
+- Add `ITopicBuilder.ToPublisherBuilder` extension method
+- Add `ITopicBuilder.ToSubscriberBuilder` extension method
+
+### Changed
+
+- `TopicBuilder` no longer use `TopicConsumer.Subscriber` by default
+- `TopicBuilder` now performs rule checks when built with a collection
 
 ### Removed
 
 - Remove obsolete `TopicBuilder` constructors
-- Remove unused `ÌTopicCollection.Clear` method
+- Remove unused `ITopicCollection.Clear` method
 
 ## [2.1.0] - 2020-06-26
 

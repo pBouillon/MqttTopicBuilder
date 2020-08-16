@@ -12,6 +12,7 @@
 using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Validators;
 using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Builder
@@ -71,15 +72,21 @@ namespace MqttTopicBuilder.Builder
         /// </summary>
         /// <param name="topicCollection">Existing collection, seeding this one</param>
         /// <param name="topicConsumer">Context where this topic will be consumed</param>
-        public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer = TopicConsumer.Subscriber)
+        public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer)
         {
             TopicCollection = topicCollection;
-            
             Consumer = topicConsumer;
 
-            _state = topicConsumer == TopicConsumer.Publisher
+            _state = Consumer == TopicConsumer.Publisher
                 ? (IBuilderState) new PublisherState(this)
                 : new SubscriberState(this);
+
+            if (Consumer == TopicConsumer.Publisher)
+            {
+                var validator = ValidatorFactory.GetPublishedTopicValidator();
+                TopicCollection.ToList()
+                    .ForEach(validator.Validate);
+            }
         }
 
         /// <inheritdoc cref="ITopicBuilder.AddMultiLevelWildcard"/>
@@ -114,7 +121,7 @@ namespace MqttTopicBuilder.Builder
 
         /// <inheritdoc cref="ITopicBuilder.Clone"/>
         public ITopicBuilder Clone()
-            => new TopicBuilder(TopicCollection);
+            => new TopicBuilder(TopicCollection, Consumer);
 
         /// <summary>
         /// Create a new <see cref="ITopicBuilder"/> from an existing topic
