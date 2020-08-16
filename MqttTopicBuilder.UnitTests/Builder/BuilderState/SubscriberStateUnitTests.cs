@@ -39,7 +39,7 @@ namespace MqttTopicBuilder.UnitTests.Builder.BuilderState
         public void AddMultiLevelWildcard()
         {
             // Arrange
-            var topicBuilder = Fixture.Create<TopicBuilder>();
+            var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
             var subscriberState = new SubscriberState(topicBuilder);
 
             // Act
@@ -59,7 +59,7 @@ namespace MqttTopicBuilder.UnitTests.Builder.BuilderState
         public void AddTopic()
         {
             // Arrange
-            var topicBuilder = Fixture.Create<TopicBuilder>();
+            var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
             var subscriberState = new SubscriberState(topicBuilder);
 
             var topic = TestUtils.GenerateSingleValidTopic();
@@ -81,7 +81,7 @@ namespace MqttTopicBuilder.UnitTests.Builder.BuilderState
         public void AddTopics()
         {
             // Arrange
-            var topicBuilder = Fixture.Create<TopicBuilder>();
+            var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
             var subscriberState = new SubscriberState(topicBuilder);
 
             var count = Fixture.Create<int>() % Mqtt.Topic.MaximumAllowedLevels;
@@ -109,7 +109,7 @@ namespace MqttTopicBuilder.UnitTests.Builder.BuilderState
         public void AddSingleLevelWildcard()
         {
             // Arrange
-            var topicBuilder = Fixture.Create<TopicBuilder>();
+            var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
             var subscriberState = new SubscriberState(topicBuilder);
 
             // Act
