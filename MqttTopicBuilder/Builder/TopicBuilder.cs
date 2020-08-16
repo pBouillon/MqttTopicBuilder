@@ -12,6 +12,7 @@
 using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Validators;
 using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Builder
@@ -74,12 +75,18 @@ namespace MqttTopicBuilder.Builder
         public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer)
         {
             TopicCollection = topicCollection;
-            
             Consumer = topicConsumer;
 
-            _state = topicConsumer == TopicConsumer.Publisher
+            _state = Consumer == TopicConsumer.Publisher
                 ? (IBuilderState) new PublisherState(this)
                 : new SubscriberState(this);
+
+            if (Consumer == TopicConsumer.Publisher)
+            {
+                var validator = ValidatorFactory.GetPublishedTopicValidator();
+                TopicCollection.ToList()
+                    .ForEach(validator.Validate);
+            }
         }
 
         /// <inheritdoc cref="ITopicBuilder.AddMultiLevelWildcard"/>
