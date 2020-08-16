@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `TopicBuilder` no longer use `TopicConsumer.Subscriber` by default
+- `TopicBuilder` now performs rule checks when built with a collection
 
 ### Removed
 
