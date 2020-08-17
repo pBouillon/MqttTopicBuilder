@@ -7,7 +7,7 @@
     <Title>MqttTopicBuilder</Title>
     <PackageDescription>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</PackageDescription>
     <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder/</RepositoryUrl>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
 
     <IsPackable>true</IsPackable>
     <PackageId>MqttTopicBuilder</PackageId>
