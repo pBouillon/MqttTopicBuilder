@@ -10,6 +10,7 @@
  */
 
 using MqttTopicBuilder.Collection;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.ITopicCollectionRules
 {

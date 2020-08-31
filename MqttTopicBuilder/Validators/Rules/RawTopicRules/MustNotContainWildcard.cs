@@ -11,6 +11,7 @@
 
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -19,13 +20,13 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     /// </summary>
     public class MustNotContainWildcard : BaseRawTopicRule
     {
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override bool IsValid(string value)
+        /// <inheritdoc cref="Rule{T}.IsValidWhen"/>
+        protected override bool IsValidWhen(string value)
             => ! (value.Contains(Mqtt.Wildcard.MultiLevel.ToString())
                || value.Contains(Mqtt.Wildcard.SingleLevel.ToString()));
 
-        /// <inheritdoc cref="Rule{T}.OnError"/>
-        protected override void OnError()
+        /// <inheritdoc cref="Rule{T}.OnInvalid"/>
+        protected override void OnInvalid()
             => throw new IllegalTopicConstructionException(
                 "This topic should not contain any wildcard");
     }

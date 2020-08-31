@@ -12,6 +12,7 @@
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 using System.Linq;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -21,12 +22,12 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     /// </summary>
     public class MustNotHaveNullChar : BaseRawTopicRule
     {
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override bool IsValid(string value)
+        /// <inheritdoc cref="Rule{T}.IsValidWhen"/>
+        protected override bool IsValidWhen(string value)
             => ! value.Contains(Mqtt.Topic.NullCharacter);
 
-        /// <inheritdoc cref="Rule{T}.OnError"/>
-        protected override void OnError()
+        /// <inheritdoc cref="Rule{T}.OnInvalid"/>
+        protected override void OnInvalid()
             => throw new IllegalTopicConstructionException(
                 "The null character is not allowed in a topic");
     }

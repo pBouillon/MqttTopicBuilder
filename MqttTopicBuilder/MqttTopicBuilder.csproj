@@ -21,6 +21,10 @@
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="TinyValidator" Version="1.0.0" />
+    </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Exceptions\ExceptionMessages.Designer.cs">
       <DependentUpon>ExceptionMessages.resx</DependentUpon>

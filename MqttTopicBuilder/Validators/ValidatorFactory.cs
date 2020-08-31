@@ -12,6 +12,7 @@
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
+using TinyValidator;
 
 namespace MqttTopicBuilder.Validators
 {
@@ -27,7 +28,7 @@ namespace MqttTopicBuilder.Validators
         /// <returns>The validator to be used</returns>
         public static Validator<string> GetPublishedTopicValidator()
             => Validator<string>
-                .CreatePipelineWith(
+                .FromValidationPipeline(
                     new MustNotContainWildcard());
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace MqttTopicBuilder.Validators
         /// </remarks>
         public static Validator<string> GetRawTopicValidator()
             => Validator<string>
-                .CreatePipelineWith(
+                .FromValidationPipeline(
                     new MustNotBeBlank(),
                     new MustEndWithMultiLevelWildcardIfAny(),
                     new MustHaveAtMostOneMultiLevelWildcard());
@@ -50,7 +51,7 @@ namespace MqttTopicBuilder.Validators
         /// <returns>The validator to be used</returns>
         public static Validator<string> GetSingleRawTopicValidator()
             => Validator<string>
-                .CreatePipelineWith(
+                .FromValidationPipeline(
                     new MustNotBeBlank(),
                     new MustBeUtf8(),
                     new MustNotHaveNullChar(),
@@ -65,7 +66,7 @@ namespace MqttTopicBuilder.Validators
         /// <returns>The validator to be used</returns>
         public static Validator<ITopicCollection> GetTopicCollectionAppendingValidator()
             => Validator<ITopicCollection>
-                .CreatePipelineWith(
+                .FromValidationPipeline(
                     new MustAppendingBeAllowed(),
                     new MustNotBeFull());
     }

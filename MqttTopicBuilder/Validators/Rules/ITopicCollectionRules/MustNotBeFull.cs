@@ -11,6 +11,7 @@
 
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Exceptions.Classes;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.ITopicCollectionRules
 {
@@ -19,12 +20,12 @@ namespace MqttTopicBuilder.Validators.Rules.ITopicCollectionRules
     /// </summary>
     public class MustNotBeFull : BaseITopicCollectionRule
     {
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override bool IsValid(ITopicCollection value)
+        /// <inheritdoc cref="Rule{T}.IsValidWhen"/>
+        protected override bool IsValidWhen(ITopicCollection value)
             => value.Levels < value.MaxLevel;
 
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override void OnError()
+        /// <inheritdoc cref="Rule{T}.OnInvalid"/>
+        protected override void OnInvalid()
             => throw new TooManyTopicsAppendingException();
     }
 }

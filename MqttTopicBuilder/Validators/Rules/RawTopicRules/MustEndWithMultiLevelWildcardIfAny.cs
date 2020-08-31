@@ -9,10 +9,11 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
+using System.Linq;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -22,8 +23,8 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     /// </summary>
     public class MustEndWithMultiLevelWildcardIfAny : BaseRawTopicRule
     {
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override bool IsValid(string value)
+        /// <inheritdoc cref="Rule{T}.IsValidWhen"/>
+        protected override bool IsValidWhen(string value)
         {
             // Remove trailing "/" if any
             if (value.Last() == Mqtt.Topic.Separator)
@@ -51,8 +52,8 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
             return true;
         }
 
-        /// <inheritdoc cref="Rule{T}.OnError"/>
-        protected override void OnError()
+        /// <inheritdoc cref="Rule{T}.OnInvalid"/>
+        protected override void OnInvalid()
             => throw new IllegalTopicConstructionException(
                 ExceptionMessages.TopicAfterWildcard);
     }

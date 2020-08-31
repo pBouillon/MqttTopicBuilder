@@ -11,6 +11,7 @@
 
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -20,12 +21,12 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     /// </summary>
     public class MustRespectMaximumLength : BaseRawTopicRule
     {
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override bool IsValid(string value)
+        /// <inheritdoc cref="Rule{T}.IsValidWhen"/>
+        protected override bool IsValidWhen(string value)
             => value.Length <= Mqtt.Topic.MaxSubTopicLength;
 
-        /// <inheritdoc cref="Rule{T}.OnError"/>
-        protected override void OnError()
+        /// <inheritdoc cref="Rule{T}.OnInvalid"/>
+        protected override void OnInvalid()
             => throw new TooLongTopicException(
                 $"Topics must not exceed {Mqtt.Topic.MaxSubTopicLength} characters");
     }

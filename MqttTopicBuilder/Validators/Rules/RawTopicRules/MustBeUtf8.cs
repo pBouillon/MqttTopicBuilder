@@ -9,9 +9,10 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Text;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
+using System.Text;
+using TinyValidator.Abstractions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -22,12 +23,12 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     /// </summary>
     public class MustBeUtf8 : BaseRawTopicRule
     {
-        /// <inheritdoc cref="Rule{T}.IsValid"/>
-        protected override bool IsValid(string value)
+        /// <inheritdoc cref="Rule{T}.IsValidWhen"/>
+        protected override bool IsValidWhen(string value)
             => Encoding.ASCII.GetByteCount(value) == Encoding.UTF8.GetByteCount(value);
 
-        /// <inheritdoc cref="Rule{T}.OnError"/>
-        protected override void OnError()
+        /// <inheritdoc cref="Rule{T}.OnInvalid"/>
+        protected override void OnInvalid()
             => throw new InvalidTopicException(
                 $"A topic should not contains the MQTT separator \"{Mqtt.Topic.Separator}\"");
     }

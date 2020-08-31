@@ -9,6 +9,8 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
+using TinyValidator.Abstractions;
+
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
     /// <summary>
