@@ -10,7 +10,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.202
+        dotnet-version: '5.0.x'
     - name: Build with dotnet
       run: dotnet build MqttTopicBuilder.sln --configuration Release
 
@@ -22,11 +22,11 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.15
+        dotnet-version: '3.1.x'
     - name: Test with dotnet Core 3.1
       run: dotnet test ./MqttTopicBuilder.UnitTests/MqttTopicBuilder.UnitTests.csproj --framework netcoreapp3.1
 
-  test-with-dotnet_5:
+  test-with-dotnet-5:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -34,6 +34,6 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.202
+        dotnet-version: '5.0.x'
     - name: Test with dotnet 5
       run: dotnet test ./MqttTopicBuilder.UnitTests/MqttTopicBuilder.UnitTests.csproj --framework net5.0
