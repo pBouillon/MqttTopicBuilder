@@ -18,7 +18,21 @@ jobs:
     - name: Build with dotnet
       run: dotnet build MqttTopicBuilder.sln --configuration Release
 
-  test:
+  test-with-dotnet-core-3.1:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.15
+
+    - name: Test with dotnet
+      run: dotnet test ./MqttTopicBuilder.UnitTests/MqttTopicBuilder.UnitTests.csproj --framework netcoreapp3.1
+
+  test-with-dotnet-5:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,4 +44,4 @@ jobs:
         dotnet-version: 5.0.202
 
     - name: Test with dotnet
-      run: dotnet test ./MqttTopicBuilder.UnitTests/MqttTopicBuilder.UnitTests.csproj
+      run: dotnet test ./MqttTopicBuilder.UnitTests/MqttTopicBuilder.UnitTests.csproj --framework net5.0
