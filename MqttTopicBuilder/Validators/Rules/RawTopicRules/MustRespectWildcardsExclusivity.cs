@@ -9,7 +9,6 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 
@@ -32,14 +31,13 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 
             // Otherwise, a longer topic can not hold any wildcard
             // in addition to another value
-            return ! (value.Contains(Mqtt.Wildcard.MultiLevel)
-                   || value.Contains(Mqtt.Wildcard.SingleLevel));
+            return ! (value.Contains(Mqtt.Wildcard.MultiLevel.ToString())
+                   || value.Contains(Mqtt.Wildcard.SingleLevel.ToString()));
         }
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()
-            => throw new InvalidTopicException(
-                $"A topic value should not hold any wildcard " + 
-                $"(\"{Mqtt.Wildcard.MultiLevel}\", \"{Mqtt.Wildcard.SingleLevel}\")");
+            => throw new InvalidTopicException("A topic value should not hold any wildcard "
+                                               + $"(\"{Mqtt.Wildcard.MultiLevel}\", \"{Mqtt.Wildcard.SingleLevel}\")");
     }
 }

@@ -46,8 +46,7 @@ namespace MqttTopicBuilder.Collection
         /// Add a multi-level wildcard to the staged topics
         /// </summary>
         /// <returns>
-        /// A new instance of <see cref="ITopicCollection"/> holding the newly
-        /// added wildcard
+        /// A new instance of <see cref="ITopicCollection"/> holding the newly added wildcard
         /// </returns>
         ITopicCollection AddMultiLevelWildcard();
 
@@ -65,8 +64,7 @@ namespace MqttTopicBuilder.Collection
         /// </summary>
         /// <param name="topic">Topic to be added</param>
         /// <returns>
-        /// A new instance of <see cref="ITopicCollection"/> holding the newly
-        /// added topic
+        /// A new instance of <see cref="ITopicCollection"/> holding the newly added topic
         /// </returns>
         ITopicCollection AddTopic(string topic);
 
@@ -75,8 +73,7 @@ namespace MqttTopicBuilder.Collection
         /// </summary>
         /// <param name="topics">Topics to be added</param>
         /// <returns>
-        /// A new instance of <see cref="ITopicCollection"/> holding the newly
-        /// added topics
+        /// A new instance of <see cref="ITopicCollection"/> holding the newly added topics
         /// </returns>
         ITopicCollection AddTopics(IEnumerable<string> topics);
 

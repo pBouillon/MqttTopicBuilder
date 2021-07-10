@@ -63,9 +63,10 @@ namespace MqttTopicBuilder.Builder
         /// <remarks>
         /// Any trailing separator will be removed
         /// </remarks>
-        public Topic(string rawTopic)
+        public Topic(string? rawTopic)
         {
             // Create minimal topic on empty string or already minimal raw string
+            // `rawTopic` is guaranteed not to be null beyond this point
             if (string.IsNullOrEmpty(rawTopic)
                 || rawTopic == Mqtt.Topic.Separator.ToString())
             {
@@ -73,15 +74,15 @@ namespace MqttTopicBuilder.Builder
                 return;
             }
 
-            TopicValidator.ValidateTopic(rawTopic);
+            TopicValidator.ValidateTopic(rawTopic!);
 
             // Remove trailing "/" if any
-            if (rawTopic.Last() == Mqtt.Topic.Separator)
+            if (rawTopic!.Last() == Mqtt.Topic.Separator)
             {
-                rawTopic = rawTopic.Remove(rawTopic.Length - 1);
+                rawTopic = rawTopic!.Remove(rawTopic.Length - 1);
             }
 
-            Value = rawTopic;
+            Value = rawTopic!;
         }
 
         /// <summary>

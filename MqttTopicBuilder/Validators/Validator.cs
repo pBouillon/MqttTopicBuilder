@@ -47,8 +47,8 @@ namespace MqttTopicBuilder.Validators
         /// </summary>
         /// <param name="value">Value to be validated</param>
         public void Validate(T value)
-            => _rules.ToList()
-                .ForEach(rule =>
-                    rule.Validate(value));
+            => _rules
+                .ToList()
+                .ForEach(rule => rule.Validate(value));
     }
 }

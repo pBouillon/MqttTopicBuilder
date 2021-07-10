@@ -80,8 +80,7 @@ namespace MqttTopicBuilder.Collection
         {
             CheckAppendingAllowanceFor(topic);
 
-            // Creating a copy of the staged topics to add the new one
-            // (keeping the object "immutable")
+            // Create a copy of the staged topics to add the new one in order to keep the immutability
             var newStaged = new Queue<string>(_stagedTopics);
             newStaged.Enqueue(topic);
 
@@ -101,7 +100,8 @@ namespace MqttTopicBuilder.Collection
         /// <param name="topic">Topic to be appended</param>
         private void CheckAppendingAllowanceFor(string topic)
         {
-            ValidatorFactory.GetTopicCollectionAppendingValidator()
+            ValidatorFactory
+                .GetTopicCollectionAppendingValidator()
                 .Validate(this);
 
             topic.ValidateTopicForAppending();

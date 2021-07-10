@@ -51,7 +51,7 @@ namespace MqttTopicBuilder.Common
         /// <remarks>
         /// Since they are <see cref="ValueObject"/>, equality is not defined by identity
         /// </remarks>
-        protected static bool EqualOperator(ValueObject left, ValueObject right)
+        protected static bool EqualOperator(ValueObject? left, ValueObject? right)
         {
             if (left is null ^ right is null)
             {
@@ -68,7 +68,7 @@ namespace MqttTopicBuilder.Common
         /// <param name="left">First value object</param>
         /// <param name="right">Second value object</param>
         /// <returns>True if they are not equals by value</returns>
-        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+        protected static bool NotEqualOperator(ValueObject? left, ValueObject? right)
             => ! EqualOperator(left, right);
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace MqttTopicBuilder.Common
         /// </summary>
         /// <param name="obj">Other <see cref="ValueObject"/> to evaluate the equality</param>
         /// <returns>True if both <see cref="ValueObject"/> are equals by value</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != GetType())
             {

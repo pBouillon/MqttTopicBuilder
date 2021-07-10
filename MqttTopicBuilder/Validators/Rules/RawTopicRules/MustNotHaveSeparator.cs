@@ -9,7 +9,6 @@
  *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
  */
 
-using System.Linq;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
 
@@ -23,7 +22,7 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
-            => ! value.Contains(Mqtt.Topic.Separator);
+            => ! value.Contains(Mqtt.Topic.Separator.ToString());
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()

@@ -26,9 +26,7 @@ namespace MqttTopicBuilder.Validators
         /// </summary>
         /// <returns>The validator to be used</returns>
         public static Validator<string> GetPublishedTopicValidator()
-            => Validator<string>
-                .CreatePipelineWith(
-                    new MustNotContainWildcard());
+            => Validator<string>.CreatePipelineWith(new MustNotContainWildcard());
 
         /// <summary>
         /// Get a validator with a set of rules to validate a topic
@@ -38,25 +36,23 @@ namespace MqttTopicBuilder.Validators
         /// Does not ensure that the single topics from which the main topic is made of are valid
         /// </remarks>
         public static Validator<string> GetRawTopicValidator()
-            => Validator<string>
-                .CreatePipelineWith(
-                    new MustNotBeBlank(),
-                    new MustEndWithMultiLevelWildcardIfAny(),
-                    new MustHaveAtMostOneMultiLevelWildcard());
+            => Validator<string>.CreatePipelineWith(
+                new MustNotBeBlank(),
+                new MustEndWithMultiLevelWildcardIfAny(),
+                new MustHaveAtMostOneMultiLevelWildcard());
 
         /// <summary>
         /// Get a validator with a set of rules to validate raw single topics
         /// </summary>
         /// <returns>The validator to be used</returns>
         public static Validator<string> GetSingleRawTopicValidator()
-            => Validator<string>
-                .CreatePipelineWith(
-                    new MustNotBeBlank(),
-                    new MustBeUtf8(),
-                    new MustNotHaveNullChar(),
-                    new MustNotHaveSeparator(),
-                    new MustRespectMaximumLength(),
-                    new MustRespectWildcardsExclusivity());
+            => Validator<string>.CreatePipelineWith(
+                new MustNotBeBlank(),
+                new MustBeUtf8(),
+                new MustNotHaveNullChar(),
+                new MustNotHaveSeparator(),
+                new MustRespectMaximumLength(),
+                new MustRespectWildcardsExclusivity());
 
         /// <summary>
         /// Get a validator with a set of rules to validate the ability for the collection
@@ -64,9 +60,8 @@ namespace MqttTopicBuilder.Validators
         /// </summary>
         /// <returns>The validator to be used</returns>
         public static Validator<ITopicCollection> GetTopicCollectionAppendingValidator()
-            => Validator<ITopicCollection>
-                .CreatePipelineWith(
-                    new MustAppendingBeAllowed(),
-                    new MustNotBeFull());
+            => Validator<ITopicCollection>.CreatePipelineWith(
+                new MustAppendingBeAllowed(),
+                new MustNotBeFull());
     }
 }
