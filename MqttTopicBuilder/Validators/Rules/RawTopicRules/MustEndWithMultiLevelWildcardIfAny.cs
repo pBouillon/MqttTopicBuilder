@@ -52,6 +52,7 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()
-            => throw new IllegalTopicConstructionException(ExceptionMessages.TopicAfterWildcard);
+            => throw new IllegalTopicConstructionException(
+                "Impossible to add a topic after a multilevel wildcard");
     }
 }

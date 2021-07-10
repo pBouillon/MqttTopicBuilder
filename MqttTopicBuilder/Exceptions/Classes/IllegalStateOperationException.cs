@@ -21,14 +21,14 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// Default constructor
         /// </summary>
         public IllegalStateOperationException()
-            : base(ExceptionMessages.IllegalStateOperation) { }
+            : base("Impossible to perform this operation in the current state") { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         public IllegalStateOperationException(string message)
-            : base($"{ExceptionMessages.IllegalStateOperation}: {message}") { }
+            : base($"Impossible to perform this operation in the current state: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
@@ -36,6 +36,6 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
         public IllegalStateOperationException(string message, System.Exception inner)
-            : base($"{ExceptionMessages.IllegalStateOperation}: {message}", inner) { }
+            : base($"Impossible to perform this operation in the current state: {message}", inner) { }
     }
 }

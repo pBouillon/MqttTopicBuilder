@@ -30,7 +30,7 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
-        protected MqttBaseException(string message, System.Exception inner)
+        protected MqttBaseException(string message, Exception inner)
             : base(message, inner) { }
     }
 }

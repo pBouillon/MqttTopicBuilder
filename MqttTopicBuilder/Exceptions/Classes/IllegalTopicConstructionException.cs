@@ -20,14 +20,14 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// Default constructor
         /// </summary>
         public IllegalTopicConstructionException()
-            : base(ExceptionMessages.IllegalTopicConstruction) { }
+            : base("Impossible to add a topic at this place") { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         public IllegalTopicConstructionException(string message)
-            : base($"{ExceptionMessages.IllegalTopicConstruction}: {message}") { }
+            : base($"Impossible to add a topic at this place: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
@@ -35,6 +35,6 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
         public IllegalTopicConstructionException(string message, System.Exception inner)
-            : base($"{ExceptionMessages.IllegalTopicConstruction}: {message}", inner) { }
+            : base($"Impossible to add a topic at this place: {message}", inner) { }
     }
 }
