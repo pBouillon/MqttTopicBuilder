@@ -24,12 +24,10 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
-            => value.Count(_ => 
-                _ == Mqtt.Wildcard.MultiLevel) <= 1;
+            => value.Count(_ => _ == Mqtt.Wildcard.MultiLevel) <= 1;
 
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override void OnError()
-            => throw new IllegalTopicConstructionException(
-                ExceptionMessages.IllegalMultiLevelWildcardUsage);
+            => throw new IllegalTopicConstructionException(ExceptionMessages.IllegalMultiLevelWildcardUsage);
     }
 }

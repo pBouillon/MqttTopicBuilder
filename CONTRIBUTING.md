@@ -29,7 +29,7 @@ your contribution. I will gladly help anyone struggling to do so if I can.
 ## Guidelines
 
 > For all development and all interactions, please follow common sense and respect.
-> 
+>
 > No insults, discrimination, political beliefs or anything that should not have its place among
 > a sharing and helpful community as the one on GitHub will be tolerated.
 
@@ -45,7 +45,7 @@ When working on an issue, fork this project and work on a specific issue. **No p
 In order to help reviewers, commits on a regular basis useful content and not the whole work once
 there are hundreds of lines to review.
 
-To keep your commits meaningful, please follow 
+To keep your commits meaningful, please follow
 [those guidelines](https://github.com/pBouillon/git_tutorials/blob/master/methodology/commit_rules.md)
 regarding the commit length, tense, structure, etc.
 
@@ -59,7 +59,7 @@ while.
 
 When submitting a new **pull request**, please specify in its title a hint on what this is about.
 You can mostly rely [on this list](https://github.com/pBouillon/git_tutorials/blob/master/methodology/emoji_commit_list.md)
-but you can also add a short tag in the front of it.  
+but you can also add a short tag in the front of it.
 
 For example: `[Configuration] Migrate from .NET Core X.Y to X'.Y'` or `⚙️ Migrate from .NET Core X.Y to X'.Y'`.
 
@@ -74,7 +74,7 @@ For example: `[Configuration] Migrate from .NET Core X.Y to X'.Y'` or `⚙️ Mi
 Not really a style but each logic added should be tested and each method/class should be documented.
 
 After your contribution, please increase the version of the project as specified by
-[the semantic versionning](https://semver.org/). In doubt, ask ! 😄
+[the semantic versioning](https://semver.org/). In doubt, ask ! 😄
 
 ## Contributing
 
@@ -92,32 +92,32 @@ label.
 Regarding what your request is, please provide at least the following information:
 
 <details>
-<summary>
-Improvement or request
-</summary>
-<p><ul>
-<li>What you think is missing</li>
-<li>Why do you think it is missing and has its place in this project</li>
-<li>Any resources to help to its development (documentation, PoC, existing sources, etc.)</li>
-</ul></p>
+    <summary>
+        Improvement or request
+    </summary>
+    <p><ul>
+        <li>What you think is missing</li>
+        <li>Why do you think it is missing and has its place in this project</li>
+        <li>Any resources to help to its development (documentation, PoC, existing sources, etc.)</li>
+    </ul></p>
 </details>
 
 <details>
-<summary>
-Bug report
-</summary>
-<p><ul>
-<li>Comprehensive and descriptive description of the bug</li>
-<li>Clear examples and steps to demonstrate this bug</li>
-<li>The expected outcome and the actual result</li>
-<li>If possible, the stack trace of the error</li>
-</ul></p>
+    <summary>
+        Bug report
+    </summary>
+    <p><ul>
+        <li>Comprehensive and descriptive description of the bug</li>
+        <li>Clear examples and steps to demonstrate this bug</li>
+        <li>The expected outcome and the actual result</li>
+        <li>If possible, the stack trace of the error</li>
+    </ul></p>
 </details>
 
 ### Working on an existing issue
 
 Firstly, please browse [the issues tab](https://github.com/pBouillon/MqttTopicBuilder/issues) and
-click on the one you would like to work on.  
+click on the one you would like to work on.
 
 Then, please write a comment to warn that you would like to work on it, it will soon be assigned to
 you if no one else is currently on this subject or you will be welcomed to work along people already

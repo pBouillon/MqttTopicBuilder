@@ -81,12 +81,13 @@ namespace MqttTopicBuilder.Builder
                 ? (IBuilderState) new PublisherState(this)
                 : new SubscriberState(this);
 
-            if (Consumer == TopicConsumer.Publisher)
-            {
-                var validator = ValidatorFactory.GetPublishedTopicValidator();
-                TopicCollection.ToList()
-                    .ForEach(validator.Validate);
-            }
+            if (Consumer != TopicConsumer.Publisher) return;
+            
+            var validator = ValidatorFactory.GetPublishedTopicValidator();
+
+            TopicCollection
+                .ToList()
+                .ForEach(validator.Validate);
         }
 
         /// <inheritdoc cref="ITopicBuilder.AddMultiLevelWildcard"/>
@@ -129,8 +130,12 @@ namespace MqttTopicBuilder.Builder
         /// <param name="topic">
         /// <see cref="Topic"/> used for seeding the new <see cref="ITopicBuilder"/> instance
         /// </param>
-        /// <param name="topicConsumer">Context where this topic will be consumed</param>
-        /// <returns>A new <see cref="ITopicBuilder"/> instance seeded with the provided <see cref="Topic"/></returns>
+        /// <param name="topicConsumer">
+        /// Context where this topic will be consumed
+        /// </param>
+        /// <returns>
+        /// A new <see cref="ITopicBuilder"/> instance seeded with the provided <see cref="Topic"/>
+        /// </returns>
         public static ITopicBuilder FromTopic(Topic topic, TopicConsumer topicConsumer)
             => new TopicBuilder(topic.Levels, topicConsumer)
                 // Adding topics *after* having set the TopicConsumer property will ensure that no illegal topics has

@@ -31,8 +31,7 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
                 value = value.Remove(value.Length - 1);
             }
 
-            var multiLevelWildcardsCount = value.Count(_ =>
-                _ == Mqtt.Wildcard.MultiLevel);
+            var multiLevelWildcardsCount = value.Count(_ => _ == Mqtt.Wildcard.MultiLevel);
 
             // If there is more than one multi-level wildcard, then its usage
             // is violated and not valid
@@ -53,7 +52,6 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()
-            => throw new IllegalTopicConstructionException(
-                ExceptionMessages.TopicAfterWildcard);
+            => throw new IllegalTopicConstructionException(ExceptionMessages.TopicAfterWildcard);
     }
 }

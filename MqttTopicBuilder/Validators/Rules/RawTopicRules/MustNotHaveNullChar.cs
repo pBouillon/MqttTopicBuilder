@@ -11,7 +11,6 @@
 
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions.Classes;
-using System.Linq;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 {
@@ -23,7 +22,7 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
     {
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override bool IsValid(string value)
-            => ! value.Contains(Mqtt.Topic.NullCharacter);
+            => ! value.Contains(Mqtt.Topic.NullCharacter.ToString());
 
         /// <inheritdoc cref="Rule{T}.OnError"/>
         protected override void OnError()
