@@ -28,6 +28,6 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules
 
         /// <inheritdoc cref="Rule{T}.IsValid"/>
         protected override void OnError()
-            => throw new IllegalTopicConstructionException(ExceptionMessages.IllegalMultiLevelWildcardUsage);
+            => throw new IllegalTopicConstructionException("More than one multi-level wildcard encountered");
     }
 }

@@ -11,7 +11,6 @@
 
 using FluentAssertions;
 using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators;
@@ -224,8 +223,7 @@ namespace MqttTopicBuilder.UnitTests.Validators
             // Assert
             validatingTopicWithMultiLevelWildcardsBeforeEnd.Should()
                 .Throw<IllegalTopicConstructionException>()
-                .Where(_ =>
-                        _.Message.Contains(ExceptionMessages.TopicAfterWildcard),
+                .WithMessage("*Impossible to add a topic after a multilevel wildcard",
                     "because a multi-level wildcard may only be used anywhere but at the end of a topic");
         }
 

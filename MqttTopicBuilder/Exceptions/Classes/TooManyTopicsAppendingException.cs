@@ -20,14 +20,14 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// Default constructor
         /// </summary>
         public TooManyTopicsAppendingException()
-            : base(ExceptionMessages.TooManyTopicsAppending) { }
+            : base("The current TopicBuilder instance if full and can not add any other element") { }
 
         /// <summary>
         /// Custom constructor providing context specificity
         /// </summary>
         /// <param name="message">Message to provide along with the exception</param>
         public TooManyTopicsAppendingException(string message)
-            : base($"{ExceptionMessages.TooManyTopicsAppending}: {message}") { }
+            : base($"The current TopicBuilder instance if full and can not add any other element: {message}") { }
 
         /// <summary>
         /// Custom constructor providing more precise context specificity
@@ -35,6 +35,6 @@ namespace MqttTopicBuilder.Exceptions.Classes
         /// <param name="message">Message to provide along with the exception</param>
         /// <param name="inner">Inner exception thrown</param>
         public TooManyTopicsAppendingException(string message, System.Exception inner)
-            : base($"{ExceptionMessages.TooManyTopicsAppending}: {message}", inner) { }
+            : base($"The current TopicBuilder instance if full and can not add any other element: {message}", inner) { }
     }
 }
