@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add C# nullable support
 - Add .NET Framework, .NET Core and .NET to the targets
 
+### Removed
+
+- Remove the `resx` containing the exception message
+
 ## [2.2.0] - 2020-08-26
 
 ### Added
