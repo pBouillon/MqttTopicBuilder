@@ -1,94 +1,81 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
-
 using AutoFixture;
+
 using FluentAssertions;
+
 using Moq;
+
 using MqttTopicBuilder.Collection;
-using MqttTopicBuilder.Exceptions.Classes;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
-using System;
+
 using Xunit;
 
-namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
+namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;
+
+/// <summary>
+/// Unit test suite for <see cref="MustNotBeFull"/>
+/// </summary>
+public class MustNotBeFullUnitTests
 {
     /// <summary>
-    /// Unit test suite for <see cref="MustNotBeFull"/>
+    /// Private instance of <see cref="IFixture"/> for test data generation purposes
     /// </summary>
-    public class MustNotBeFullUnitTests
+    private static readonly IFixture Fixture = new Fixture();
+
+    /// <summary>
+    /// Ensure that a collection that is full
+    /// will not pass the rule
+    /// </summary>
+    [Fact]
+    public void Validate_OnFullCollection()
     {
-        /// <summary>
-        /// Private instance of <see cref="IFixture"/> for test data generation purposes
-        /// </summary>
-        private static readonly IFixture Fixture = new Fixture();
+        // Ensure that this level is at least 1
+        var maxLevel = Fixture.Create<int>() + 1;
+        var level = maxLevel;
 
-        /// <summary>
-        /// Ensure that a collection that is full
-        /// will not pass the rule
-        /// </summary>
-        [Fact]
-        public void Validate_OnFullCollection()
-        {
-            // Arrange
-            // Ensure that this level is at least 1
-            var maxLevel = Fixture.Create<int>() + 1;
-            var level = maxLevel;
+        var topicCollectionMock = new Mock<ITopicCollection>();
 
-            var topicCollectionMock = new Mock<ITopicCollection>();
-            topicCollectionMock.Setup(_ => _.Levels)
-                .Returns(level);
-            topicCollectionMock.Setup(_ => _.MaxLevel)
-                .Returns(maxLevel);
+        topicCollectionMock.Setup(_ => _.Levels)
+            .Returns(level);
 
-            var topicCollection = topicCollectionMock.Object;
+        topicCollectionMock.Setup(_ => _.MaxLevel)
+            .Returns(maxLevel);
 
-            // Act
-            Action validatingCollectionStatus = () =>
-                new MustNotBeFull()
-                    .Validate(topicCollection);
+        var topicCollection = topicCollectionMock.Object;
 
-            // Assert
-            validatingCollectionStatus.Should()
-                .Throw<TooManyTopicsAppendingException>(
-                    "because the collection has as many levels as it can contains");
-        }
+        var validatingCollectionStatus = () => new MustNotBeFull()
+                .Validate(topicCollection);
 
-        /// <summary>
-        /// Ensure that a collection that is not full will pass the rule
-        /// </summary>
-        [Fact]
-        public void Validate_OnNotFullCollection()
-        {
-            // Arrange
-            // Ensure that this level is at least 1
-            var maxLevel = Fixture.Create<int>() + 1;
-            var level = maxLevel - 1;
+        validatingCollectionStatus
+            .Should()
+            .Throw<TooManyTopicsAppendingException>("because the collection has as many levels as it can contains");
+    }
 
-            var topicCollectionMock = new Mock<ITopicCollection>();
-            topicCollectionMock.Setup(_ => _.Levels)
-                .Returns(level);
-            topicCollectionMock.Setup(_ => _.MaxLevel)
-                .Returns(maxLevel);
+    /// <summary>
+    /// Ensure that a collection that is not full will pass the rule
+    /// </summary>
+    [Fact]
+    public void Validate_OnNotFullCollection()
+    {
+        // Ensure that this level is at least 1
+        var maxLevel = Fixture.Create<int>() + 1;
+        var level = maxLevel - 1;
 
-            var topicCollection = topicCollectionMock.Object;
+        var topicCollectionMock = new Mock<ITopicCollection>();
 
-            // Act
-            Action validatingCollectionStatus = () =>
-                new MustNotBeFull()
-                    .Validate(topicCollection);
+        topicCollectionMock.Setup(_ => _.Levels)
+            .Returns(level);
 
-            // Assert
-            validatingCollectionStatus.Should()
-                .NotThrow<TooManyTopicsAppendingException>(
-                    "because the collection has less levels than it can contains");
-        }
+        topicCollectionMock.Setup(_ => _.MaxLevel)
+            .Returns(maxLevel);
+
+        var topicCollection = topicCollectionMock.Object;
+
+        var validatingCollectionStatus = () => new MustNotBeFull()
+                .Validate(topicCollection);
+
+        validatingCollectionStatus
+            .Should()
+            .NotThrow<TooManyTopicsAppendingException>("because the collection has less levels than it can contains");
     }
 }

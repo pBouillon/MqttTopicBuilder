@@ -1,112 +1,99 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
-
-using MqttTopicBuilder.Collection;
 using System.Collections.Generic;
 
-namespace MqttTopicBuilder.Builder
+using MqttTopicBuilder.Collection;
+
+namespace MqttTopicBuilder.Builder;
+
+/// <summary>
+/// Builder for MQTT topic dynamic creation
+/// </summary>
+public interface ITopicBuilder
 {
     /// <summary>
-    /// Builder for MQTT topic dynamic creation
+    /// Indicate whether or not it is allowed to append one more topic to the builder
     /// </summary>
-    public interface ITopicBuilder
-    {
-        /// <summary>
-        /// Indicate whether or not it is allowed to append one more topic
-        /// to the builder
-        /// </summary>
-        /// <remarks>
-        /// Adding a topic when this property is <c>false</c> will throw an
-        /// exception
-        /// </remarks>
-        bool IsAppendingAllowed { get; }
+    /// <remarks>
+    /// Adding a topic when this property is <c>false</c> will throw an exception
+    /// </remarks>
+    bool IsAppendingAllowed { get; }
 
-        /// <summary>
-        /// Consumer type of the topic to be built (PUBLISH / SUBSCRIBE)
-        /// </summary>
-        TopicConsumer Consumer { get; }
-        
-        /// <summary>
-        /// Indicate whether or not the builder is empty
-        /// </summary>
-        bool IsEmpty { get; }
+    /// <summary>
+    /// Consumer type of the topic to be built (PUBLISH / SUBSCRIBE)
+    /// </summary>
+    Consumer Consumer { get; }
 
-        /// <summary>
-        /// Count all topics added
-        /// </summary>
-        int Levels { get; }
+    /// <summary>
+    /// Indicate whether or not the builder is empty
+    /// </summary>
+    bool IsEmpty { get; }
 
-        /// <summary>
-        /// Maximum level of the topic to be built and allowed to be built with the builder
-        /// </summary>
-        int MaxLevel { get; }
+    /// <summary>
+    /// Count all topics added
+    /// </summary>
+    int Levels { get; }
 
-        /// <summary>
-        /// Inner-collection on which relies the builder for topic creation
-        /// </summary>
-        ITopicCollection TopicCollection { get; }
+    /// <summary>
+    /// Maximum level of the topic to be built and allowed to be built with the builder
+    /// </summary>
+    int MaxLevel { get; }
 
-        /// <summary>
-        /// Add a multi-level wildcard to the builder
-        /// </summary>
-        /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended wildcard</returns>
-        ITopicBuilder AddMultiLevelWildcard();
+    /// <summary>
+    /// Inner-collection on which relies the builder for topic creation
+    /// </summary>
+    ITopicCollection TopicCollection { get; }
 
-        /// <summary>
-        /// Add a topic to the builder
-        /// </summary>
-        /// <param name="topic">Topic to be added</param>
-        /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended topic</returns>
-        ITopicBuilder AddTopic(string topic);
+    /// <summary>
+    /// Add a multi-level wildcard to the builder
+    /// </summary>
+    /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended wildcard</returns>
+    ITopicBuilder AddMultiLevelWildcard();
 
-        /// <summary>
-        /// Add several topics to the builder
-        /// </summary>
-        /// <param name="topics">Topics to be added</param>
-        /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended topics</returns>
-        ITopicBuilder AddTopics(IEnumerable<string> topics);
+    /// <summary>
+    /// Add a topic to the builder
+    /// </summary>
+    /// <param name="topic">Topic to be added</param>
+    /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended topic</returns>
+    ITopicBuilder AddTopic(string topic);
 
-        /// <summary>
-        /// Add a multi-level wildcard to the builder
-        /// </summary>
-        /// <param name="topics">Topics to be added</param>
-        /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended topic</returns>
-        ITopicBuilder AddTopics(params string[] topics);
+    /// <summary>
+    /// Add several topics to the builder
+    /// </summary>
+    /// <param name="topics">Topics to be added</param>
+    /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended topics</returns>
+    ITopicBuilder AddTopics(IEnumerable<string> topics);
 
-        /// <summary>
-        /// Add a single-level wildcard to the builder
-        /// </summary>
-        /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended wildcard</returns>
-        ITopicBuilder AddSingleLevelWildcard();
+    /// <summary>
+    /// Add a multi-level wildcard to the builder
+    /// </summary>
+    /// <param name="topics">Topics to be added</param>
+    /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended topic</returns>
+    ITopicBuilder AddTopics(params string[] topics);
 
-        /// <summary>
-        /// Create the topic from the builder's content
-        /// </summary>
-        /// <returns>
-        /// An instance of <see cref="Topic"/> build based on the <see cref="ITopicBuilder"/> content
-        /// </returns>
-        Topic Build();
+    /// <summary>
+    /// Add a single-level wildcard to the builder
+    /// </summary>
+    /// <returns>An instance of <see cref="ITopicBuilder"/> holding the appended wildcard</returns>
+    ITopicBuilder AddSingleLevelWildcard();
 
-        /// <summary>
-        /// Clear the <see cref="ITopicBuilder"/>
-        /// </summary>
-        /// <returns>
-        /// A clean instance of <see cref="ITopicBuilder"/>
-        /// </returns>
-        ITopicBuilder Clear();
+    /// <summary>
+    /// Create the topic from the builder's content
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="Topic"/> build based on the <see cref="ITopicBuilder"/> content
+    /// </returns>
+    Topic Build();
 
-        /// <summary>
-        /// Clone the current instance of <see cref="ITopicBuilder"/>
-        /// </summary>
-        /// <returns>A new instance of <see cref="ITopicBuilder"/></returns>
-        ITopicBuilder Clone();
-    }
+    /// <summary>
+    /// Clear the <see cref="ITopicBuilder"/>
+    /// </summary>
+    /// <returns>
+    /// A clean instance of <see cref="ITopicBuilder"/>
+    /// </returns>
+    ITopicBuilder Clear();
+
+    /// <summary>
+    /// Clone the current instance of <see cref="ITopicBuilder"/>
+    /// </summary>
+    /// <returns>A new instance of <see cref="ITopicBuilder"/></returns>
+    ITopicBuilder Clone();
 }

@@ -1,64 +1,47 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
-
-using System;
 using FluentAssertions;
-using MqttTopicBuilder.Exceptions.Classes;
+
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
+
 using Xunit;
 
-namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules
+namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
+
+/// <summary>
+/// Unit test suite for <see cref="MustBeUtf8"/>
+/// </summary>
+public class MustBeUtf8UnitTest
 {
     /// <summary>
-    /// Unit test suite for <see cref="MustBeUtf8"/>
+    /// Ensure that a raw topic not encoded with UTF-8 will not pass the rule
     /// </summary>
-    public class MustBeUtf8UnitTest
+    [Fact]
+    public void Validate_OnNonUtf8Topic()
     {
-        /// <summary>
-        /// Ensure that a raw topic not encoded with UTF-8 will not pass the rule
-        /// </summary>
-        [Fact]
-        public void Validate_OnNonUtf8Topic()
-        {
-            // Arrange
-            const string rawTopic = "🚮🕯💻";
-            var rule = new MustBeUtf8();
+        const string rawTopic = "🚮🕯💻";
+        var rule = new MustBeUtf8();
 
-            // Act
-            Action validatingRawTopicEncoding = () =>
-                rule.Validate(rawTopic);
+        var validatingRawTopicEncoding = () => rule.Validate(rawTopic);
 
-            // Assert
-            validatingRawTopicEncoding.Should()
-                .Throw<InvalidTopicException>("because this raw topic is not UTF-8");
-        }
+        validatingRawTopicEncoding
+            .Should()
+            .Throw<InvalidTopicException>("because this raw topic is not UTF-8");
+    }
 
-        /// <summary>
-        /// Ensure that a raw topic encoded with UTF-8 will pass the rule
-        /// </summary>
-        [Fact]
-        public void Validate_OnUtf8Topic()
-        {
-            // Arrange
-            var rawTopic = TestUtils.GenerateSingleValidTopic();
-            var rule = new MustBeUtf8();
+    /// <summary>
+    /// Ensure that a raw topic encoded with UTF-8 will pass the rule
+    /// </summary>
+    [Fact]
+    public void Validate_OnUtf8Topic()
+    {
+        var rawTopic = TestUtils.GenerateSingleValidTopic();
+        var rule = new MustBeUtf8();
 
-            // Act
-            Action validatingRawTopicEncoding = () =>
-                rule.Validate(rawTopic);
+        var validatingRawTopicEncoding = () => rule.Validate(rawTopic);
 
-            // Assert
-            validatingRawTopicEncoding.Should()
-                .NotThrow<InvalidTopicException>("because this raw topic is UTF-8");
-        }
+        validatingRawTopicEncoding
+            .Should()
+            .NotThrow<InvalidTopicException>("because this raw topic is UTF-8");
     }
 }
