@@ -1,0 +1,19 @@
+name: Publish NuGet package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: push on nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-dotnet@v2
+        with:
+        dotnet-version: 6.0.x
+      - run: dotnet build
+      - run: dotnet pack --configuration Release
+      - name: Publish the package to nuget.org
+        run: dotnet nuget push */bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.NugetApiKey }}
