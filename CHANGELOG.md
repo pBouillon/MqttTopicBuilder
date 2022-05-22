@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bump the language version to use C# 10
 - Lazily create the validation pipelines
-- Target both .NET 5 and .NET 6
 - Update the CI
 - Update the CD
 
