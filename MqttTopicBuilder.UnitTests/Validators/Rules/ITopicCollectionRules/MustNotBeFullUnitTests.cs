@@ -7,7 +7,6 @@ using Moq;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 
-using System;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
 
@@ -30,7 +29,6 @@ public class MustNotBeFullUnitTests
     [Fact]
     public void Validate_OnFullCollection()
     {
-        // Arrange
         // Ensure that this level is at least 1
         var maxLevel = Fixture.Create<int>() + 1;
         var level = maxLevel;
@@ -43,15 +41,12 @@ public class MustNotBeFullUnitTests
 
         var topicCollection = topicCollectionMock.Object;
 
-        // Act
-        Action validatingCollectionStatus = () =>
-            new MustNotBeFull()
+        var validatingCollectionStatus = () => new MustNotBeFull()
                 .Validate(topicCollection);
 
-        // Assert
-        validatingCollectionStatus.Should()
-            .Throw<TooManyTopicsAppendingException>(
-                "because the collection has as many levels as it can contains");
+        validatingCollectionStatus
+            .Should()
+            .Throw<TooManyTopicsAppendingException>("because the collection has as many levels as it can contains");
     }
 
     /// <summary>
@@ -60,7 +55,6 @@ public class MustNotBeFullUnitTests
     [Fact]
     public void Validate_OnNotFullCollection()
     {
-        // Arrange
         // Ensure that this level is at least 1
         var maxLevel = Fixture.Create<int>() + 1;
         var level = maxLevel - 1;
@@ -73,14 +67,11 @@ public class MustNotBeFullUnitTests
 
         var topicCollection = topicCollectionMock.Object;
 
-        // Act
-        Action validatingCollectionStatus = () =>
-            new MustNotBeFull()
+        var validatingCollectionStatus = () => new MustNotBeFull()
                 .Validate(topicCollection);
 
-        // Assert
-        validatingCollectionStatus.Should()
-            .NotThrow<TooManyTopicsAppendingException>(
-                "because the collection has less levels than it can contains");
+        validatingCollectionStatus
+            .Should()
+            .NotThrow<TooManyTopicsAppendingException>("because the collection has less levels than it can contains");
     }
 }

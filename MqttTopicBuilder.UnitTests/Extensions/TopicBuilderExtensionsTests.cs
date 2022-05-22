@@ -6,7 +6,6 @@ using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Extensions;
 
-using System;
 using System.Collections.Generic;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
@@ -30,30 +29,24 @@ public class TopicBuilderExtensionsTests
     [Fact]
     public void ToPublisherBuilder_FromPublisherBuilder()
     {
-        // Arrange
         var topics = Fixture.Create<List<string>>();
 
         var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Publisher)
             .AddTopics(topics);
 
-        // Act
         var publisher = builder.ToPublisherBuilder();
 
-        // Assert
         publisher.Levels
             .Should()
-            .Be(builder.Levels,
-                "because the content of the builder should remain the same");
+            .Be(builder.Levels, "because the content of the builder should remain the same");
 
         publisher.TopicCollection.ToArray()
             .Should()
-            .Contain(builder.TopicCollection.ToArray(),
-                "because the content of the builder should remain the same");
+            .Contain(builder.TopicCollection.ToArray(), "because the content of the builder should remain the same");
 
         publisher.Consumer
             .Should()
-            .Be(TopicConsumer.Publisher,
-                "because the consumer should have changed for the converted builder");
+            .Be(TopicConsumer.Publisher, "because the consumer should have changed for the converted builder");
     }
 
     /// <summary>
@@ -64,20 +57,16 @@ public class TopicBuilderExtensionsTests
     [Fact]
     public void ToPublisherBuilder_FromSubscriberWithoutWildcards()
     {
-        // Arrange
         var topics = Fixture.Create<List<string>>();
 
         var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber)
             .AddTopics(topics);
 
-        // Act
         var publisherBuilder = builder.ToPublisherBuilder();
 
-        // Assert
         publisherBuilder.Levels
             .Should()
-            .Be(builder.Levels,
-                "because the content of the builder should remain the same");
+            .Be(builder.Levels, "because the content of the builder should remain the same");
 
         publisherBuilder.TopicCollection.ToArray()
             .Should()
@@ -86,8 +75,7 @@ public class TopicBuilderExtensionsTests
 
         publisherBuilder.Consumer
             .Should()
-            .Be(TopicConsumer.Publisher,
-                "because the consumer should have changed for the converted builder");
+            .Be(TopicConsumer.Publisher, "because the consumer should have changed for the converted builder");
     }
 
     /// <summary>
@@ -97,7 +85,6 @@ public class TopicBuilderExtensionsTests
     [Fact]
     public void ToPublisherBuilder_FromSubscriberWithWildcards()
     {
-        // Arrange
         var topics = Fixture.Create<List<string>>();
         topics.Add(Mqtt.Wildcard.SingleLevel.ToString());
         topics.AddRange(Fixture.Create<List<string>>());
@@ -105,12 +92,10 @@ public class TopicBuilderExtensionsTests
         var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber)
             .AddTopics(topics);
 
-        // Act
-        Action convertingSubscriberWithTopicsToPublisher = () =>
-            _ = builder.ToPublisherBuilder();
+        var convertingSubscriberWithTopicsToPublisher = () => _ = builder.ToPublisherBuilder();
 
-        // Assert
-        convertingSubscriberWithTopicsToPublisher.Should()
+        convertingSubscriberWithTopicsToPublisher
+            .Should()
             .Throw<IllegalTopicConstructionException>(
                 "because converting a topic should not bypass topic construction rules");
     }
@@ -122,16 +107,13 @@ public class TopicBuilderExtensionsTests
     [Fact]
     public void ToSubscriberBuilder_FromPublisherBuilder()
     {
-        // Arrange
         var topics = Fixture.Create<List<string>>();
 
         var publisherBuilder = new TopicBuilder(topics.Count + 1, TopicConsumer.Publisher)
             .AddTopics(topics);
 
-        // Act
         var subscriberBuilder = publisherBuilder.ToSubscriberBuilder();
 
-        // Assert
         subscriberBuilder.Levels
             .Should()
             .Be(publisherBuilder.Levels,
@@ -144,8 +126,7 @@ public class TopicBuilderExtensionsTests
 
         subscriberBuilder.Consumer
             .Should()
-            .Be(TopicConsumer.Subscriber,
-                "because the consumer should have changed for the converted builder");
+            .Be(TopicConsumer.Subscriber, "because the consumer should have changed for the converted builder");
     }
 
     /// <summary>
@@ -155,29 +136,23 @@ public class TopicBuilderExtensionsTests
     [Fact]
     public void ToSubscriberBuilder_FromSubscriberBuilder()
     {
-        // Arrange
         var topics = Fixture.Create<List<string>>();
 
         var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber)
             .AddTopics(topics);
 
-        // Act
         var subscriberBuilder = builder.ToSubscriberBuilder();
 
-        // Assert
         subscriberBuilder.Levels
             .Should()
-            .Be(builder.Levels,
-                "because the content of the builder should remain the same");
+            .Be(builder.Levels, "because the content of the builder should remain the same");
 
         subscriberBuilder.TopicCollection.ToArray()
             .Should()
-            .Contain(builder.TopicCollection.ToArray(),
-                "because the content of the builder should remain the same");
+            .Contain(builder.TopicCollection.ToArray(), "because the content of the builder should remain the same");
 
         subscriberBuilder.Consumer
             .Should()
-            .Be(TopicConsumer.Subscriber,
-                "because the consumer should have changed for the converted builder");
+            .Be(TopicConsumer.Subscriber, "because the consumer should have changed for the converted builder");
     }
 }

@@ -4,7 +4,6 @@ using FluentAssertions;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
-using System;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
 
@@ -26,20 +25,16 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnBlankString()
     {
-        // Arrange
         var whitespaceCount = Fixture.Create<int>() + 1;
         var rawTopic = new string(' ', whitespaceCount);
 
         var rule = new MustNotBeBlank();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .Throw<EmptyTopicException>(
-                "because a blank topic should break the rule");
+        validatingRawTopic
+            .Should()
+            .Throw<EmptyTopicException>("because a blank topic should break the rule");
     }
 
     /// <summary>
@@ -48,19 +43,15 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnEmptyString()
     {
-        // Arrange
         var rawTopic = string.Empty;
 
         var rule = new MustNotBeBlank();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .Throw<EmptyTopicException>(
-                "because an empty topic should break the rule");
+        validatingRawTopic
+            .Should()
+            .Throw<EmptyTopicException>("because an empty topic should break the rule");
     }
 
     /// <summary>
@@ -69,18 +60,14 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnNonEmptyString()
     {
-        // Arrange
         var rawTopic = TestUtils.GenerateSingleValidTopic();
         var rule = new MustNotBeBlank();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .NotThrow<EmptyTopicException>(
-                "because a topic with a valid value should not break the rule");
+        validatingRawTopic
+            .Should()
+            .NotThrow<EmptyTopicException>("because a topic with a valid value should not break the rule");
     }
 
     /// <summary>
@@ -89,19 +76,14 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnNullString()
     {
-        // Arrange
         string rawTopic = null;
 
         var rule = new MustNotBeBlank();
 
-        // Act
-        // ReSharper disable once ExpressionIsAlwaysNull
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .Throw<EmptyTopicException>(
-                "because an null topic should break the rule");
+        validatingRawTopic
+            .Should()
+            .Throw<EmptyTopicException>("because an null topic should break the rule");
     }
 }

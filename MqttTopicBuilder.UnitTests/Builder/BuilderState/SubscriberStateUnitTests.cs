@@ -7,7 +7,6 @@ using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.UnitTests.Utils;
 
-using System;
 using System.Collections.Generic;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
@@ -30,18 +29,14 @@ public class SubscriberStateUnitTests
     [Fact]
     public void AddMultiLevelWildcard()
     {
-        // Arrange
         var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
         var subscriberState = new SubscriberState(topicBuilder);
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddMultiLevelWildcard();
+        var addingMultiLevelWildcard = () => subscriberState.AddMultiLevelWildcard();
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .NotThrow<MqttBaseException>(
-                "because adding a wildcard is allowed when subscribing");
+        addingMultiLevelWildcard
+            .Should()
+            .NotThrow<MqttBaseException>("because adding a wildcard is allowed when subscribing");
     }
 
     /// <summary>
@@ -50,20 +45,16 @@ public class SubscriberStateUnitTests
     [Fact]
     public void AddTopic()
     {
-        // Arrange
         var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
         var subscriberState = new SubscriberState(topicBuilder);
 
         var topic = TestUtils.GenerateSingleValidTopic();
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddTopic(topic);
+        var addingMultiLevelWildcard = () => subscriberState.AddTopic(topic);
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .NotThrow<MqttBaseException>(
-                "because adding a topic should be allowed on subscribe");
+        addingMultiLevelWildcard
+            .Should()
+            .NotThrow<MqttBaseException>("because adding a topic should be allowed on subscribe");
     }
 
     /// <summary>
@@ -72,7 +63,6 @@ public class SubscriberStateUnitTests
     [Fact]
     public void AddTopics()
     {
-        // Arrange
         var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
         var subscriberState = new SubscriberState(topicBuilder);
 
@@ -84,14 +74,11 @@ public class SubscriberStateUnitTests
             topics.Enqueue(TestUtils.GenerateSingleValidTopic());
         }
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddTopics(topics);
+        var addingMultiLevelWildcard = () => subscriberState.AddTopics(topics);
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .NotThrow<MqttBaseException>(
-                "because adding a topic should be allowed on subscribe");
+        addingMultiLevelWildcard
+            .Should()
+            .NotThrow<MqttBaseException>("because adding a topic should be allowed on subscribe");
     }
 
     /// <summary>
@@ -100,17 +87,13 @@ public class SubscriberStateUnitTests
     [Fact]
     public void AddSingleLevelWildcard()
     {
-        // Arrange
         var topicBuilder = new TopicBuilder(TopicConsumer.Subscriber);
         var subscriberState = new SubscriberState(topicBuilder);
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddSingleLevelWildcard();
+        var addingMultiLevelWildcard = () => subscriberState.AddSingleLevelWildcard();
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .NotThrow<MqttBaseException>(
-                "because adding a wildcard is allowed when subscribing");
+        addingMultiLevelWildcard
+            .Should()
+            .NotThrow<MqttBaseException>("because adding a wildcard is allowed when subscribing");
     }
 }

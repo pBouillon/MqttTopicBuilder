@@ -31,10 +31,8 @@ public static class TestUtils
     /// topic will be valid too
     /// </remarks>
     public static string GenerateValidTopic(int levels = Mqtt.Topic.MaximumAllowedLevels - 1)
-        => string.Join(
-            Mqtt.Topic.Separator.ToString(), 
-            Fixture.Create<string[]>()
-                .Take(levels));
+        => string.Join(Mqtt.Topic.Separator.ToString(),
+            Fixture.Create<string[]>().Take(levels));
 
     /// <summary>
     /// Generates a valid topic of one level

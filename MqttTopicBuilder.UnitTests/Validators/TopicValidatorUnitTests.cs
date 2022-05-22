@@ -5,7 +5,6 @@ using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators;
 
-using System;
 using System.Linq;
 
 using Xunit;
@@ -23,15 +22,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnBlankTopic()
     {
-        // Arrange
         var blankTopic = string.Empty;
 
-        // Act
-        Action validatingBlankTopic = () =>
-            blankTopic.ValidateTopicForAppending();
+        var validatingBlankTopic = () => blankTopic.ValidateTopicForAppending();
 
-        // Assert
-        validatingBlankTopic.Should()
+        validatingBlankTopic
+            .Should()
             .Throw<EmptyTopicException>("because a topic can not be empty");
     }
 
@@ -41,15 +37,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnMultiLevelWildcard()
     {
-        // Arrange
         var multiLevelWildcard = Mqtt.Wildcard.MultiLevel.ToString();
 
-        // Act
-        Action validatingTopic = () =>
-            multiLevelWildcard.ValidateTopicForAppending();
+        var validatingTopic = () => multiLevelWildcard.ValidateTopicForAppending();
 
-        // Assert
-        validatingTopic.Should()
+        validatingTopic
+            .Should()
             .NotThrow<MqttBaseException>("because a single wildcard is allowed to be appended");
     }
 
@@ -59,16 +52,11 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnNonUtf8Topic()
     {
-        // Arrange
         const string nonUtf8Topic = "non🌱utf🛠8🐛";
 
-        // Act
-        Action validatingNonUtf8Topic = () =>
-            nonUtf8Topic.ValidateTopicForAppending();
+        var validatingNonUtf8Topic = () => nonUtf8Topic.ValidateTopicForAppending();
 
-        // Assert
-        validatingNonUtf8Topic.Should()
-            .Throw<InvalidTopicException>();
+        validatingNonUtf8Topic.Should().Throw<InvalidTopicException>();
     }
 
     /// <summary>
@@ -77,15 +65,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnSeparator()
     {
-        // Arrange
         var separatorTopic = Mqtt.Topic.Separator.ToString();
 
-        // Act
-        Action validatingSeparator = () =>
-            separatorTopic.ValidateTopicForAppending();
+        var validatingSeparator = () => separatorTopic.ValidateTopicForAppending();
 
-        // Assert
-        validatingSeparator.Should()
+        validatingSeparator
+            .Should()
             .Throw<InvalidTopicException>("because appending the separator will result in an empty level");
     }
 
@@ -95,15 +80,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnSeveralWildcards()
     {
-        // Arrange
         var mixedWildcards = $"{Mqtt.Wildcard.SingleLevel}{Mqtt.Wildcard.SingleLevel}";
 
-        // Act
-        Action validatingTopic = () =>
-            mixedWildcards.ValidateTopicForAppending();
+        var validatingTopic = () => mixedWildcards.ValidateTopicForAppending();
 
-        // Assert
-        validatingTopic.Should()
+        validatingTopic
+            .Should()
             .Throw<InvalidTopicException>("because only one wildcard may be used on a single level");
     }
 
@@ -113,15 +95,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnTooLongTopic()
     {
-        // Arrange
         var tooLongTopic = new string('_', Mqtt.Topic.MaxSubTopicLength + 1);
 
-        // Act
-        Action validatingTooLongTopic = () =>
-            tooLongTopic.ValidateTopicForAppending();
+        var validatingTooLongTopic = () => tooLongTopic.ValidateTopicForAppending();
 
-        // Assert
-        validatingTooLongTopic.Should()
+        validatingTooLongTopic
+            .Should()
             .Throw<TooLongTopicException>("because a topic must not exceed the size limit");
     }
 
@@ -131,15 +110,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnSingleLevelWildcard()
     {
-        // Arrange
         var singleLevelWildcard = Mqtt.Wildcard.SingleLevel.ToString();
 
-        // Act
-        Action validatingTopic = () =>
-            singleLevelWildcard.ValidateTopicForAppending();
+        var validatingTopic = () => singleLevelWildcard.ValidateTopicForAppending();
 
-        // Assert
-        validatingTopic.Should()
+        validatingTopic
+            .Should()
             .NotThrow<MqttBaseException>("because a single wildcard is allowed to be appended");
     }
 
@@ -149,15 +125,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnBlankTopic()
     {
-        // Arrange
         var blankTopic = string.Empty;
 
-        // Act
-        Action validatingBlankTopic = () =>
-            TopicValidator.ValidateTopic(blankTopic);
+        var validatingBlankTopic = () => TopicValidator.ValidateTopic(blankTopic);
 
-        // Assert
-        validatingBlankTopic.Should()
+        validatingBlankTopic
+            .Should()
             .Throw<EmptyTopicException>("because a topic can not be empty");
     }
 
@@ -167,15 +140,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnMinimalTopic()
     {
-        // Arrange
         var minimalValidTopic = Mqtt.Topic.Separator.ToString();
 
-        // Act
-        Action validatingTopic = () =>
-            TopicValidator.ValidateTopic(minimalValidTopic);
+        var validatingTopic = () => TopicValidator.ValidateTopic(minimalValidTopic);
 
-        // Assert
-        validatingTopic.Should()
+        validatingTopic
+            .Should()
             .NotThrow<MqttBaseException>("because the topic is minimal yet allowed");
     }
 
@@ -185,15 +155,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnNonUtf8Topic()
     {
-        // Arrange
         const string nonUtf8Topic = "non/🌱/utf/🛠/8/🐛";
 
-        // Act
-        Action validatingNonUtf8Topic = () =>
-            TopicValidator.ValidateTopic(nonUtf8Topic);
+        var validatingNonUtf8Topic = () => TopicValidator.ValidateTopic(nonUtf8Topic);
 
-        // Assert
-        validatingNonUtf8Topic.Should()
+        validatingNonUtf8Topic
+            .Should()
             .Throw<InvalidTopicException>();
     }
 
@@ -204,18 +171,15 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnMultiLevelWildcardsBeforeTopicEnd()
     {
-        // Arrange
         var topicWithMultiLevelWildcardBeforeEnd = $"{Mqtt.Topic.Separator}{Mqtt.Wildcard.MultiLevel}";
         topicWithMultiLevelWildcardBeforeEnd += $"{Mqtt.Topic.Separator}{TestUtils.GenerateValidTopic()}";
 
-        // Act
-        Action validatingTopicWithMultiLevelWildcardsBeforeEnd = () =>
-            TopicValidator.ValidateTopic(topicWithMultiLevelWildcardBeforeEnd);
+        var validatingTopicWithMultiLevelWildcardsBeforeEnd = () => TopicValidator.ValidateTopic(topicWithMultiLevelWildcardBeforeEnd);
 
-        // Assert
         validatingTopicWithMultiLevelWildcardsBeforeEnd
             .Should()
-            .Throw<IllegalTopicConstructionException>("because a multi-level wildcard may only be used anywhere but at the end of a topic");
+            .Throw<IllegalTopicConstructionException>(
+                    "because a multi-level wildcard may only be used anywhere but at the end of a topic");
     }
 
     /// <summary>
@@ -224,21 +188,16 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnMultiLevelWildcardsTopic()
     {
-        // Arrange
         var multiLevelWildcardsTopic = TestUtils.GenerateValidTopic(
             Mqtt.Topic.MaximumAllowedLevels - 2);
 
-        // Appending '/#/#'
         multiLevelWildcardsTopic += string.Concat(
-            Enumerable.Repeat(
-                $"{Mqtt.Topic.Separator}{Mqtt.Wildcard.MultiLevel}", 2));
+            Enumerable.Repeat($"{Mqtt.Topic.Separator}{Mqtt.Wildcard.MultiLevel}", 2));
 
-        // Act
-        Action validatingMultiLevelWildcardTopic = () =>
-            TopicValidator.ValidateTopic(multiLevelWildcardsTopic);
+        var validatingMultiLevelWildcardTopic = () => TopicValidator.ValidateTopic(multiLevelWildcardsTopic);
 
-        // Assert
-        validatingMultiLevelWildcardTopic.Should()
+        validatingMultiLevelWildcardTopic
+            .Should()
             .Throw<IllegalTopicConstructionException>();
     }
 
@@ -248,15 +207,12 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnValidTopic()
     {
-        // Arrange
         var validRawTopic = TestUtils.GenerateValidTopic();
 
-        // Act
-        Action validatingMinimalTopic = () =>
-            TopicValidator.ValidateTopic(validRawTopic);
+        var validatingMinimalTopic = () => TopicValidator.ValidateTopic(validRawTopic);
 
-        // Assert
-        validatingMinimalTopic.Should()
+        validatingMinimalTopic
+            .Should()
             .NotThrow<MqttBaseException>("because the topic is correctly built");
     }
 }

@@ -5,7 +5,6 @@ using Moq;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 
-using System;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
 
@@ -23,22 +22,18 @@ public class MustAppendingBeAllowedUnitTests
     [Fact]
     public void Validate_OnAppendingAllowed()
     {
-        // Arrange
         var topicCollectionMock = new Mock<ITopicCollection>();
         topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
             .Returns(true);
 
         var topicCollection = topicCollectionMock.Object;
 
-        // Act
-        Action validatingCollectionAppendingAllowance = () =>
-            new MustAppendingBeAllowed()
+        var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed()
                 .Validate(topicCollection);
 
-        // Assert
-        validatingCollectionAppendingAllowance.Should()
-            .NotThrow<IllegalTopicConstructionException>(
-                "because the collection can accept another topic");
+        validatingCollectionAppendingAllowance
+            .Should()
+            .NotThrow<IllegalTopicConstructionException>("because the collection can accept another topic");
     }
 
     /// <summary>
@@ -48,21 +43,18 @@ public class MustAppendingBeAllowedUnitTests
     [Fact]
     public void Validate_OnAppendingNotAllowed()
     {
-        // Arrange
         var topicCollectionMock = new Mock<ITopicCollection>();
-        topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
+        topicCollectionMock
+            .Setup(_ => _.IsAppendingAllowed)
             .Returns(false);
 
         var topicCollection = topicCollectionMock.Object;
 
-        // Act
-        Action validatingCollectionAppendingAllowance = () =>
-            new MustAppendingBeAllowed()
+        var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed()
                 .Validate(topicCollection);
 
-        // Assert
-        validatingCollectionAppendingAllowance.Should()
-            .Throw<IllegalTopicConstructionException>(
-                "because the collection cannot accept another topic");
+        validatingCollectionAppendingAllowance
+            .Should()
+            .Throw<IllegalTopicConstructionException>("because the collection cannot accept another topic");
     }
 }

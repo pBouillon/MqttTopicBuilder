@@ -2,7 +2,6 @@
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
-using System;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
 
@@ -19,16 +18,13 @@ public class MustBeUtf8UnitTest
     [Fact]
     public void Validate_OnNonUtf8Topic()
     {
-        // Arrange
         const string rawTopic = "🚮🕯💻";
         var rule = new MustBeUtf8();
 
-        // Act
-        Action validatingRawTopicEncoding = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopicEncoding = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopicEncoding.Should()
+        validatingRawTopicEncoding
+            .Should()
             .Throw<InvalidTopicException>("because this raw topic is not UTF-8");
     }
 
@@ -38,16 +34,13 @@ public class MustBeUtf8UnitTest
     [Fact]
     public void Validate_OnUtf8Topic()
     {
-        // Arrange
         var rawTopic = TestUtils.GenerateSingleValidTopic();
         var rule = new MustBeUtf8();
 
-        // Act
-        Action validatingRawTopicEncoding = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopicEncoding = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopicEncoding.Should()
+        validatingRawTopicEncoding
+            .Should()
             .NotThrow<InvalidTopicException>("because this raw topic is UTF-8");
     }
 }

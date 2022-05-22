@@ -5,7 +5,6 @@ using FluentAssertions;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
-using System;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
 
@@ -28,19 +27,15 @@ public class MustRespectMaximumLengthUnitTests
     [Fact]
     public void Validate_OnTopicLongerThanMaximumLimit()
     {
-        // Arrange
         var length = Fixture.Create<int>() + Mqtt.Topic.MaxSubTopicLength;
         var rawTopic = new string(Fixture.Create<char>(), length);
         var rule = new MustRespectMaximumLength();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .Throw<TooLongTopicException>(
-                "because the topic is exceeding the maximum allowed size");
+        validatingRawTopic
+            .Should()
+            .Throw<TooLongTopicException>("because the topic is exceeding the maximum allowed size");
     }
 
     /// <summary>
@@ -50,19 +45,15 @@ public class MustRespectMaximumLengthUnitTests
     [Fact]
     public void Validate_OnTopicShorterThanMaximumLimit()
     {
-        // Arrange
         const int length = Mqtt.Topic.MaxSubTopicLength / 2;
         var rawTopic = new string(Fixture.Create<char>(), length);
         var rule = new MustRespectMaximumLength();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .NotThrow<TooLongTopicException>(
-                "because the topic is under the defined bound");
+        validatingRawTopic
+            .Should()
+            .NotThrow<TooLongTopicException>("because the topic is under the defined bound");
     }
 
     /// <summary>
@@ -72,18 +63,14 @@ public class MustRespectMaximumLengthUnitTests
     [Fact]
     public void Validate_OnTopicWithExactSameLengthAsMaximumLimit()
     {
-        // Arrange
         const int length = Mqtt.Topic.MaxSubTopicLength;
         var rawTopic = new string(Fixture.Create<char>(), length);
         var rule = new MustRespectMaximumLength();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .NotThrow<TooLongTopicException>(
-                "because the topic as reached the maximum limit but does not exceed it");
+        validatingRawTopic
+            .Should()
+            .NotThrow<TooLongTopicException>("because the topic as reached the maximum limit but does not exceed it");
     }
 }

@@ -4,7 +4,6 @@ using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
-using System;
 using System.Collections.Generic;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
@@ -28,13 +27,10 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddMultiLevelWildcard()
     {
-        // Arrange
         ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
-        // Act
         builder = builder.AddMultiLevelWildcard();
 
-        // Assert
         builder.Levels
             .Should()
             .Be(1, "because the wildcard consist of one level");
@@ -50,13 +46,10 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddSingleLevelWildcard()
     {
-        // Arrange
         ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
-        // Act
         builder = builder.AddSingleLevelWildcard();
 
-        // Assert
         builder.Levels
             .Should()
             .Be(1, "because the wildcard consist of one level");
@@ -72,15 +65,12 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnBlankTopic()
     {
-        // Arrange
         ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
-        // Act
-        Action appendingEmptyTopic = () =>
-            builder.AddTopic(string.Empty);
+        var appendingEmptyTopic = () => builder.AddTopic(string.Empty);
 
-        // Assert
-        appendingEmptyTopic.Should()
+        appendingEmptyTopic
+            .Should()
             .Throw<EmptyTopicException>("because an empty topic is not a valid one to be added");
     }
 
@@ -91,14 +81,11 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnMultiLevelWildcard()
     {
-        // Arrange
         ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
-        // Act
         builder = builder.AddTopic(
             Mqtt.Wildcard.MultiLevel.ToString());
 
-        // Assert
         builder.Levels
             .Should()
             .Be(1, "because the wildcard consist of one level");
@@ -115,14 +102,11 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnSingleLevelWildcard()
     {
-        // Arrange
         ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
-        // Act
         builder = builder.AddTopic(
             Mqtt.Wildcard.SingleLevel.ToString());
 
-        // Assert
         builder.Levels
             .Should()
             .Be(1, "because the wildcard consist of one level");
@@ -138,40 +122,33 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnTopicSeparator()
     {
-        // Arrange
         ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
 
-        // Act
-        Action appendingTopic = () =>
-            builder.AddTopic(
+        var appendingTopic = () => builder.AddTopic(
                 Mqtt.Topic.Separator.ToString());
 
-        // Assert
-        appendingTopic.Should()
+        appendingTopic
+            .Should()
             .Throw<InvalidTopicException>("because the topic separator is not a valid topic to be appended");
     }
 
     /// <summary>
-    /// Ensure that the regular behaviour is valid
+    /// Ensure that the regular behavior is valid
     /// </summary>
     [Fact]
     public void AddTopic_OnValidTopic()
     {
-        // Arrange
         var addCount = Fixture.Create<int>();
         ITopicBuilder builder = new TopicBuilder(addCount + 1, TopicConsumer.Subscriber);
 
-        // Act
         for (var i = 0; i < addCount; ++i)
         {
             builder = builder.AddTopic(Fixture.Create<string>());
         }
 
-        // Assert
         builder.Levels
             .Should()
-            .Be(addCount,
-                "because there should be as many levels as topics added");
+            .Be(addCount, "because there should be as many levels as topics added");
     }
 
     /// <summary>
@@ -180,19 +157,16 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopics_OnTopicsWithMultiLevelWildcard()
     {
-        // Arrange
         var topics = Fixture.Create<List<string>>();
         topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
         topics.AddRange(Fixture.Create<List<string>>());
 
         ITopicBuilder builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber);
 
-        // Act
-        Action addTopicsWithAMultiLevelWildcard = () =>
-            builder.AddTopics(topics);
+        var addTopicsWithAMultiLevelWildcard = () => builder.AddTopics(topics);
 
-        // Assert
-        addTopicsWithAMultiLevelWildcard.Should()
+        addTopicsWithAMultiLevelWildcard
+            .Should()
             .Throw<IllegalTopicConstructionException>(
                 "because adding a multi-level wildcard among other topics is not valid");
     }
@@ -203,17 +177,13 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopics_OnValidTopics()
     {
-        // Arrange
         var topics = Fixture.Create<string[]>();
         ITopicBuilder builder = new TopicBuilder(topics.Length + 1, TopicConsumer.Subscriber);
 
-        // Act
         builder = builder.AddTopics(topics);
 
-        // Assert
         builder.Levels
             .Should()
-            .Be(topics.Length,
-                "because all topics should have been added");
+            .Be(topics.Length, "because all topics should have been added");
     }
 }

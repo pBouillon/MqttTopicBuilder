@@ -7,7 +7,6 @@ using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.UnitTests.Utils;
 
-using System;
 using System.Collections.Generic;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
@@ -30,18 +29,14 @@ public class PublisherStateUnitTests
     [Fact]
     public void AddMultiLevelWildcard()
     {
-        // Arrange
         var topicBuilder = Fixture.Create<TopicBuilder>();
         var subscriberState = new PublisherState(topicBuilder);
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddMultiLevelWildcard();
+        var addingMultiLevelWildcard = () => subscriberState.AddMultiLevelWildcard();
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .Throw<IllegalStateOperationException>(
-                "because adding a wildcard is not allowed when publishing");
+        addingMultiLevelWildcard
+            .Should()
+            .Throw<IllegalStateOperationException>("because adding a wildcard is not allowed when publishing");
     }
 
     /// <summary>
@@ -50,20 +45,16 @@ public class PublisherStateUnitTests
     [Fact]
     public void AddTopic()
     {
-        // Arrange
         var topicBuilder = Fixture.Create<TopicBuilder>();
         var subscriberState = new PublisherState(topicBuilder);
 
         var topic = TestUtils.GenerateSingleValidTopic();
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddTopic(topic);
+        var addingMultiLevelWildcard = () => subscriberState.AddTopic(topic);
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .NotThrow<MqttBaseException>(
-                "because adding a topic should be allowed on subscribe");
+        addingMultiLevelWildcard
+            .Should()
+            .NotThrow<MqttBaseException>("because adding a topic should be allowed on subscribe");
     }
 
     /// <summary>
@@ -72,26 +63,22 @@ public class PublisherStateUnitTests
     [Fact]
     public void AddTopics()
     {
-        // Arrange
         var topicBuilder = Fixture.Create<TopicBuilder>();
         var subscriberState = new PublisherState(topicBuilder);
 
         var count = Fixture.Create<int>() % Mqtt.Topic.MaximumAllowedLevels;
         var topics = new Queue<string>();
-            
+
         for (var i = 0; i < count; ++i)
         {
             topics.Enqueue(TestUtils.GenerateSingleValidTopic());
         }
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddTopics(topics);
+        var addingMultiLevelWildcard = () => subscriberState.AddTopics(topics);
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .NotThrow<MqttBaseException>(
-                "because adding a topic should be allowed on subscribe");
+        addingMultiLevelWildcard
+            .Should()
+            .NotThrow<MqttBaseException>("because adding a topic should be allowed on subscribe");
     }
 
     /// <summary>
@@ -100,17 +87,13 @@ public class PublisherStateUnitTests
     [Fact]
     public void AddSingleLevelWildcard()
     {
-        // Arrange
         var topicBuilder = Fixture.Create<TopicBuilder>();
         var subscriberState = new PublisherState(topicBuilder);
 
-        // Act
-        Action addingMultiLevelWildcard = () =>
-            subscriberState.AddSingleLevelWildcard();
+        var addingMultiLevelWildcard = () => subscriberState.AddSingleLevelWildcard();
 
-        // Assert
-        addingMultiLevelWildcard.Should()
-            .Throw<MqttBaseException>(
-                "because adding a topic should not be allowed on subscribe");
+        addingMultiLevelWildcard
+            .Should()
+            .Throw<MqttBaseException>("because adding a topic should not be allowed on subscribe");
     }
 }

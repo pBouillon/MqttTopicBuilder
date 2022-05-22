@@ -4,7 +4,6 @@ using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
-using System;
 using MqttTopicBuilder.Exceptions;
 using Xunit;
 
@@ -21,18 +20,14 @@ public class MustNotHaveNullCharUnitTests
     [Fact]
     public void Validate_OnNoNullChar()
     {
-        // Arrange
         var rawTopic = TestUtils.GenerateSingleValidTopic();
         var rule = new MustNotHaveNullChar();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => rule.Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .NotThrow<IllegalTopicConstructionException>(
-                "because the raw topic is correctly formed");
+        validatingRawTopic
+            .Should()
+            .NotThrow<IllegalTopicConstructionException>("because the raw topic is correctly formed");
     }
 
     /// <summary>
@@ -41,18 +36,13 @@ public class MustNotHaveNullCharUnitTests
     [Fact]
     public void Validate_OnNullChar()
     {
-        // Arrange
         var rawTopic = Mqtt.Topic.NullCharacter.ToString();
-        var rule = new MustNotHaveNullChar();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => new MustNotHaveNullChar().Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .Throw<IllegalTopicConstructionException>(
-                "because a topic using the null char is not valid");
+        validatingRawTopic
+            .Should()
+            .Throw<IllegalTopicConstructionException>("because a topic using the null char is not valid");
     }
 
     /// <summary>
@@ -61,18 +51,14 @@ public class MustNotHaveNullCharUnitTests
     [Fact]
     public void Validate_OnNullCharAmongTopic()
     {
-        // Arrange
-        var rawTopic = TestUtils.GenerateSingleValidTopic() 
-                       + Mqtt.Topic.NullCharacter + TestUtils.GenerateSingleValidTopic();
-        var rule = new MustNotHaveNullChar();
+        var rawTopic = TestUtils.GenerateSingleValidTopic()
+                       + Mqtt.Topic.NullCharacter
+                       + TestUtils.GenerateSingleValidTopic();
 
-        // Act
-        Action validatingRawTopic = () =>
-            rule.Validate(rawTopic);
+        var validatingRawTopic = () => new MustNotHaveNullChar().Validate(rawTopic);
 
-        // Assert
-        validatingRawTopic.Should()
-            .Throw<IllegalTopicConstructionException>(
-                "because a topic using the null char is not valid");
+        validatingRawTopic
+            .Should()
+            .Throw<IllegalTopicConstructionException>("because a topic using the null char is not valid");
     }
 }
