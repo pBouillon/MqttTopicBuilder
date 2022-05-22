@@ -1,15 +1,4 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
-
-namespace MqttTopicBuilder.Builder
+﻿namespace MqttTopicBuilder.Builder
 {
     /// <summary>
     /// Represent the different possible consumers of a topic to be build

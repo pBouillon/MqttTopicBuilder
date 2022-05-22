@@ -1,16 +1,6 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
-
-using MqttTopicBuilder.Constants;
+﻿using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Validators;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;

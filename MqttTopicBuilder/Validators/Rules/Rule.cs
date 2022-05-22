@@ -1,15 +1,4 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
-
-namespace MqttTopicBuilder.Validators.Rules
+﻿namespace MqttTopicBuilder.Validators.Rules
 {
     /// <summary>
     /// Represent a unique rule to be validated by the <see cref="Validator{T}"/>

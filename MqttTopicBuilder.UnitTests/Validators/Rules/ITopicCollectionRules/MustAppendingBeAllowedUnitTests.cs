@@ -1,77 +1,69 @@
-﻿/*
- * Author
- *      Pierre Bouillon - https://github.com/pBouillon
- *
- * Repository
- *      MqttTopicBuilder - https://github.com/pBouillon/MqttTopicBuilder
- *
- * License
- *      MIT - https://github.com/pBouillon/MqttTopicBuilder/blob/master/LICENSE
- */
+﻿using FluentAssertions;
 
-using FluentAssertions;
 using Moq;
+
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
+
 using System;
+
 using Xunit;
 
-namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules
+namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;
+
+/// <summary>
+/// Unit test suite for <see cref="MustAppendingBeAllowed"/>
+/// </summary>
+public class MustAppendingBeAllowedUnitTests
 {
     /// <summary>
-    /// Unit test suite for <see cref="MustAppendingBeAllowed"/>
+    /// Ensure that a collection that is able to contain another value
+    /// will pass the rule
     /// </summary>
-    public class MustAppendingBeAllowedUnitTests
+    [Fact]
+    public void Validate_OnAppendingAllowed()
     {
-        /// <summary>
-        /// Ensure that a collection that is able to contain another value
-        /// will pass the rule
-        /// </summary>
-        [Fact]
-        public void Validate_OnAppendingAllowed()
-        {
-            // Arrange
-            var topicCollectionMock = new Mock<ITopicCollection>();
-            topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
-                .Returns(true);
+        // Arrange
+        var topicCollectionMock = new Mock<ITopicCollection>();
+        topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
+            .Returns(true);
 
-            var topicCollection = topicCollectionMock.Object;
+        var topicCollection = topicCollectionMock.Object;
 
-            // Act
-            Action validatingCollectionAppendingAllowance = () =>
-                new MustAppendingBeAllowed()
-                    .Validate(topicCollection);
+        // Act
+        Action validatingCollectionAppendingAllowance = () =>
+            new MustAppendingBeAllowed()
+                .Validate(topicCollection);
 
-            // Assert
-            validatingCollectionAppendingAllowance.Should()
-                .NotThrow<IllegalTopicConstructionException>(
-                    "because the collection can accept another topic");
-        }
+        // Assert
+        validatingCollectionAppendingAllowance.Should()
+            .NotThrow<IllegalTopicConstructionException>(
+                "because the collection can accept another topic");
+    }
 
-        /// <summary>
-        /// Ensure that a collection that is not able to contain another value
-        /// will not pass the rule
-        /// </summary>
-        [Fact]
-        public void Validate_OnAppendingNotAllowed()
-        {
-            // Arrange
-            var topicCollectionMock = new Mock<ITopicCollection>();
-            topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
-                .Returns(false);
+    /// <summary>
+    /// Ensure that a collection that is not able to contain another value
+    /// will not pass the rule
+    /// </summary>
+    [Fact]
+    public void Validate_OnAppendingNotAllowed()
+    {
+        // Arrange
+        var topicCollectionMock = new Mock<ITopicCollection>();
+        topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
+            .Returns(false);
 
-            var topicCollection = topicCollectionMock.Object;
+        var topicCollection = topicCollectionMock.Object;
 
-            // Act
-            Action validatingCollectionAppendingAllowance = () =>
-                new MustAppendingBeAllowed()
-                    .Validate(topicCollection);
+        // Act
+        Action validatingCollectionAppendingAllowance = () =>
+            new MustAppendingBeAllowed()
+                .Validate(topicCollection);
 
-            // Assert
-            validatingCollectionAppendingAllowance.Should()
-                .Throw<IllegalTopicConstructionException>(
-                    "because the collection cannot accept another topic");
-        }
+        // Assert
+        validatingCollectionAppendingAllowance.Should()
+            .Throw<IllegalTopicConstructionException>(
+                "because the collection cannot accept another topic");
     }
 }
