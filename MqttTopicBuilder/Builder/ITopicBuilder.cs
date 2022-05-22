@@ -23,7 +23,7 @@ public interface ITopicBuilder
     /// Consumer type of the topic to be built (PUBLISH / SUBSCRIBE)
     /// </summary>
     TopicConsumer Consumer { get; }
-        
+
     /// <summary>
     /// Indicate whether or not the builder is empty
     /// </summary>

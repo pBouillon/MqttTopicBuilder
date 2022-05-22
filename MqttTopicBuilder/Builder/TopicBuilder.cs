@@ -101,7 +101,7 @@ public class TopicBuilder : ITopicBuilder
 
     /// <inheritdoc cref="ITopicBuilder.Build"/>
     public Topic Build()
-        => new Topic(
+        => new(
             string.Join(
                 Mqtt.Topic.Separator.ToString(), TopicCollection.ToArray()));
 

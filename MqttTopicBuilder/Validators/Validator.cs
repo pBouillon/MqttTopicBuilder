@@ -30,7 +30,7 @@ public class Validator<T>
     /// <param name="rules">Rules to be validated</param>
     /// <returns>A new instance of <see cref="Validator{T}"/></returns>
     public static Validator<T> CreatePipelineWith(params Rule<T>[] rules)
-        => new Validator<T>(rules);
+        => new(rules);
 
     /// <summary>
     /// Effective call to validate each of the previously provided rules

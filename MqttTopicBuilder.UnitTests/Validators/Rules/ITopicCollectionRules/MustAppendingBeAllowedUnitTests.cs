@@ -23,13 +23,14 @@ public class MustAppendingBeAllowedUnitTests
     public void Validate_OnAppendingAllowed()
     {
         var topicCollectionMock = new Mock<ITopicCollection>();
-        topicCollectionMock.Setup(_ => _.IsAppendingAllowed)
+
+        topicCollectionMock
+            .Setup(_ => _.IsAppendingAllowed)
             .Returns(true);
 
         var topicCollection = topicCollectionMock.Object;
 
-        var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed()
-                .Validate(topicCollection);
+        var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed().Validate(topicCollection);
 
         validatingCollectionAppendingAllowance
             .Should()
@@ -44,14 +45,14 @@ public class MustAppendingBeAllowedUnitTests
     public void Validate_OnAppendingNotAllowed()
     {
         var topicCollectionMock = new Mock<ITopicCollection>();
+
         topicCollectionMock
             .Setup(_ => _.IsAppendingAllowed)
             .Returns(false);
 
         var topicCollection = topicCollectionMock.Object;
 
-        var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed()
-                .Validate(topicCollection);
+        var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed().Validate(topicCollection);
 
         validatingCollectionAppendingAllowance
             .Should()

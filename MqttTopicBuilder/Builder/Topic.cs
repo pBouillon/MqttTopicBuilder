@@ -40,7 +40,7 @@ public class Topic : ValueObject
     /// </summary>
     /// <param name="rawTopic">String to be converted</param>
     public static implicit operator Topic(string rawTopic)
-        => new Topic(rawTopic);
+        => new(rawTopic);
 
     /// <summary>
     /// Create a new MQTT Topic from a raw string
@@ -83,7 +83,7 @@ public class Topic : ValueObject
     /// </remarks>
     /// <returns>A new instance of the Topic</returns>
     public static Topic FromString(string rawTopic)
-        => new Topic(rawTopic);
+        => new(rawTopic);
 
     /// <inheritdoc cref="ValueObject.GetAtomicValues"/>
     protected override IEnumerable<object> GetAtomicValues()

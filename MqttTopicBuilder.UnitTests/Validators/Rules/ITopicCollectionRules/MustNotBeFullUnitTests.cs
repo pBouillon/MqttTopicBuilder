@@ -34,8 +34,10 @@ public class MustNotBeFullUnitTests
         var level = maxLevel;
 
         var topicCollectionMock = new Mock<ITopicCollection>();
+
         topicCollectionMock.Setup(_ => _.Levels)
             .Returns(level);
+
         topicCollectionMock.Setup(_ => _.MaxLevel)
             .Returns(maxLevel);
 
@@ -60,8 +62,10 @@ public class MustNotBeFullUnitTests
         var level = maxLevel - 1;
 
         var topicCollectionMock = new Mock<ITopicCollection>();
+
         topicCollectionMock.Setup(_ => _.Levels)
             .Returns(level);
+
         topicCollectionMock.Setup(_ => _.MaxLevel)
             .Returns(maxLevel);
 
