@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
-
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
 using System;
-
+using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;

@@ -4,12 +4,11 @@ using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Extensions;
 
 using System;
 using System.Collections.Generic;
-
+using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Extensions;

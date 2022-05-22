@@ -3,11 +3,11 @@
 using FluentAssertions;
 
 using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
 using System;
+using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
 

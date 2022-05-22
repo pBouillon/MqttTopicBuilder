@@ -3,11 +3,10 @@
 using Moq;
 
 using MqttTopicBuilder.Collection;
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 
 using System;
-
+using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;

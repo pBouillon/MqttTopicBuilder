@@ -2,7 +2,6 @@
 
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.Exceptions.Classes;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators;
 
@@ -214,11 +213,9 @@ public class TopicValidatorUnitTests
             TopicValidator.ValidateTopic(topicWithMultiLevelWildcardBeforeEnd);
 
         // Assert
-        validatingTopicWithMultiLevelWildcardsBeforeEnd.Should()
-            .Throw<IllegalTopicConstructionException>()
-            .Where(_ =>
-                    _.Message.Contains(ExceptionMessages.TopicAfterWildcard),
-                "because a multi-level wildcard may only be used anywhere but at the end of a topic");
+        validatingTopicWithMultiLevelWildcardsBeforeEnd
+            .Should()
+            .Throw<IllegalTopicConstructionException>("because a multi-level wildcard may only be used anywhere but at the end of a topic");
     }
 
     /// <summary>
