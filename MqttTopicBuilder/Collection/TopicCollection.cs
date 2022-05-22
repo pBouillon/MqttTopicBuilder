@@ -1,10 +1,10 @@
-﻿using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Validators;
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+
+using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Validators;
 
 // Allow unit test project to reach this class
 [assembly: InternalsVisibleTo("MqttTopicBuilder.UnitTests")]
@@ -23,9 +23,8 @@ internal class TopicCollection : ITopicCollection
     private readonly Queue<string> _stagedTopics;
 
     /// <inheritdoc cref="ITopicCollection.IsAppendingAllowed"/>
-    public bool IsAppendingAllowed
-        => IsEmpty
-           || _stagedTopics.Last() != Mqtt.Wildcard.MultiLevel.ToString();
+    public bool IsAppendingAllowed 
+        => IsEmpty || _stagedTopics.Last() != Mqtt.Wildcard.MultiLevel.ToString();
 
     /// <inheritdoc cref="ITopicCollection.IsEmpty"/>
     public bool IsEmpty
@@ -51,8 +50,7 @@ internal class TopicCollection : ITopicCollection
     /// <param name="stagedTopics">Collection of staged topics to be copied</param>
     /// <param name="maxLevel">Collection of staged topics to be copied</param>
     /// <remarks>
-    /// Since this is only a copy, no "overflow" (stagedTopics.Count > MaxLength) should
-    /// occurs
+    /// Since this is only a copy, no "overflow" (stagedTopics.Count > MaxLength) should occurs
     /// </remarks>
     private TopicCollection(Queue<string> stagedTopics, int maxLevel)
         => (_stagedTopics, MaxLevel) = (stagedTopics, maxLevel);
@@ -70,8 +68,7 @@ internal class TopicCollection : ITopicCollection
     {
         CheckAppendingAllowanceFor(topic);
 
-        // Creating a copy of the staged topics to add the new one
-        // (keeping the object "immutable")
+        // Creating a copy of the staged topics to add the new one (keeping the object "immutable")
         var newStaged = new Queue<string>(_stagedTopics);
         newStaged.Enqueue(topic);
 
@@ -82,8 +79,8 @@ internal class TopicCollection : ITopicCollection
     /// <inheritdoc cref="ITopicCollection.AddTopics"/>
     public ITopicCollection AddTopics(IEnumerable<string> topics)
         => topics.Aggregate(
-            (ITopicCollection) this, (current, topic) => 
-                current.AddTopic(topic));
+            (ITopicCollection) this,
+            (current, topic) => current.AddTopic(topic));
 
     /// <summary>
     /// Check whether it is possible or not to append the provided topic to the current collection.
@@ -91,7 +88,8 @@ internal class TopicCollection : ITopicCollection
     /// <param name="topic">Topic to be appended</param>
     private void CheckAppendingAllowanceFor(string topic)
     {
-        ValidatorFactory.GetTopicCollectionAppendingValidator()
+        ValidatorFactory
+            .GetTopicCollectionAppendingValidator()
             .Validate(this);
 
         topic.ValidateTopicForAppending();

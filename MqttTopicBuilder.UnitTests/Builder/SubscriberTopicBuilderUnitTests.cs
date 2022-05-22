@@ -1,18 +1,20 @@
-﻿using AutoFixture;
+using System.Collections.Generic;
+
+using AutoFixture;
 
 using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
-using System.Collections.Generic;
 using MqttTopicBuilder.Exceptions;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;
 
 /// <summary>
 /// Unit test suite for <see cref="ITopicBuilder"/> when used
-/// along with <see cref="TopicConsumer.Subscriber"/>
+/// along with <see cref="Consumer.Subscriber"/>
 /// </summary>
 public class SubscriberTopicBuilderUnitTests
 {
@@ -27,7 +29,7 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddMultiLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
         builder = builder.AddMultiLevelWildcard();
 
@@ -46,7 +48,7 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddSingleLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
         builder = builder.AddSingleLevelWildcard();
 
@@ -65,7 +67,7 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnBlankTopic()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
         var appendingEmptyTopic = () => builder.AddTopic(string.Empty);
 
@@ -81,7 +83,7 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnMultiLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
         builder = builder.AddTopic(
             Mqtt.Wildcard.MultiLevel.ToString());
@@ -102,7 +104,7 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnSingleLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
         builder = builder.AddTopic(
             Mqtt.Wildcard.SingleLevel.ToString());
@@ -122,7 +124,7 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnTopicSeparator()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
         var appendingTopic = () => builder.AddTopic(
                 Mqtt.Topic.Separator.ToString());
@@ -139,7 +141,7 @@ public class SubscriberTopicBuilderUnitTests
     public void AddTopic_OnValidTopic()
     {
         var addCount = Fixture.Create<int>();
-        ITopicBuilder builder = new TopicBuilder(addCount + 1, TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(addCount + 1, Consumer.Subscriber);
 
         for (var i = 0; i < addCount; ++i)
         {
@@ -161,7 +163,7 @@ public class SubscriberTopicBuilderUnitTests
         topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
         topics.AddRange(Fixture.Create<List<string>>());
 
-        ITopicBuilder builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(topics.Count + 1, Consumer.Subscriber);
 
         var addTopicsWithAMultiLevelWildcard = () => builder.AddTopics(topics);
 
@@ -178,7 +180,7 @@ public class SubscriberTopicBuilderUnitTests
     public void AddTopics_OnValidTopics()
     {
         var topics = Fixture.Create<string[]>();
-        ITopicBuilder builder = new TopicBuilder(topics.Length + 1, TopicConsumer.Subscriber);
+        ITopicBuilder builder = new TopicBuilder(topics.Length + 1, Consumer.Subscriber);
 
         builder = builder.AddTopics(topics);
 

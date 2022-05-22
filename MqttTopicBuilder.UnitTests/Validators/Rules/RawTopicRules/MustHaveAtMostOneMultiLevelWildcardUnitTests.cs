@@ -1,12 +1,12 @@
-﻿using AutoFixture;
+using AutoFixture;
 
 using FluentAssertions;
 
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
-using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;

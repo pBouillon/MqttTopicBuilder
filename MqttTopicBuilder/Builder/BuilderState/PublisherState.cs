@@ -1,9 +1,9 @@
-﻿using MqttTopicBuilder.Validators;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+
 using MqttTopicBuilder.Exceptions;
+using MqttTopicBuilder.Validators;
 
 // Allow unit test project to reach this class
 [assembly: InternalsVisibleTo("MqttTopicBuilder.UnitTests")]
@@ -12,7 +12,7 @@ namespace MqttTopicBuilder.Builder.BuilderState;
 
 /// <summary>
 /// Specialized <see cref="IBuilderState"/> for topic construction
-/// when the consumer is <see cref="TopicConsumer.Publisher"/>
+/// when the consumer is <see cref="Consumer.Publisher"/>
 /// </summary>
 internal class PublisherState : BuilderState
 {
@@ -25,8 +25,7 @@ internal class PublisherState : BuilderState
 
     /// <inheritdoc cref="BuilderState.AddMultiLevelWildcard"/>
     public override ITopicBuilder AddMultiLevelWildcard()
-        => throw new IllegalStateOperationException(
-            "multi-level wildcards are forbidden when publishing");
+        => throw new IllegalStateOperationException("Multi-level wildcards are forbidden when publishing");
 
     /// <inheritdoc cref="BuilderState.AddTopic"/>
     public override ITopicBuilder AddTopic(string topic)
@@ -41,12 +40,10 @@ internal class PublisherState : BuilderState
         var enumeratedTopics = topics.ToList();
 
         // Validate each one of the topics
-        enumeratedTopics.ForEach(_ => 
-            validator.Validate(_));
+        enumeratedTopics.ForEach(validator.Validate);
 
         // Append all topics
-        var modifiedCollection = TopicBuilder.TopicCollection
-            .AddTopics(enumeratedTopics);
+        var modifiedCollection = TopicBuilder.TopicCollection.AddTopics(enumeratedTopics);
             
         // Return the new instance of the builder with the new topics
         return new TopicBuilder(modifiedCollection, TopicBuilder.Consumer);
@@ -58,6 +55,5 @@ internal class PublisherState : BuilderState
 
     /// <inheritdoc cref="BuilderState.AddSingleLevelWildcard"/>
     public override ITopicBuilder AddSingleLevelWildcard()
-        => throw new IllegalStateOperationException(
-            "single-level wildcards are forbidden when publishing");
+        => throw new IllegalStateOperationException("Single-level wildcards are forbidden when publishing");
 }

@@ -1,19 +1,19 @@
-﻿using AutoFixture;
+using AutoFixture;
 
 using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 
-using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;
 
 /// <summary>
 /// Unit test suite for <see cref="ITopicBuilder"/> for operations
-/// independent of the <see cref="TopicConsumer"/>
+/// independent of the <see cref="Consumer"/>
 /// </summary>
 public class TopicBuilderUnitTests
 {
@@ -109,7 +109,7 @@ public class TopicBuilderUnitTests
         var topic = MqttTopicBuilder.Builder.Topic.FromString(
             TestUtils.GenerateValidTopic());
 
-        var builder = TopicBuilder.FromTopic(topic, TopicConsumer.Subscriber);
+        var builder = TopicBuilder.FromTopic(topic, Consumer.Subscriber);
 
         builder.Build()
             .Should()
@@ -121,7 +121,7 @@ public class TopicBuilderUnitTests
     }
 
     /// <summary>
-    /// Ensure that it is not possible to bypass construction rule on a specific <see cref="TopicConsumer"/>
+    /// Ensure that it is not possible to bypass construction rule on a specific <see cref="Consumer"/>
     /// by seeding the <see cref="TopicBuilder"/> with a <see cref="Topic"/> containing forbidden values
     /// </summary>
     [Fact]
@@ -131,7 +131,7 @@ public class TopicBuilderUnitTests
             Mqtt.Wildcard.SingleLevel.ToString());
 
         var creatingPublisherBuilderWithSubscriberTopic
-            = () => TopicBuilder.FromTopic(wildcardTopic, TopicConsumer.Publisher);
+            = () => TopicBuilder.FromTopic(wildcardTopic, Consumer.Publisher);
 
         creatingPublisherBuilderWithSubscriberTopic
             .Should()

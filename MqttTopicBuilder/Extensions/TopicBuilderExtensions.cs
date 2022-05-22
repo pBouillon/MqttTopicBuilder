@@ -1,4 +1,4 @@
-﻿using MqttTopicBuilder.Builder;
+using MqttTopicBuilder.Builder;
 
 namespace MqttTopicBuilder.Extensions;
 
@@ -8,30 +8,30 @@ namespace MqttTopicBuilder.Extensions;
 public static class TopicBuilderExtensions
 {
     /// <summary>
-    /// Get an instance of a <see cref="ITopicBuilder"/> in <see cref="TopicConsumer.Publisher"/> mode
+    /// Get an instance of a <see cref="ITopicBuilder"/> in <see cref="Consumer.Publisher"/> mode
     /// from an existing builder
     /// </summary>
     /// <param name="builder">Builder to convert</param>
-    /// <returns>A new builder whose consumer is <see cref="TopicConsumer.Publisher"/></returns>
+    /// <returns>A new builder whose consumer is <see cref="Consumer.Publisher"/></returns>
     /// <remarks>
-    /// If the builder's consumer already is <see cref="TopicConsumer.Publisher"/>, this will return a clone
+    /// If the builder's consumer already is <see cref="Consumer.Publisher"/>, this will return a clone
     /// of the provided <paramref name="builder"/>
     /// </remarks>
     public static ITopicBuilder ToPublisherBuilder(this ITopicBuilder builder)
-        => Convert(builder, TopicConsumer.Publisher);
+        => Convert(builder, Consumer.Publisher);
 
     /// <summary>
-    /// Get an instance of a <see cref="ITopicBuilder"/> in <see cref="TopicConsumer.Subscriber"/> mode
+    /// Get an instance of a <see cref="ITopicBuilder"/> in <see cref="Consumer.Subscriber"/> mode
     /// from an existing builder
     /// </summary>
     /// <param name="builder">Builder to convert</param>
-    /// <returns>A new builder whose consumer is <see cref="TopicConsumer.Subscriber"/></returns>
+    /// <returns>A new builder whose consumer is <see cref="Consumer.Subscriber"/></returns>
     /// <remarks>
-    /// If the builder's consumer already is <see cref="TopicConsumer.Subscriber"/>, this will return a clone
+    /// If the builder's consumer already is <see cref="Consumer.Subscriber"/>, this will return a clone
     /// of the provided <paramref name="builder"/>
     /// </remarks>
     public static ITopicBuilder ToSubscriberBuilder(this ITopicBuilder builder)
-        => Convert(builder, TopicConsumer.Subscriber);
+        => Convert(builder, Consumer.Subscriber);
 
     /// <summary>
     /// Get an instance of a <see cref="ITopicBuilder"/> in the desired <paramref name="target"/> mode
@@ -44,7 +44,7 @@ public static class TopicBuilderExtensions
     /// If the builder's consumer already is in <paramref name="target"/> mode, this will return a clone
     /// of the provided <paramref name="builder"/>
     /// </remarks>
-    private static ITopicBuilder Convert(ITopicBuilder builder, TopicConsumer target)
+    private static ITopicBuilder Convert(ITopicBuilder builder, Consumer target)
         => builder.Consumer == target
             ? builder.Clone()
             : new TopicBuilder(builder.TopicCollection, target);

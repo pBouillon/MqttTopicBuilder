@@ -1,5 +1,6 @@
-﻿using MqttTopicBuilder.Constants;
 using System.Linq;
+
+using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
@@ -16,6 +17,5 @@ public class MustNotHaveNullChar : BaseRawTopicRule
 
     /// <inheritdoc cref="Rule{T}.OnError"/>
     protected override void OnError()
-        => throw new IllegalTopicConstructionException(
-            "The null character is not allowed in a topic");
+        => throw new IllegalTopicConstructionException("The null character is not allowed in a topic");
 }

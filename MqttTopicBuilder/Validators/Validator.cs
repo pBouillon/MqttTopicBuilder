@@ -1,7 +1,7 @@
-﻿using MqttTopicBuilder.Validators.Rules;
-
 using System.Collections.Generic;
 using System.Linq;
+
+using MqttTopicBuilder.Validators.Rules;
 
 namespace MqttTopicBuilder.Validators;
 
@@ -24,8 +24,7 @@ public class Validator<T>
         => _rules = rules;
 
     /// <summary>
-    /// Create a new validator with a set of rules to be executed in the
-    /// provided order
+    /// Create a new validator with a set of rules to be executed in the provided order
     /// </summary>
     /// <param name="rules">Rules to be validated</param>
     /// <returns>A new instance of <see cref="Validator{T}"/></returns>
@@ -37,7 +36,7 @@ public class Validator<T>
     /// </summary>
     /// <param name="value">Value to be validated</param>
     public void Validate(T value)
-        => _rules.ToList()
-            .ForEach(rule =>
-                rule.Validate(value));
+        => _rules
+            .ToList()
+            .ForEach(rule => rule.Validate(value));
 }

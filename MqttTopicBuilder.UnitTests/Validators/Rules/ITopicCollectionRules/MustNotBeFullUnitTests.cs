@@ -1,13 +1,13 @@
-﻿using AutoFixture;
+using AutoFixture;
 
 using FluentAssertions;
 
 using Moq;
 
 using MqttTopicBuilder.Collection;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 
-using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;

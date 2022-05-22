@@ -1,12 +1,13 @@
-﻿using MqttTopicBuilder.Constants;
 using System.Linq;
+
+using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
 /// <summary>
-/// Rule to ensure that if any wildcard is used in a single topic,
-/// then no other value than the wildcard itself should have been provided
+/// Rule to ensure that if any wildcard is used in a single topic, then no value other than the wildcard itself
+/// should have been provided
 /// </summary>
 public class MustRespectWildcardsExclusivity : BaseRawTopicRule
 {
@@ -19,15 +20,18 @@ public class MustRespectWildcardsExclusivity : BaseRawTopicRule
             return true;
         }
 
-        // Otherwise, a longer topic can not hold any wildcard
-        // in addition to another value
-        return ! (value.Contains(Mqtt.Wildcard.MultiLevel)
-                  || value.Contains(Mqtt.Wildcard.SingleLevel));
+        var wildcards = new[]
+        {
+            Mqtt.Wildcard.MultiLevel,
+            Mqtt.Wildcard.SingleLevel,
+        };
+
+        var hasAnyWildcard = value.Any(wildcards.Contains);
+        return !hasAnyWildcard;
     }
 
     /// <inheritdoc cref="Rule{T}.OnError"/>
     protected override void OnError()
         => throw new InvalidTopicException(
-            $"A topic value should not hold any wildcard " + 
-            $"(\"{Mqtt.Wildcard.MultiLevel}\", \"{Mqtt.Wildcard.SingleLevel}\")");
+            $"A topic value should not hold any wildcard (\"{Mqtt.Wildcard.MultiLevel}\", \"{Mqtt.Wildcard.SingleLevel}\")");
 }

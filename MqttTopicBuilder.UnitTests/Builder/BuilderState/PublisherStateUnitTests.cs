@@ -1,14 +1,15 @@
-﻿using AutoFixture;
+﻿using System.Collections.Generic;
+
+using AutoFixture;
 
 using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 
-using System.Collections.Generic;
-using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder.BuilderState;

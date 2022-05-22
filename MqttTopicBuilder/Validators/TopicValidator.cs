@@ -1,5 +1,6 @@
-﻿using MqttTopicBuilder.Constants;
 using System.Linq;
+
+using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators;
@@ -25,7 +26,8 @@ public static class TopicValidator
         }
 
         // Validate the whole topic
-        ValidatorFactory.GetRawTopicValidator()
+        ValidatorFactory
+            .GetRawTopicValidator()
             .Validate(topic);
 
         // Remove trailing "/" if any
@@ -37,7 +39,8 @@ public static class TopicValidator
         // Validate each of the single topics from which the main one is made
         var singleTopicValidator = ValidatorFactory.GetSingleRawTopicValidator();
 
-        topic.Split(Mqtt.Topic.Separator)
+        topic
+            .Split(Mqtt.Topic.Separator)
             .ToList()
             .ForEach(singleTopicValidator.Validate);
     }

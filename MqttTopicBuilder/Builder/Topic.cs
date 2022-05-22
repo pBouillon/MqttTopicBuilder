@@ -1,30 +1,25 @@
-﻿using MqttTopicBuilder.Common;
+using System.Linq;
+
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Validators;
-
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MqttTopicBuilder.Builder;
 
 /// <summary>
 /// Represent an MQTT topic
 /// </summary>
-public class Topic : ValueObject
+public record Topic
 {
     /// <summary>
     /// Number of levels of this topic
     /// </summary>
     public int Levels
         => Value == Mqtt.Topic.Separator.ToString()
-            // If the topic is the smallest one allowed, its level is one
             ? 1
-            // Otherwise, its the number of parts of the topic
-            : Value.Split(Mqtt.Topic.Separator)
-                .Length;
+            : Value.Split(Mqtt.Topic.Separator).Length;
 
     /// <summary>
-    /// Value of the MQTT topic (e.g "a/b/c")
+    /// Value of the MQTT topic (e.g. "a/b/c")
     /// </summary>
     public readonly string Value;
 
@@ -55,18 +50,17 @@ public class Topic : ValueObject
     /// </remarks>
     public Topic(string rawTopic)
     {
-        // Create minimal topic on empty string or already minimal raw string
-        if (string.IsNullOrEmpty(rawTopic)
-            || rawTopic == Mqtt.Topic.Separator.ToString())
+        var isEmpty = string.IsNullOrEmpty(rawTopic) || rawTopic == Mqtt.Topic.Separator.ToString();
+        if (isEmpty)
         {
             Value = Mqtt.Topic.Separator.ToString();
             return;
         }
 
         TopicValidator.ValidateTopic(rawTopic);
-
-        // Remove trailing "/" if any
-        if (rawTopic.Last() == Mqtt.Topic.Separator)
+        
+        var hasTrailingSeparator = rawTopic.Last() == Mqtt.Topic.Separator;
+        if (hasTrailingSeparator)
         {
             rawTopic = rawTopic.Remove(rawTopic.Length - 1);
         }
@@ -84,13 +78,6 @@ public class Topic : ValueObject
     /// <returns>A new instance of the Topic</returns>
     public static Topic FromString(string rawTopic)
         => new(rawTopic);
-
-    /// <inheritdoc cref="ValueObject.GetAtomicValues"/>
-    protected override IEnumerable<object> GetAtomicValues()
-    {
-        yield return Levels;
-        yield return Value;
-    }
 
     /// <summary>
     /// Retrieve all atomic topics contained in the topic

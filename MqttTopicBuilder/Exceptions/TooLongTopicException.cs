@@ -1,4 +1,4 @@
-﻿using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Constants;
 
 namespace MqttTopicBuilder.Exceptions;
 

@@ -1,4 +1,4 @@
-﻿using MqttTopicBuilder.Collection;
+using MqttTopicBuilder.Collection;
 
 namespace MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
 

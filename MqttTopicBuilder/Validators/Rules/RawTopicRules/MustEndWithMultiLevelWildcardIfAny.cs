@@ -1,6 +1,7 @@
-﻿using MqttTopicBuilder.Constants;
-using MqttTopicBuilder.Exceptions;
 using System.Linq;
+
+using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
@@ -19,24 +20,15 @@ public class MustEndWithMultiLevelWildcardIfAny : BaseRawTopicRule
             value = value.Remove(value.Length - 1);
         }
 
-        var multiLevelWildcardsCount = value.Count(_ =>
-            _ == Mqtt.Wildcard.MultiLevel);
+        var multiLevelWildcardsCount = value.Count(@char => @char == Mqtt.Wildcard.MultiLevel);
 
-        // If there is more than one multi-level wildcard, then its usage
-        // is violated and not valid
-        if (multiLevelWildcardsCount >= 2)
+        return multiLevelWildcardsCount switch
         {
-            return false;
-        }
-
-        // If there is a wildcard, it should be the last character
-        if (multiLevelWildcardsCount == 1)
-        {
-            return value.Last() == Mqtt.Wildcard.MultiLevel;
-        }
-
-        // Last case is no multi-level wildcard, which is allowed
-        return true;
+            0 => true,
+            // If there is a wildcard, it should be the last character
+            1 => value.Last() == Mqtt.Wildcard.MultiLevel,
+            _ => false,
+        };
     }
 
     /// <inheritdoc cref="Rule{T}.OnError"/>

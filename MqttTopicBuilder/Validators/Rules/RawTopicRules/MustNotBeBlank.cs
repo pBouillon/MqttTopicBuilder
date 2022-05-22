@@ -1,4 +1,4 @@
-﻿using MqttTopicBuilder.Exceptions;
+using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
 

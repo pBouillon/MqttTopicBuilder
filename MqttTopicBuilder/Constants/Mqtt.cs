@@ -1,4 +1,4 @@
-﻿namespace MqttTopicBuilder.Constants;
+namespace MqttTopicBuilder.Constants;
 
 /// <summary>
 /// Hold MQTT constants

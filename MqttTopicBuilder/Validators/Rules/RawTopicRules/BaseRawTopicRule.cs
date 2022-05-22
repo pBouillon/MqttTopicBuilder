@@ -1,4 +1,4 @@
-﻿namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
+namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
 
 /// <summary>
 /// Set of rules to be applied to raw (string) topics

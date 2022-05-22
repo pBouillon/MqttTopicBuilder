@@ -1,6 +1,6 @@
-﻿using MqttTopicBuilder.Collection;
-
 using System.Collections.Generic;
+
+using MqttTopicBuilder.Collection;
 
 namespace MqttTopicBuilder.Builder;
 
@@ -10,19 +10,17 @@ namespace MqttTopicBuilder.Builder;
 public interface ITopicBuilder
 {
     /// <summary>
-    /// Indicate whether or not it is allowed to append one more topic
-    /// to the builder
+    /// Indicate whether or not it is allowed to append one more topic to the builder
     /// </summary>
     /// <remarks>
-    /// Adding a topic when this property is <c>false</c> will throw an
-    /// exception
+    /// Adding a topic when this property is <c>false</c> will throw an exception
     /// </remarks>
     bool IsAppendingAllowed { get; }
 
     /// <summary>
     /// Consumer type of the topic to be built (PUBLISH / SUBSCRIBE)
     /// </summary>
-    TopicConsumer Consumer { get; }
+    Consumer Consumer { get; }
 
     /// <summary>
     /// Indicate whether or not the builder is empty

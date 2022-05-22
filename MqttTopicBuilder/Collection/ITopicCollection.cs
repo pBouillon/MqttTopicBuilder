@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Collection;
 
@@ -6,8 +6,7 @@ namespace MqttTopicBuilder.Collection;
 /// Represent a custom topics collection
 /// </summary>
 /// <remarks>
-/// Most operation are returning a new instance instead of updating
-/// the current one
+/// Most operation are returning a new instance instead of updating the current one
 /// </remarks>
 public interface ITopicCollection : IEnumerable<string>
 {

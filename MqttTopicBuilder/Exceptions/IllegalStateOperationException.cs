@@ -1,8 +1,7 @@
-﻿namespace MqttTopicBuilder.Exceptions;
+namespace MqttTopicBuilder.Exceptions;
 
 /// <summary>
-/// Exception thrown on an operation on a builder that is not allowed in its current
-/// state
+/// Exception thrown on an operation on a builder that is not allowed in its current state
 /// </summary>
 public class IllegalStateOperationException : MqttBaseException
 {

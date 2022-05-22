@@ -1,13 +1,14 @@
-﻿using AutoFixture;
+using System.Collections.Generic;
+
+using AutoFixture;
 
 using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Extensions;
 
-using System.Collections.Generic;
-using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Extensions;
@@ -24,14 +25,14 @@ public class TopicBuilderExtensionsTests
 
     /// <summary>
     /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
-    /// <see cref="TopicConsumer.Publisher"/>
+    /// <see cref="Consumer.Publisher"/>
     /// </summary>
     [Fact]
     public void ToPublisherBuilder_FromPublisherBuilder()
     {
         var topics = Fixture.Create<List<string>>();
 
-        var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Publisher)
+        var builder = new TopicBuilder(topics.Count + 1, Consumer.Publisher)
             .AddTopics(topics);
 
         var publisher = builder.ToPublisherBuilder();
@@ -46,20 +47,20 @@ public class TopicBuilderExtensionsTests
 
         publisher.Consumer
             .Should()
-            .Be(TopicConsumer.Publisher, "because the consumer should have changed for the converted builder");
+            .Be(Consumer.Publisher, "because the consumer should have changed for the converted builder");
     }
 
     /// <summary>
     /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
     ///
-    /// <see cref="TopicConsumer.Subscriber"/> and contains no wildcard
+    /// <see cref="Consumer.Subscriber"/> and contains no wildcard
     /// </summary>
     [Fact]
     public void ToPublisherBuilder_FromSubscriberWithoutWildcards()
     {
         var topics = Fixture.Create<List<string>>();
 
-        var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber)
+        var builder = new TopicBuilder(topics.Count + 1, Consumer.Subscriber)
             .AddTopics(topics);
 
         var publisherBuilder = builder.ToPublisherBuilder();
@@ -75,12 +76,12 @@ public class TopicBuilderExtensionsTests
 
         publisherBuilder.Consumer
             .Should()
-            .Be(TopicConsumer.Publisher, "because the consumer should have changed for the converted builder");
+            .Be(Consumer.Publisher, "because the consumer should have changed for the converted builder");
     }
 
     /// <summary>
     /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
-    /// <see cref="TopicConsumer.Subscriber"/> and contains wildcards
+    /// <see cref="Consumer.Subscriber"/> and contains wildcards
     /// </summary>
     [Fact]
     public void ToPublisherBuilder_FromSubscriberWithWildcards()
@@ -89,7 +90,7 @@ public class TopicBuilderExtensionsTests
         topics.Add(Mqtt.Wildcard.SingleLevel.ToString());
         topics.AddRange(Fixture.Create<List<string>>());
 
-        var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber)
+        var builder = new TopicBuilder(topics.Count + 1, Consumer.Subscriber)
             .AddTopics(topics);
 
         var convertingSubscriberWithTopicsToPublisher = () => _ = builder.ToPublisherBuilder();
@@ -102,14 +103,14 @@ public class TopicBuilderExtensionsTests
 
     /// <summary>
     /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
-    /// <see cref="TopicConsumer.Publisher"/>
+    /// <see cref="Consumer.Publisher"/>
     /// </summary>
     [Fact]
     public void ToSubscriberBuilder_FromPublisherBuilder()
     {
         var topics = Fixture.Create<List<string>>();
 
-        var publisherBuilder = new TopicBuilder(topics.Count + 1, TopicConsumer.Publisher)
+        var publisherBuilder = new TopicBuilder(topics.Count + 1, Consumer.Publisher)
             .AddTopics(topics);
 
         var subscriberBuilder = publisherBuilder.ToSubscriberBuilder();
@@ -126,19 +127,19 @@ public class TopicBuilderExtensionsTests
 
         subscriberBuilder.Consumer
             .Should()
-            .Be(TopicConsumer.Subscriber, "because the consumer should have changed for the converted builder");
+            .Be(Consumer.Subscriber, "because the consumer should have changed for the converted builder");
     }
 
     /// <summary>
     /// Ensure the behavior of a conversion of a <see cref="ITopicBuilder"/> whose consumer is
-    /// <see cref="TopicConsumer.Subscriber"/>
+    /// <see cref="Consumer.Subscriber"/>
     /// </summary>
     [Fact]
     public void ToSubscriberBuilder_FromSubscriberBuilder()
     {
         var topics = Fixture.Create<List<string>>();
 
-        var builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Subscriber)
+        var builder = new TopicBuilder(topics.Count + 1, Consumer.Subscriber)
             .AddTopics(topics);
 
         var subscriberBuilder = builder.ToSubscriberBuilder();
@@ -153,6 +154,6 @@ public class TopicBuilderExtensionsTests
 
         subscriberBuilder.Consumer
             .Should()
-            .Be(TopicConsumer.Subscriber, "because the consumer should have changed for the converted builder");
+            .Be(Consumer.Subscriber, "because the consumer should have changed for the converted builder");
     }
 }

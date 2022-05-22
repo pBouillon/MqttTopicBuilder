@@ -1,4 +1,5 @@
-﻿using MqttTopicBuilder.Constants;
+using System.Linq;
+using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
@@ -9,12 +10,19 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
 public class MustNotContainWildcard : BaseRawTopicRule
 {
     /// <inheritdoc cref="Rule{T}.IsValid"/>
-    protected override bool IsValid(string value)
-        => ! (value.Contains(Mqtt.Wildcard.MultiLevel.ToString())
-              || value.Contains(Mqtt.Wildcard.SingleLevel.ToString()));
+    protected override bool IsValid( string value )
+    {
+        var wildcards = new[]
+        {
+            Mqtt.Wildcard.MultiLevel,
+            Mqtt.Wildcard.SingleLevel,
+        };
+
+        var hasAnyWildcard = value.Any(wildcards.Contains);
+        return !hasAnyWildcard;
+    }
 
     /// <inheritdoc cref="Rule{T}.OnError"/>
     protected override void OnError()
-        => throw new IllegalTopicConstructionException(
-            "This topic should not contain any wildcard");
+        => throw new IllegalTopicConstructionException("This topic should not contain any wildcard");
 }

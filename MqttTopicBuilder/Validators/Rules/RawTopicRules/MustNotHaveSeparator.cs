@@ -1,5 +1,6 @@
-﻿using MqttTopicBuilder.Constants;
 using System.Linq;
+
+using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 
 namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;

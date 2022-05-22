@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 // Allow unit test project to reach this class
@@ -8,7 +8,7 @@ namespace MqttTopicBuilder.Builder.BuilderState;
 
 /// <summary>
 /// Specialized <see cref="IBuilderState"/> for topic construction
-/// when the consumer is <see cref="TopicConsumer.Subscriber"/>
+/// when the consumer is <see cref="Consumer.Subscriber"/>
 /// </summary>
 internal class SubscriberState : BuilderState
 {

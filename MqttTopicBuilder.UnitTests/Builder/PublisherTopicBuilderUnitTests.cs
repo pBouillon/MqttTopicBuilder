@@ -1,18 +1,20 @@
-﻿using AutoFixture;
+using System.Collections.Generic;
+
+using AutoFixture;
 
 using FluentAssertions;
 
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
-using System.Collections.Generic;
 using MqttTopicBuilder.Exceptions;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;
 
 /// <summary>
 /// Unit test suite for <see cref="ITopicBuilder"/> when used
-/// along with <see cref="TopicConsumer.Publisher"/>
+/// along with <see cref="Consumer.Publisher"/>
 /// </summary>
 public class PublisherTopicBuilderUnitTests
 {
@@ -27,7 +29,7 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddMultiLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
         var addMultiLevelWildcard = () => builder = builder.AddMultiLevelWildcard();
 
@@ -42,7 +44,7 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddSingleLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
         var addSingleLevelWildcard = () => builder = builder.AddMultiLevelWildcard();
 
@@ -57,7 +59,7 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnBlankTopic()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
         var appendingEmptyTopic = () => builder.AddTopic(string.Empty);
 
@@ -73,7 +75,7 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnMultiLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
         var addSingleLevelWildcard = () => builder = builder.AddTopic(
                 Mqtt.Wildcard.MultiLevel.ToString());
@@ -90,7 +92,7 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnSingleLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
         var addSingleLevelWildcard = () => builder = builder.AddTopic(
                 Mqtt.Wildcard.SingleLevel.ToString());
@@ -106,7 +108,7 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnTopicSeparator()
     {
-        ITopicBuilder builder = new TopicBuilder(TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
         var appendingTopic = () => builder.AddTopic(
                 Mqtt.Topic.Separator.ToString());
@@ -123,7 +125,7 @@ public class PublisherTopicBuilderUnitTests
     public void AddTopic_OnValidTopic()
     {
         var addCount = Fixture.Create<int>();
-        ITopicBuilder builder = new TopicBuilder(addCount + 1, TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(addCount + 1, Consumer.Publisher);
 
         for (var i = 0; i < addCount; ++i)
         {
@@ -145,7 +147,7 @@ public class PublisherTopicBuilderUnitTests
         topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
         topics.AddRange(Fixture.Create<List<string>>());
 
-        ITopicBuilder builder = new TopicBuilder(topics.Count + 1, TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(topics.Count + 1, Consumer.Publisher);
 
         var addTopicsWithAMultiLevelWildcard = () => builder.AddTopics(topics);
 
@@ -162,7 +164,7 @@ public class PublisherTopicBuilderUnitTests
     public void AddTopics_OnValidTopics()
     {
         var topics = Fixture.Create<string[]>();
-        ITopicBuilder builder = new TopicBuilder(topics.Length + 1, TopicConsumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(topics.Length + 1, Consumer.Publisher);
 
         builder = builder.AddTopics(topics);
 

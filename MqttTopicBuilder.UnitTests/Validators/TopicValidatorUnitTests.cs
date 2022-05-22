@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+using System.Linq;
+
+using FluentAssertions;
 
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators;
-
-using System.Linq;
 
 using Xunit;
 

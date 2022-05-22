@@ -1,4 +1,4 @@
-﻿namespace MqttTopicBuilder.Exceptions;
+namespace MqttTopicBuilder.Exceptions;
 
 /// <summary>
 /// Exception thrown on an operation on an empty Topic

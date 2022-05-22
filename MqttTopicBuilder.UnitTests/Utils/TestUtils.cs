@@ -1,9 +1,9 @@
-﻿using AutoFixture;
-
-using MqttTopicBuilder.Constants;
-
 using System;
 using System.Linq;
+
+using AutoFixture;
+
+using MqttTopicBuilder.Constants;
 
 namespace MqttTopicBuilder.UnitTests.Utils;
 

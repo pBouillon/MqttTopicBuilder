@@ -1,9 +1,9 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 
 using MqttTopicBuilder.Constants;
+using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.UnitTests.Utils;
 
-using MqttTopicBuilder.Exceptions;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Topic;

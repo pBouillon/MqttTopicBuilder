@@ -1,10 +1,10 @@
-﻿namespace MqttTopicBuilder.Builder;
+namespace MqttTopicBuilder.Builder;
 
 /// <summary>
 /// Represent the different possible consumers of a topic to be build
 /// using <see cref="ITopicBuilder"/>
 /// </summary>
-public enum TopicConsumer
+public enum Consumer
 {
     /// <summary>
     /// Indicate that the topic is intended to be used on an MQTT PUBLISH

@@ -1,9 +1,9 @@
-﻿using MqttTopicBuilder.Builder.BuilderState;
+using System.Collections.Generic;
+
+using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Validators;
-
-using System.Collections.Generic;
 
 namespace MqttTopicBuilder.Builder;
 
@@ -17,7 +17,7 @@ public class TopicBuilder : ITopicBuilder
         => TopicCollection.IsAppendingAllowed;
 
     /// <inheritdoc cref="ITopicBuilder.Consumer"/>
-    public TopicConsumer Consumer { get; }
+    public Consumer Consumer { get; }
 
     /// <inheritdoc cref="ITopicBuilder.IsEmpty"/>
     public bool IsEmpty
@@ -42,36 +42,37 @@ public class TopicBuilder : ITopicBuilder
     /// <summary>
     /// Create a new <see cref="ITopicCollection"/>
     /// </summary>
-    /// <param name="topicConsumer">Context where this topic will be consumed</param>
+    /// <param name="consumer">Context where this topic will be consumed</param>
     /// <remarks>
     /// The maximum capacity will be <see cref="Mqtt.Topic.MaximumAllowedLevels"/>
     /// </remarks>
-    public TopicBuilder(TopicConsumer topicConsumer)
-        : this(Mqtt.Topic.MaximumAllowedLevels, topicConsumer) { }
+    public TopicBuilder(Consumer consumer)
+        : this(Mqtt.Topic.MaximumAllowedLevels, consumer) { }
 
     /// <summary>
     /// Create a new <see cref="ITopicCollection"/> with a maximum capacity
     /// </summary>
     /// <param name="maxLevel">Maximum number of topics that the collection can contains</param>
-    /// <param name="topicConsumer">Context where this topic will be consumed</param>
-    public TopicBuilder(int maxLevel, TopicConsumer topicConsumer)
-        : this(new TopicCollection(maxLevel), topicConsumer) { }
+    /// <param name="consumer">Context where this topic will be consumed</param>
+    public TopicBuilder(int maxLevel, Consumer consumer)
+        : this(new TopicCollection(maxLevel), consumer) { }
 
     /// <summary>
     /// Create a new instance of <see cref="ITopicCollection"/> from an existing one
     /// </summary>
     /// <param name="topicCollection">Existing collection, seeding this one</param>
-    /// <param name="topicConsumer">Context where this topic will be consumed</param>
-    public TopicBuilder(ITopicCollection topicCollection, TopicConsumer topicConsumer)
+    /// <param name="consumer">Context where this topic will be consumed</param>
+    public TopicBuilder(ITopicCollection topicCollection, Consumer consumer)
     {
         TopicCollection = topicCollection;
-        Consumer = topicConsumer;
+        Consumer = consumer;
 
-        _state = Consumer == TopicConsumer.Publisher
-            ? (IBuilderState) new PublisherState(this)
+        _state = Consumer == Consumer.Publisher
+            ? new PublisherState(this)
             : new SubscriberState(this);
 
-        if (Consumer == TopicConsumer.Publisher)
+        // ReSharper disable once InvertIf
+        if (Consumer == Consumer.Publisher)
         {
             var validator = ValidatorFactory.GetPublishedTopicValidator();
             TopicCollection.ToList()
@@ -101,9 +102,12 @@ public class TopicBuilder : ITopicBuilder
 
     /// <inheritdoc cref="ITopicBuilder.Build"/>
     public Topic Build()
-        => new(
-            string.Join(
-                Mqtt.Topic.Separator.ToString(), TopicCollection.ToArray()));
+    {
+        var parts = TopicCollection.ToArray();
+        var topic = string.Join(Mqtt.Topic.Separator.ToString(), parts);
+
+        return new Topic(topic);
+    }
 
     /// <inheritdoc cref="ITopicBuilder.Clear"/>
     public ITopicBuilder Clear()
@@ -119,11 +123,10 @@ public class TopicBuilder : ITopicBuilder
     /// <param name="topic">
     /// <see cref="Topic"/> used for seeding the new <see cref="ITopicBuilder"/> instance
     /// </param>
-    /// <param name="topicConsumer">Context where this topic will be consumed</param>
+    /// <param name="consumer">Context where this topic will be consumed</param>
     /// <returns>A new <see cref="ITopicBuilder"/> instance seeded with the provided <see cref="Topic"/></returns>
-    public static ITopicBuilder FromTopic(Topic topic, TopicConsumer topicConsumer)
-        => new TopicBuilder(topic.Levels, topicConsumer)
-            // Adding topics *after* having set the TopicConsumer property will ensure that no illegal topics has
-            // been added in the builder
-            .AddTopics(topic.ToArray());
+    public static ITopicBuilder FromTopic(Topic topic, Consumer consumer)
+        // Adding topics *after* having set the Consumer property will ensure that no illegal topics has
+        // been added in the builder
+        => new TopicBuilder(topic.Levels, consumer).AddTopics(topic.ToArray());
 }

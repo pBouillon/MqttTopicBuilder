@@ -1,4 +1,4 @@
-﻿namespace MqttTopicBuilder.Validators.Rules;
+namespace MqttTopicBuilder.Validators.Rules;
 
 /// <summary>
 /// Represent a unique rule to be validated by the <see cref="Validator{T}"/>
