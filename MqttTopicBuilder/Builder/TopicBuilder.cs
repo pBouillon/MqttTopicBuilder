@@ -116,7 +116,7 @@ public class TopicBuilder : ITopicBuilder
     /// <inheritdoc cref="ITopicBuilder.Clone"/>
     public ITopicBuilder Clone()
         => new TopicBuilder(TopicCollection, Consumer);
-
+    
     /// <summary>
     /// Create a new <see cref="ITopicBuilder"/> from an existing topic
     /// </summary>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
 
-    <Authors>pbouillon</Authors>
+      <Authors>pbouillon</Authors>
     <Title>MqttTopicBuilder</Title>
     <PackageDescription>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</PackageDescription>
     <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder/</RepositoryUrl>
@@ -19,6 +19,7 @@
     <PackageTags>mqtt,topic,mqtt-topic,mqtt-tools</PackageTags>
     <RepositoryType>github</RepositoryType>
     <LangVersion>10</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 </Project>

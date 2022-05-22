@@ -34,7 +34,7 @@ public record Topic
     /// Convert a <see cref="string"/> to a <see cref="Topic"/>
     /// </summary>
     /// <param name="rawTopic">String to be converted</param>
-    public static implicit operator Topic(string rawTopic)
+    public static implicit operator Topic(string? rawTopic )
         => new(rawTopic);
 
     /// <summary>
@@ -48,7 +48,7 @@ public record Topic
     /// <remarks>
     /// Any trailing separator will be removed
     /// </remarks>
-    public Topic(string rawTopic)
+    public Topic(string? rawTopic )
     {
         var isEmpty = string.IsNullOrEmpty(rawTopic) || rawTopic == Mqtt.Topic.Separator.ToString();
         if (isEmpty)
@@ -57,15 +57,15 @@ public record Topic
             return;
         }
 
-        TopicValidator.ValidateTopic(rawTopic);
+        TopicValidator.ValidateTopic(rawTopic!);
         
-        var hasTrailingSeparator = rawTopic.Last() == Mqtt.Topic.Separator;
+        var hasTrailingSeparator = rawTopic!.Last() == Mqtt.Topic.Separator;
         if (hasTrailingSeparator)
         {
-            rawTopic = rawTopic.Remove(rawTopic.Length - 1);
+            rawTopic = rawTopic!.Remove(rawTopic.Length - 1);
         }
 
-        Value = rawTopic;
+        Value = rawTopic!;
     }
 
     /// <summary>

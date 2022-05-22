@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.0] - 2022-05-22
 
+### Added
+
+- Add C# nullable support
+
 ## Removed
 
 - Remove the `resx` file for the exceptions' messages

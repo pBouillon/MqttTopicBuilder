@@ -9,6 +9,9 @@ public enum Consumer
     /// <summary>
     /// Indicate that the topic is intended to be used on an MQTT PUBLISH
     /// </summary>
+    /// <remarks>
+    /// When on PUBLISH mode, MQTT does not allow for wildcards to be used
+    /// </remarks>
     Publisher,
 
     /// <summary>
