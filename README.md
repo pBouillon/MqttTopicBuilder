@@ -1,10 +1,6 @@
-# MqttTopicBuilder  
+# MqttTopicBuilder
 
-| Category | Status |
-|:--------:|:-------|
-| Package | [![NuGet Badge](https://buildstats.info/nuget/MqttTopicBuilder)](https://www.nuget.org/packages/MqttTopicBuilder/) |
-| Quality | [![CodeFactor](https://www.codefactor.io/repository/github/pbouillon/mqtttopicbuilder/badge)](https://www.codefactor.io/repository/github/pbouillon/mqtttopicbuilder) |
-| CI / CD | [![Build](https://github.com/pBouillon/MqttTopicBuilder/workflows/Build/badge.svg)](https://github.com/pBouillon/MqttTopicBuilder/actions?query=workflow%3ABuild) [![Deployment](https://github.com/pBouillon/MqttTopicBuilder/workflows/NuGet%20package/badge.svg)](https://github.com/pBouillon/MqttTopicBuilder/actions?query=workflow%3A%22NuGet+package%22) |
+[![NuGet Badge](https://buildstats.info/nuget/MqttTopicBuilder)](https://www.nuget.org/packages/MqttTopicBuilder/)
 
 📮 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics
 

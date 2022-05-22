@@ -5,22 +5,14 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '5.0.x', '6.0.x' ]
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.202
-    - name: Build
-      run: dotnet build --configuration Release
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.202
-    - name: Test
-      run: dotnet test
+        dotnet-version: ${{ matrix.dotnet }}
+    - run: dotnet build --configuration Release
+    - run: dotnet test

@@ -1,144 +1,97 @@
-# Contributing to this project
+# MqttTopicBuilder
 
-🎊 Do you want to help ? Awesome ! Thank you ! 🎉  
+[![NuGet Badge](https://buildstats.info/nuget/MqttTopicBuilder)](https://www.nuget.org/packages/MqttTopicBuilder/)
 
-There is plenty of different ways to contribute to this repository. The 
-following document will provide details on how to contribute. Of course
-these are mostly guidelines and not rules, your jugement and experience is
-what prevail the most, please feel free to bring your own ideas !
+📮 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics
 
----
+The project is built using *.NET Standard 2.0* (compatible with *.NET Core 2* and *.NET Framework 4.6.1*)
 
-## Summary
+## Installation
 
-- [What you should probably know](#what-you-probably-should-know)
-- [Guidelines](#guidelines)
-- [Style guide](#style-guide)
-- [Contributing](#contributing)
+You can find this projet [on NuGet](https://www.nuget.org/packages/MqttTopicBuilder/).
 
----
+From the command line:
 
-## What you probably should know
+```bash
+dotnet add package MqttTopicBuilder
+```
 
-Before diving in please take time to go through the structure of the project and to check
-[what MQTT is](http://mqtt.org/).
+From the package manager:
 
-No coding level or experience is required to contribute, what matters is the outcome of
-your contribution. I will gladly help anyone struggling to do so if I can.
+```bash
+Install-Package MqttTopicBuilder
+```
 
-## Guidelines
+## Usage
 
-> For all development and all interactions, please follow common sense and respect.
-> 
-> No insults, discrimination, political beliefs or anything that should not have its place among
-> a sharing and helpful community as the one on GitHub will be tolerated.
+> More detailed instructions and documentation are available [here](https://pbouillon.gitbook.io/mqtttopicbuilder/)  
+> For changelog, see [the changelog](./CHANGELOG.md)
 
-📝 If you need help for anything related to this project, do not hesitate to ask !
+Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
+their validity regarding the way you are planning to use them.
 
-In your pull request, do not hesitate to add your name in the `CONTRIBUTORS.md` file !
+```csharp
+var subscribeTo = new TopicBuilder(TopicConsumer.Subscriber)
+    .AddTopic("Hello")
+    .AddTopic("From")
+    .AddTopics("Mqtt", "Topic", "Builder")
+    .AddMultiLevelWildcard()
+    .Build();
 
-### Git usage
+Console.WriteLine(subscribeTo);
+// -> "Hello/From/Mqtt/Topic/Builder/#"
 
-When working on an issue, fork this project and work on a specific issue. **No pull request**
-**will be merged if it contains more than one issue resulution**.
+var publishTop = new TopicBuilder(TopicConsumer.Publisher)
+    .AddTopic("Hello")
+    .AddTopic("From")
+    .AddTopics("Mqtt", "Topic", "Builder")
+    .AddMultiLevelWildcard()
+    .Build();
+// Will throw an exception since wildcards are not allowed when publishing
+// on a topic
 
-In order to help reviewers, commits on a regular basis useful content and not the whole work once
-there are hundreds of lines to review.
+```
 
-To keep your commits meaningful, please follow 
-[those guidelines](https://github.com/pBouillon/git_tutorials/blob/master/methodology/commit_rules.md)
-regarding the commit length, tense, structure, etc.
+The built object is a `Topic` object. It can be used to both access the topic
+but also gather informations about it such as its level.
 
-### GitHub usage
+```csharp
+var topic = new TopicBuilder(TopicConsumer.Subscriber)
+    .AddTopic("Hello")
+    .AddTopic("World")
+    .Build();
 
-Avoid spamming people and/or excessive tagging, your contribution or request will be reviewed when
-possible. However, if you are afraid of it being forgotten, do not hesitate to ask again once in a
-while.
+Console.WriteLine(topic.Value);
+// -> "Hello/World"
 
-#### Pull request
+Console.WriteLine(topic.Levels);
+// -> 2
+```
 
-When submitting a new **pull request**, please specify in its title a hint on what this is about.
-You can mostly rely [on this list](https://github.com/pBouillon/git_tutorials/blob/master/methodology/emoji_commit_list.md)
-but you can also add a short tag in the front of it.  
+Topics can also be built using the regular constructor or the extension method:
 
-For example: `[Configuration] Migrate from .NET Core X.Y to X'.Y'` or `⚙️ Migrate from .NET Core X.Y to X'.Y'`.
+```csharp
+var topic = Topic.FromString("Hello/World");
+// or: var topic = (Topic) "Hello/World";
 
-> If the work you are submitting is not done yet, include `[WiP]` in the front of your title.
+Console.WriteLine(topic.Value);
+// -> "Hello/World"
 
-## Style guide
+Console.WriteLine(topic.Levels);
+// -> 2
+```
 
-- Private attributes should start with an underscore
-- In general, follow [the C# coding conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
-- Please keep methods alphabetically ordered
+Topic integrity can also be checked using the `TopicValidator` methods
 
-Not really a style but each logic added should be tested and each method/class should be documented.
+```csharp
+TopicValidator.ValidateTopic("a/wrong/#/Topic");
+// Will throw an exception since no topic is allowed after '#'
 
-After your contribution, please increase the version of the project as specified by
-[the semantic versionning](https://semver.org/). In doubt, ask ! 😄
+"wrong+Topic".ValidateTopicForAppending();
+// Will throw an exception since '+' is not allowed in a topic
+```
 
-## Contributing
+## Contributions
 
-### Request a change
-
-Wether it is an improvement, a request, a bug fix or anything else, all suggestions are welcomed
-(but with no guarantee to be further implemented).
-
-In order to do so, please create a [new issue](https://github.com/pBouillon/MqttTopicBuilder/issues/new)
-**after** checking if no other existing issue is about the same thing.
-
-Keep the title clear and short, write the body in Markdown and tag the new issue with the appropriate
-label.
-
-Regarding what your request is, please provide at least the following information:
-
-<details>
-<summary>
-Improvement or request
-</summary>
-<p><ul>
-<li>What you think is missing</li>
-<li>Why do you think it is missing and has its place in this project</li>
-<li>Any resources to help to its development (documentation, PoC, existing sources, etc.)</li>
-</ul></p>
-</details>
-
-<details>
-<summary>
-Bug report
-</summary>
-<p><ul>
-<li>Comprehensive and descriptive description of the bug</li>
-<li>Clear examples and steps to demonstrate this bug</li>
-<li>The expected outcome and the actual result</li>
-<li>If possible, the stack trace of the error</li>
-</ul></p>
-</details>
-
-### Working on an existing issue
-
-Firstly, please browse [the issues tab](https://github.com/pBouillon/MqttTopicBuilder/issues) and
-click on the one you would like to work on.  
-
-Then, please write a comment to warn that you would like to work on it, it will soon be assigned to
-you if no one else is currently on this subject or you will be welcomed to work along people already
-in charge of it.
-
-You're all set ! You can now work on it, following [the guidelines](#guidelines).
-
-> Please keep in mind that your addition to this project will change its core content,
-> it is important to keep the code clean and the quality of it as good as possible.
-
-### Filling your pull request
-
-**First of all, please ensure that you are up to date with the current state of the `master` branch**
-
-To submit your pull request, provide a clear and concise title of what it is about. Then, in its
-body, detail each modification you brought to the project.
-
-Please, be sure that the code is following [the guidelines](#guidelines) and that
-[all checks](https://github.com/pBouillon/MqttTopicBuilder/actions) are passing.
-
-If your PR contains any major changes and will update the package's usage, it would be great
-if you could add a section about what updates should be made in [the wiki](https://github.com/pBouillon/MqttTopicBuilder/wiki).
-
-You can then submit it and wait for its review and its possible comments until it is merged !
+All contributions are welcome, please feel free to suggest pull requests !
+You can read more about it in the [CONTRIBUTING.md](https://github.com/pBouillon/MqttTopicBuilder/blob/master/CONTRIBUTING.md).
