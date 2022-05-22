@@ -1,25 +1,42 @@
-# MqttTopicBuilder
+<h1 align="center">
+  <a href="https://www.nuget.org/packages/MqttTopicBuilder">
+    MqttTopicBuilder
+  </a>
+</h1>
 
-[![NuGet Badge](https://buildstats.info/nuget/MqttTopicBuilder)](https://www.nuget.org/packages/MqttTopicBuilder/)
+<hr/>
 
-📮 `MqttTopicBuilder` is a tool to build valid and verified MQTT topics
+<p align="center">
+    Build valid and verified MQTT topics
+</p>
 
-The project is built using *.NET Standard 2.0* (compatible with *.NET Core 2* and *.NET Framework 4.6.1*)
+<p align="center">
+  <a href="https://www.nuget.org/packages/MqttTopicBuilder">
+    <img align="center" src="https://buildstats.info/nuget/MqttTopicBuilder" />
+  </a>
+</p>
+
+MqttTopicBuilder is a small library without any dependency that can help you to
+enforce the validity of your [MQTT topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/)
+by using the provided builder.
 
 ## Installation
 
 You can find this projet [on NuGet](https://www.nuget.org/packages/MqttTopicBuilder/).
 
-To install it from the command line, use:  
-`~$ dotnet add package MqttTopicBuilder`
+From the command line:
 
-or, from the package manager:  
-`Install-Package MqttTopicBuilder`
+```bash
+dotnet add package MqttTopicBuilder
+```
+
+From the package manager:
+
+```bash
+Install-Package MqttTopicBuilder
+```
 
 ## Usage
-
-> More detailed instructions and documentation are available [here](https://pbouillon.gitbook.io/mqtttopicbuilder/)  
-> For changelog, see [the changelog](./CHANGELOG.md)
 
 Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
 their validity regarding the way you are planning to use them.
@@ -46,7 +63,7 @@ var publishTop = new TopicBuilder(TopicConsumer.Publisher)
 
 ```
 
-The built object is a `Topic` object. It can be used to both access the topic
+The object built is a `Topic` object. It can be used to both access the topic
 but also gather informations about it such as its level.
 
 ```csharp
