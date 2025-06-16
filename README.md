@@ -4,16 +4,8 @@
   </a>
 </h1>
 
-<hr/>
-
 <p align="center">
     Build valid and verified MQTT topics
-</p>
-
-<p align="center">
-  <a href="https://www.nuget.org/packages/MqttTopicBuilder">
-    <img align="center" src="https://buildstats.info/nuget/MqttTopicBuilder" />
-  </a>
 </p>
 
 MqttTopicBuilder is a small library without any dependency that can help you to
