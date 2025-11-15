@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Target Frameworks -->
+    <TargetFrameworks>net9.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Package Metadata -->
+    <PackageId>MqttTopicBuilder</PackageId>
+    <Title>MqttTopicBuilder</Title>
+    <Description>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</Description>
+    <Authors>Pierre Bouillon</Authors>
+
+    <!-- Version (will be overridden by CI) -->
+    <Version>0.0.0</Version>
+
+    <!-- Package Settings -->
+    <IsPackable>true</IsPackable>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>mqtt;topic;mqtt-topic;mqtt-tools</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- Links -->
+    <PackageProjectUrl>https://github.com/pBouillon/MqttTopicBuilder</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pBouillon/MqttTopicBuilder</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <!-- Source Link -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+</Project>
