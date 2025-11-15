@@ -1,100 +1,109 @@
-<h1 align="center">
-  <a href="https://www.nuget.org/packages/MqttTopicBuilder">
-    MqttTopicBuilder
-  </a>
-</h1>
+# MqttTopicBuilder
 
-<p align="center">
-    Build valid and verified MQTT topics
-</p>
+[![NuGet](https://img.shields.io/nuget/v/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
+[![License](https://img.shields.io/github/license/pBouillon/MqttTopicBuilder.svg)](https://github.com/pBouillon/MqttTopicBuilder/blob/main/LICENSE)
 
-MqttTopicBuilder is a small library without any dependency that can help you to
-enforce the validity of your [MQTT topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/)
-by using the provided builder.
+A lightweight, zero-dependency library for building and validating MQTT topics with compile-time safety.
+
+## Overview
+
+MqttTopicBuilder helps you construct valid [MQTT topics](https://www.hivemq.com/blog/mqtt-essentials-part-5-mqtt-topics-best-practices/) using a fluent builder API. It enforces MQTT topic rules at build time, preventing common mistakes like using wildcards in publisher topics or placing wildcards in invalid positions.
 
 ## Installation
 
-You can find this projet [on NuGet](https://www.nuget.org/packages/MqttTopicBuilder/).
-
-From the command line:
+Install via .NET CLI:
 
 ```bash
 dotnet add package MqttTopicBuilder
 ```
 
-From the package manager:
+Or via Package Manager Console:
 
 ```bash
 Install-Package MqttTopicBuilder
 ```
 
-## Usage
+## Quick Start
 
-Using a custom builder, `MqttTopicBuilder` allows you to build topics and ensure
-their validity regarding the way you are planning to use them.
+### Building Topics
+
+Use the `TopicBuilder` to construct topics with validation based on whether you're publishing or subscribing:
 
 ```csharp
-var subscribeTo = new TopicBuilder(TopicConsumer.Subscriber)
-    .AddTopic("Hello")
-    .AddTopic("From")
-    .AddTopics("Mqtt", "Topic", "Builder")
+// Subscriber topic with wildcards
+var subscribeTopic = new TopicBuilder(TopicConsumer.Subscriber)
+    .AddTopic("sensors")
+    .AddTopic("temperature")
     .AddMultiLevelWildcard()
     .Build();
 
-Console.WriteLine(subscribeTo);
-// -> "Hello/From/Mqtt/Topic/Builder/#"
+Console.WriteLine(subscribeTopic);
+// Output: "sensors/temperature/#"
 
-var publishTop = new TopicBuilder(TopicConsumer.Publisher)
-    .AddTopic("Hello")
-    .AddTopic("From")
-    .AddTopics("Mqtt", "Topic", "Builder")
-    .AddMultiLevelWildcard()
+// Publisher topic (wildcards not allowed)
+var publishTopic = new TopicBuilder(TopicConsumer.Publisher)
+    .AddTopic("sensors")
+    .AddTopic("temperature")
+    .AddTopic("room1")
     .Build();
-// Will throw an exception since wildcards are not allowed when publishing
-// on a topic
 
+Console.WriteLine(publishTopic);
+// Output: "sensors/temperature/room1"
 ```
 
-The object built is a `Topic` object. It can be used to both access the topic
-but also gather informations about it such as its level.
+### Topic Properties
 
+
+Access topic metadata through the `Topic` object:
 ```csharp
 var topic = new TopicBuilder(TopicConsumer.Subscriber)
-    .AddTopic("Hello")
-    .AddTopic("World")
+    .AddTopic("home")
+    .AddTopic("livingroom")
+    .AddTopic("temperature")
     .Build();
 
-Console.WriteLine(topic.Value);
-// -> "Hello/World"
-
-Console.WriteLine(topic.Levels);
-// -> 2
+Console.WriteLine(topic.Value);   // "home/livingroom/temperature"
+Console.WriteLine(topic.Levels);  // 3
 ```
 
-Topics can also be built using the regular constructor or the extension method:
+### Creating Topics from Strings
+
+Convert existing topic strings into `Topic` objects:
 
 ```csharp
-var topic = Topic.FromString("Hello/World");
-// or: var topic = (Topic) "Hello/World";
+var topic = Topic.FromString("home/kitchen/humidity");
+// or using implicit conversion:
+// var topic = (Topic)"home/kitchen/humidity";
 
-Console.WriteLine(topic.Value);
-// -> "Hello/World"
-
-Console.WriteLine(topic.Levels);
-// -> 2
+Console.WriteLine(topic.Value);   // "home/kitchen/humidity"
+Console.WriteLine(topic.Levels);  // 3
 ```
 
-Topic integrity can also be checked using the `TopicValidator` methods
+### Validation
+
+Validate topic strings before using them:
 
 ```csharp
-TopicValidator.ValidateTopic("a/wrong/#/Topic");
-// Will throw an exception since no topic is allowed after '#'
+// This will throw - multi-level wildcard must be at the end
+TopicValidator.ValidateTopic("sensors/#/temperature");
 
-"wrong+Topic".ValidateTopicForAppending();
-// Will throw an exception since '+' is not allowed in a topic
+// This will throw - '+' is a wildcard and cannot be part of a topic name
+"invalid+topic".ValidateTopicForAppending();
 ```
 
-## Contributions
+## Features
 
-All contributions are welcome, please feel free to suggest pull requests !
-You can read more about it in the [CONTRIBUTING.md](https://github.com/pBouillon/MqttTopicBuilder/blob/master/CONTRIBUTING.md).
+- **Zero dependencies** - Lightweight and framework-agnostic
+- **Publisher and Subscriber modes** - Build topics with validation rules specific to each use case
+- **Fluent API** - Intuitive builder pattern for constructing topics
+- **Validation** - Enforces MQTT specification rules
+- **Wildcard support** - Proper handling of single-level (`+`) and multi-level (`#`) wildcards
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
