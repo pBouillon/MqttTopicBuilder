@@ -24,7 +24,7 @@ jobs:
         run: dotnet restore MqttTopicBuilder.slnx
 
       - name: Build
-        run: dotnet build MqttTopicBuilder.slnx --configuration Release --no-restore
+        run: dotnet build MqttTopicBuilder.slnx --no-restore
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test MqttTopicBuilder.slnx --no-build --verbosity normal
