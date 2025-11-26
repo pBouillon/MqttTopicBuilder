@@ -1,12 +1,7 @@
-using AutoFixture;
-
-using FluentAssertions;
-
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;
@@ -18,86 +13,52 @@ namespace MqttTopicBuilder.UnitTests.Builder;
 public class TopicBuilderUnitTests
 {
     /// <summary>
-    /// Private instance of <see cref="IFixture"/> for test data generation purposes
-    /// </summary>
-    private static readonly IFixture Fixture = new Fixture();
-
-    /// <summary>
     /// Ensure that the building behavior is valid
     /// </summary>
-    [Fact]
-    public void Build()
+    [Theory]
+    [InlineData(Consumer.Publisher)]
+    [InlineData(Consumer.Subscriber)]
+    public void Build(Consumer mode)
     {
-        ITopicBuilder builder = Fixture.Create<TopicBuilder>();
-
-        var upperBound = builder.MaxLevel - 1;
-        var topicCount = (Fixture.Create<int>() % upperBound) + 1;
-        for (var i = 0; i < topicCount; ++i)
-        {
-            builder = builder.AddTopic(Fixture.Create<string>());
-        }
+        var builder = new TopicBuilder(mode)
+            .AddTopic("sensors")
+            .AddTopic("bedroom")
+            .AddTopic("temperature");
 
         var topic = builder.Build();
 
-        topic.Levels
-            .Should()
-            .Be(builder.Levels, "because the content of the topic should not be altered");
+        topic.Levels.ShouldBe(3);
     }
 
     /// <summary>
     /// Ensure that the object's cleaning behavior is valid
     /// </summary>
-    [Fact]
-    public void Clear()
+    [Theory]
+    [InlineData(Consumer.Publisher)]
+    [InlineData(Consumer.Subscriber)]
+    public void Clear(Consumer mode)
     {
-        var builder = Fixture.Create<TopicBuilder>();
+        var builder = new TopicBuilder(mode).Clear();
 
-        var cleaned = builder.Clear();
-
-        cleaned.Levels
-            .Should()
-            .Be(0, "because the builder must not contain any level anymore");
-
-        cleaned.TopicCollection
-            .ToList()
-            .Should()
-            .BeEmpty("because the inner collection should have been cleaned");
-    }
-
-    /// <summary>
-    /// Ensure that the clone is successful
-    /// </summary>
-    [Fact]
-    public void Clone()
-    {
-        var initial = Fixture.Create<TopicBuilder>();
-
-        var clone = initial.Clone();
-
-        clone.MaxLevel
-            .Should()
-            .Be(initial.MaxLevel, "because the same max level should have been copied");
-
-        clone.Levels
-            .Should()
-            .Be(initial.Levels, "because the content level count should also have been cloned");
+        builder.Levels.ShouldBe(0);
+        builder.TopicCollection.ShouldBeEmpty();
     }
 
     /// <summary>
     /// Ensure that the clone is not altered when modifying the original copy
     /// </summary>
-    [Fact]
-    public void Clone_OnAlteredOriginalInstance()
+    [Theory]
+    [InlineData(Consumer.Publisher)]
+    [InlineData(Consumer.Subscriber)]
+    public void Clone_OnAlteredOriginalInstance(Consumer mode)
     {
-        var initial = Fixture.Create<TopicBuilder>();
-        var clone = initial.Clone();
-        var initialCount = initial.Levels;
+        var builder = new TopicBuilder(mode).AddTopic("sensors");
+        var clone = builder.Clone();
 
-        initial.AddTopic(TestUtils.GenerateSingleValidTopic());
+        builder = builder.AddTopic("bedroom");
 
-        clone.Levels
-            .Should()
-            .Be(initialCount, "because altering the origin should not alter the cloned instance");
+        builder.Levels.ShouldBe(2);
+        clone.Levels.ShouldBe(1);
     }
 
     /// <summary>
@@ -106,18 +67,12 @@ public class TopicBuilderUnitTests
     [Fact]
     public void FromTopic()
     {
-        var topic = MqttTopicBuilder.Builder.Topic.FromString(
-            TestUtils.GenerateValidTopic());
+        var topic = MqttTopicBuilder.Builder.Topic.FromString("sensors/bedroom/temperature");
 
         var builder = TopicBuilder.FromTopic(topic, Consumer.Subscriber);
 
-        builder.Build()
-            .Should()
-            .Be(topic, "because the topic should have been built from the provided one");
-
-        builder.MaxLevel
-            .Should()
-            .Be(topic.Levels, "because the builder should only hold the provided topic");
+        builder.Build().ShouldBe(topic);
+        builder.MaxLevel.ShouldBe(topic.Levels);
     }
 
     /// <summary>
@@ -127,14 +82,12 @@ public class TopicBuilderUnitTests
     [Fact]
     public void FromTopic_WithIllegalConsumer()
     {
-        var wildcardTopic = MqttTopicBuilder.Builder.Topic.FromString(
-            Mqtt.Wildcard.SingleLevel.ToString());
+        var wildcardTopic = MqttTopicBuilder.Builder.Topic.FromString(Mqtt.Wildcard.SingleLevel.ToString());
 
         var creatingPublisherBuilderWithSubscriberTopic
             = () => TopicBuilder.FromTopic(wildcardTopic, Consumer.Publisher);
 
         creatingPublisherBuilderWithSubscriberTopic
-            .Should()
-            .Throw<IllegalTopicConstructionException>("because a wildcard should not be allowed in PUBLISH mode");
+            .ShouldThrow<IllegalTopicConstructionException>();
     }
 }

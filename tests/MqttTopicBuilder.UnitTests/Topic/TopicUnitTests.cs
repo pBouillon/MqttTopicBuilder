@@ -1,9 +1,6 @@
-using FluentAssertions;
-
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Topic;
@@ -19,14 +16,11 @@ public class TopicUnitTests
     [Fact]
     public void Conversion_ExplicitFromTopic()
     {
-        var rawTopic = TestUtils.GenerateValidTopic();
-        var topic = new MqttTopicBuilder.Builder.Topic(rawTopic);
+        var topic = new MqttTopicBuilder.Builder.Topic("sensors/temperature");
 
-        var rawTopicValue = (string) topic;
+        var rawTopicValue = (string)topic;
 
-        rawTopicValue
-            .Should()
-            .Be(rawTopic, "because a topic should have been created using the initial raw value");
+        rawTopicValue.ShouldBe("sensors/temperature");
     }
 
     /// <summary>
@@ -35,13 +29,9 @@ public class TopicUnitTests
     [Fact]
     public void Conversion_ImplicitFromString()
     {
-        var rawTopic = TestUtils.GenerateValidTopic();
+        var topic = (MqttTopicBuilder.Builder.Topic)"sensors/temperature";
 
-        var topic = (MqttTopicBuilder.Builder.Topic) rawTopic;
-
-        topic.Value
-            .Should()
-            .Be(rawTopic, "because a topic should have been created using the initial raw value");
+        topic.Value.ShouldBe("sensors/temperature");
     }
 
     /// <summary>
@@ -54,13 +44,9 @@ public class TopicUnitTests
 
         var topicBuilt = new MqttTopicBuilder.Builder.Topic(emptyTopic);
 
-        topicBuilt.Value
-            .Should()
-            .Be(Mqtt.Topic.Separator.ToString(), "because an empty string will result in the smallest valid topic");
+        topicBuilt.Value.ShouldBe(Mqtt.Topic.Separator.ToString());
 
-        topicBuilt.Levels
-            .Should()
-            .Be(1, "because there is only one level, the smallest one");
+        topicBuilt.Levels.ShouldBe(1);
     }
 
     /// <summary>
@@ -73,9 +59,7 @@ public class TopicUnitTests
 
         var creatingInvalidTopic = () => _ = MqttTopicBuilder.Builder.Topic.FromString(invalidRawTopic);
 
-        creatingInvalidTopic
-            .Should()
-            .Throw<EmptyTopicException>("because two consecutive separators will result in an empty topic");
+        creatingInvalidTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -88,9 +72,7 @@ public class TopicUnitTests
 
         var minimalTopic = MqttTopicBuilder.Builder.Topic.FromString(minimalRawTopic);
 
-        minimalTopic.Value
-            .Should()
-            .Be(Mqtt.Topic.Separator.ToString());
+        minimalTopic.Value.ShouldBe(Mqtt.Topic.Separator.ToString());
     }
 
     /// <summary>
@@ -99,17 +81,11 @@ public class TopicUnitTests
     [Fact]
     public void FromString_FromValidRawTopic()
     {
-        var validRawTopic = TestUtils.GenerateValidTopic();
+        var validTopic = MqttTopicBuilder.Builder.Topic.FromString("sensors/temperature");
 
-        var validTopic = MqttTopicBuilder.Builder.Topic.FromString(validRawTopic);
+        validTopic.Value.ShouldBe("sensors/temperature");
 
-        validTopic.Value
-            .Should()
-            .Be(validRawTopic, "because a valid value will not be altered");
-
-        validTopic.Levels
-            .Should()
-            .Be(validRawTopic.Split(Mqtt.Topic.Separator).Length, "because the same number of level is conserved");
+        validTopic.Levels.ShouldBe(2);
     }
 
     /// <summary>
@@ -118,19 +94,13 @@ public class TopicUnitTests
     [Fact]
     public void FromString_FromValidRawTopicWithTrailingSeparator()
     {
-        var validRawTopic = TestUtils.GenerateValidTopic();
-        var validRawTopicWithTrailingSeparator = validRawTopic + Mqtt.Topic.Separator;
+        var validRawTopicWithTrailingSeparator = "sensors/temperature/";
 
         var validTopic = MqttTopicBuilder.Builder.Topic.FromString(validRawTopicWithTrailingSeparator);
 
-        validTopic.Value
-            .Should()
-            .Be(validRawTopic, "because the separator has been trimmed");
+        validTopic.Value.ShouldBe("sensors/temperature");
 
-        validTopic.Levels
-            .Should()
-            .Be(validRawTopicWithTrailingSeparator.Split(Mqtt.Topic.Separator).Length - 1,
-                "because the trailing separator has been removed");
+        validTopic.Levels.ShouldBe(2);
     }
 
     /// <summary>
@@ -139,15 +109,14 @@ public class TopicUnitTests
     [Fact]
     public void Topic_EqualityCheckBasedOnValue()
     {
-        var rawTopic = TestUtils.GenerateValidTopic();
+        var rawTopic = "sensors/temperature";
+
         var firstTopic = new MqttTopicBuilder.Builder.Topic(rawTopic);
         var secondTopic = new MqttTopicBuilder.Builder.Topic(rawTopic);
 
         var result = firstTopic == secondTopic;
 
-        result
-            .Should()
-            .BeTrue("because both topics are holding the same values");
+        result.ShouldBeTrue();
     }
 
     /// <summary>
@@ -160,14 +129,9 @@ public class TopicUnitTests
 
         var topicBuilt = new MqttTopicBuilder.Builder.Topic(emptyTopic);
 
-        topicBuilt.Value
-            .Should()
-            .Be(Mqtt.Topic.Separator.ToString(),
-                "because an empty string will result in the smallest valid topic");
+        topicBuilt.Value.ShouldBe(Mqtt.Topic.Separator.ToString());
 
-        topicBuilt.Levels
-            .Should()
-            .Be(1, "because there is only one level, the smallest one");
+        topicBuilt.Levels.ShouldBe(1);
     }
 
     /// <summary>
@@ -176,13 +140,9 @@ public class TopicUnitTests
     [Fact]
     public void Topic_FromInvalidRawTopic()
     {
-        var invalidRawTopic = $"{Mqtt.Topic.Separator}{Mqtt.Topic.Separator}";
+        var creatingInvalidTopic = () => _ = new MqttTopicBuilder.Builder.Topic("//");
 
-        var creatingInvalidTopic = () => _ = new MqttTopicBuilder.Builder.Topic(invalidRawTopic);
-
-        creatingInvalidTopic
-            .Should()
-            .Throw<EmptyTopicException>("because two consecutive separators will result in an empty topic");
+        creatingInvalidTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -191,13 +151,9 @@ public class TopicUnitTests
     [Fact]
     public void Topic_FromMinimalTopic()
     {
-        var minimalRawTopic = Mqtt.Topic.Separator.ToString();
+        var minimalTopic = new MqttTopicBuilder.Builder.Topic("/");
 
-        var minimalTopic = new MqttTopicBuilder.Builder.Topic(minimalRawTopic);
-
-        minimalTopic.Value
-            .Should()
-            .Be(Mqtt.Topic.Separator.ToString());
+        minimalTopic.Value.ShouldBe(Mqtt.Topic.Separator.ToString());
     }
 
     /// <summary>
@@ -206,18 +162,11 @@ public class TopicUnitTests
     [Fact]
     public void Topic_FromValidRawTopic()
     {
-        var validRawTopic = TestUtils.GenerateValidTopic();
+        var validTopic = new MqttTopicBuilder.Builder.Topic("sensors/bedroom/temperature");
 
-        var validTopic = new MqttTopicBuilder.Builder.Topic(validRawTopic);
+        validTopic.Value.ShouldBe("sensors/bedroom/temperature");
 
-        validTopic.Value
-            .Should()
-            .Be(validRawTopic, "because a valid value will not be altered");
-
-        validTopic.Levels
-            .Should()
-            .Be(validRawTopic.Split(Mqtt.Topic.Separator).Length,
-                "because the same number of level is conserved");
+        validTopic.Levels.ShouldBe(3);
     }
 
     /// <summary>
@@ -226,18 +175,11 @@ public class TopicUnitTests
     [Fact]
     public void Topic_FromValidRawTopicWithTrailingSeparator()
     {
-        var validRawTopic = TestUtils.GenerateValidTopic();
-        var validRawTopicWithTrailingSeparator = validRawTopic + Mqtt.Topic.Separator;
-
+        var validRawTopicWithTrailingSeparator = "sensors/bedroom/temperature/";
         var validTopic = new MqttTopicBuilder.Builder.Topic(validRawTopicWithTrailingSeparator);
 
-        validTopic.Value
-            .Should()
-            .Be(validRawTopic, "because the separator has been trimmed");
+        validTopic.Value.ShouldBe("sensors/bedroom/temperature");
 
-        validTopic.Levels
-            .Should()
-            .Be(validRawTopicWithTrailingSeparator.Split(Mqtt.Topic.Separator).Length - 1,
-                "because the trailing separator has been removed");
+        validTopic.Levels.ShouldBe(3);
     }
 }

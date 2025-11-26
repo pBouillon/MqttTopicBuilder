@@ -1,13 +1,8 @@
-using System.Collections.Generic;
-
-using AutoFixture;
-
-using FluentAssertions;
-
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-
+using Shouldly;
+using System.Collections.Generic;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;
@@ -19,23 +14,16 @@ namespace MqttTopicBuilder.UnitTests.Builder;
 public class PublisherTopicBuilderUnitTests
 {
     /// <summary>
-    /// Private instance of <see cref="IFixture"/> for test data generation purposes
-    /// </summary>
-    private static readonly IFixture Fixture = new Fixture();
-
-    /// <summary>
     /// Ensure that the appending of a multi-level wildcard is correctly made
     /// </summary>
     [Fact]
     public void AddMultiLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
-        var addMultiLevelWildcard = () => builder = builder.AddMultiLevelWildcard();
+        var addMultiLevelWildcard = () => builder.AddMultiLevelWildcard();
 
-        addMultiLevelWildcard
-            .Should()
-            .Throw<IllegalStateOperationException>("because a topic used on PUBLISH mode cannot use wildcard");
+        addMultiLevelWildcard.ShouldThrow<IllegalStateOperationException>();
     }
 
     /// <summary>
@@ -44,13 +32,11 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddSingleLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
-        var addSingleLevelWildcard = () => builder = builder.AddMultiLevelWildcard();
+        var addSingleLevelWildcard = () => builder.AddMultiLevelWildcard();
 
-        addSingleLevelWildcard
-            .Should()
-            .Throw<IllegalStateOperationException>("because a topic used on PUBLISH mode cannot use wildcard");
+        addSingleLevelWildcard.ShouldThrow<IllegalStateOperationException>();
     }
 
     /// <summary>
@@ -59,13 +45,11 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnBlankTopic()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
         var appendingEmptyTopic = () => builder.AddTopic(string.Empty);
 
-        appendingEmptyTopic
-            .Should()
-            .Throw<EmptyTopicException>("because an empty topic is not a valid one to be added");
+        appendingEmptyTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -75,14 +59,11 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnMultiLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
-        var addSingleLevelWildcard = () => builder = builder.AddTopic(
-                Mqtt.Wildcard.MultiLevel.ToString());
+        var addSingleLevelWildcard = () => builder.AddTopic(Mqtt.Wildcard.MultiLevel.ToString());
 
-        addSingleLevelWildcard
-            .Should()
-            .Throw<IllegalTopicConstructionException>("because a topic used on PUBLISH mode cannot use wildcard");
+        addSingleLevelWildcard.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     /// <summary>
@@ -92,14 +73,11 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnSingleLevelWildcard()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
-        var addSingleLevelWildcard = () => builder = builder.AddTopic(
-                Mqtt.Wildcard.SingleLevel.ToString());
+        var addSingleLevelWildcard = () => builder.AddTopic(Mqtt.Wildcard.SingleLevel.ToString());
 
-        addSingleLevelWildcard
-            .Should()
-            .Throw<IllegalTopicConstructionException>("because a topic used on PUBLISH mode cannot use wildcard");
+        addSingleLevelWildcard.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     /// <summary>
@@ -108,14 +86,11 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnTopicSeparator()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
-        var appendingTopic = () => builder.AddTopic(
-                Mqtt.Topic.Separator.ToString());
+        var appendingTopic = () => builder.AddTopic(Mqtt.Topic.Separator.ToString());
 
-        appendingTopic
-            .Should()
-            .Throw<InvalidTopicException>("because the topic separator is not a valid topic to be appended");
+        appendingTopic.ShouldThrow<InvalidTopicException>();
     }
 
     /// <summary>
@@ -124,17 +99,14 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnValidTopic()
     {
-        var addCount = Fixture.Create<int>();
-        ITopicBuilder builder = new TopicBuilder(addCount + 1, Consumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(5, Consumer.Publisher);
 
-        for (var i = 0; i < addCount; ++i)
-        {
-            builder = builder.AddTopic(Fixture.Create<string>());
-        }
+        builder = builder
+            .AddTopic("sensors")
+            .AddTopic("bedroom")
+            .AddTopic("temperature");
 
-        builder.Levels
-            .Should()
-            .Be(addCount, "because there should be as many levels as topics added");
+        builder.Levels.ShouldBe(3);
     }
 
     /// <summary>
@@ -143,18 +115,17 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopics_OnTopicsWithMultiLevelWildcard()
     {
-        var topics = Fixture.Create<List<string>>();
-        topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
-        topics.AddRange(Fixture.Create<List<string>>());
+        string[] topics = [
+            "sensors",
+            Mqtt.Wildcard.MultiLevel.ToString(),
+            "temperature",
+        ];
 
-        ITopicBuilder builder = new TopicBuilder(topics.Count + 1, Consumer.Publisher);
+        var builder = new TopicBuilder(Consumer.Publisher);
 
         var addTopicsWithAMultiLevelWildcard = () => builder.AddTopics(topics);
 
-        addTopicsWithAMultiLevelWildcard
-            .Should()
-            .Throw<IllegalTopicConstructionException>(
-                "because adding a multi-level wildcard among other topics is not valid");
+        addTopicsWithAMultiLevelWildcard.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     /// <summary>
@@ -163,13 +134,10 @@ public class PublisherTopicBuilderUnitTests
     [Fact]
     public void AddTopics_OnValidTopics()
     {
-        var topics = Fixture.Create<string[]>();
-        ITopicBuilder builder = new TopicBuilder(topics.Length + 1, Consumer.Publisher);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Publisher);
 
-        builder = builder.AddTopics(topics);
+        builder = builder.AddTopics(["sensors", "bedroom", "temperature"]);
 
-        builder.Levels
-            .Should()
-            .Be(topics.Length, "because all topics should have been added");
+        builder.Levels.ShouldBe(3);
     }
 }

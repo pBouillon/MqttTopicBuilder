@@ -1,12 +1,7 @@
-using System.Linq;
-
-using FluentAssertions;
-
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators;
@@ -26,9 +21,7 @@ public class TopicValidatorUnitTests
 
         var validatingBlankTopic = () => blankTopic.ValidateTopicForAppending();
 
-        validatingBlankTopic
-            .Should()
-            .Throw<EmptyTopicException>("because a topic can not be empty");
+        validatingBlankTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -37,13 +30,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnMultiLevelWildcard()
     {
-        var multiLevelWildcard = Mqtt.Wildcard.MultiLevel.ToString();
+        var validatingTopic = () => "#".ValidateTopicForAppending();
 
-        var validatingTopic = () => multiLevelWildcard.ValidateTopicForAppending();
-
-        validatingTopic
-            .Should()
-            .NotThrow<MqttBaseException>("because a single wildcard is allowed to be appended");
+        validatingTopic.ShouldNotThrow();
     }
 
     /// <summary>
@@ -52,11 +41,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnNonUtf8Topic()
     {
-        const string nonUtf8Topic = "non🌱utf🛠8🐛";
+        var validatingNonUtf8Topic = () => "non🌱utf8".ValidateTopicForAppending();
 
-        var validatingNonUtf8Topic = () => nonUtf8Topic.ValidateTopicForAppending();
-
-        validatingNonUtf8Topic.Should().Throw<InvalidTopicException>();
+        validatingNonUtf8Topic.ShouldThrow<InvalidTopicException>();
     }
 
     /// <summary>
@@ -65,13 +52,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnSeparator()
     {
-        var separatorTopic = Mqtt.Topic.Separator.ToString();
+        var validatingSeparator = () => "/".ValidateTopicForAppending();
 
-        var validatingSeparator = () => separatorTopic.ValidateTopicForAppending();
-
-        validatingSeparator
-            .Should()
-            .Throw<InvalidTopicException>("because appending the separator will result in an empty level");
+        validatingSeparator.ShouldThrow<InvalidTopicException>();
     }
 
     /// <summary>
@@ -80,13 +63,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnSeveralWildcards()
     {
-        var mixedWildcards = $"{Mqtt.Wildcard.SingleLevel}{Mqtt.Wildcard.SingleLevel}";
+        var validatingTopic = () => "++".ValidateTopicForAppending();
 
-        var validatingTopic = () => mixedWildcards.ValidateTopicForAppending();
-
-        validatingTopic
-            .Should()
-            .Throw<InvalidTopicException>("because only one wildcard may be used on a single level");
+        validatingTopic.ShouldThrow<InvalidTopicException>("because only one wildcard may be used on a single level");
     }
 
     /// <summary>
@@ -99,9 +78,7 @@ public class TopicValidatorUnitTests
 
         var validatingTooLongTopic = () => tooLongTopic.ValidateTopicForAppending();
 
-        validatingTooLongTopic
-            .Should()
-            .Throw<TooLongTopicException>("because a topic must not exceed the size limit");
+        validatingTooLongTopic.ShouldThrow<TooLongTopicException>();
     }
 
     /// <summary>
@@ -110,13 +87,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopicForAppending_OnSingleLevelWildcard()
     {
-        var singleLevelWildcard = Mqtt.Wildcard.SingleLevel.ToString();
+        var validatingTopic = () => "+".ValidateTopicForAppending();
 
-        var validatingTopic = () => singleLevelWildcard.ValidateTopicForAppending();
-
-        validatingTopic
-            .Should()
-            .NotThrow<MqttBaseException>("because a single wildcard is allowed to be appended");
+        validatingTopic.ShouldNotThrow();
     }
 
     /// <summary>
@@ -125,13 +98,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnBlankTopic()
     {
-        var blankTopic = string.Empty;
+        var validatingBlankTopic = () => TopicValidator.ValidateTopic(string.Empty);
 
-        var validatingBlankTopic = () => TopicValidator.ValidateTopic(blankTopic);
-
-        validatingBlankTopic
-            .Should()
-            .Throw<EmptyTopicException>("because a topic can not be empty");
+        validatingBlankTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -140,13 +109,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnMinimalTopic()
     {
-        var minimalValidTopic = Mqtt.Topic.Separator.ToString();
+        var validatingTopic = () => TopicValidator.ValidateTopic("/");
 
-        var validatingTopic = () => TopicValidator.ValidateTopic(minimalValidTopic);
-
-        validatingTopic
-            .Should()
-            .NotThrow<MqttBaseException>("because the topic is minimal yet allowed");
+        validatingTopic.ShouldNotThrow();
     }
 
     /// <summary>
@@ -155,13 +120,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnNonUtf8Topic()
     {
-        const string nonUtf8Topic = "non/🌱/utf/🛠/8/🐛";
+        var validatingNonUtf8Topic = () => TopicValidator.ValidateTopic("non/🌱/utf8");
 
-        var validatingNonUtf8Topic = () => TopicValidator.ValidateTopic(nonUtf8Topic);
-
-        validatingNonUtf8Topic
-            .Should()
-            .Throw<InvalidTopicException>();
+        validatingNonUtf8Topic.ShouldThrow<InvalidTopicException>();
     }
 
     /// <summary>
@@ -171,15 +132,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnMultiLevelWildcardsBeforeTopicEnd()
     {
-        var topicWithMultiLevelWildcardBeforeEnd = $"{Mqtt.Topic.Separator}{Mqtt.Wildcard.MultiLevel}";
-        topicWithMultiLevelWildcardBeforeEnd += $"{Mqtt.Topic.Separator}{TestUtils.GenerateValidTopic()}";
+        var validatingTopicWithMultiLevelWildcardsBeforeEnd = () => TopicValidator.ValidateTopic("sensors/#/bedroom");
 
-        var validatingTopicWithMultiLevelWildcardsBeforeEnd = () => TopicValidator.ValidateTopic(topicWithMultiLevelWildcardBeforeEnd);
-
-        validatingTopicWithMultiLevelWildcardsBeforeEnd
-            .Should()
-            .Throw<IllegalTopicConstructionException>(
-                    "because a multi-level wildcard may only be used anywhere but at the end of a topic");
+        validatingTopicWithMultiLevelWildcardsBeforeEnd.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     /// <summary>
@@ -188,17 +143,9 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnMultiLevelWildcardsTopic()
     {
-        var multiLevelWildcardsTopic = TestUtils.GenerateValidTopic(
-            Mqtt.Topic.MaximumAllowedLevels - 2);
+        var validatingMultiLevelWildcardTopic = () => TopicValidator.ValidateTopic("sensors/#/bedroom/#");
 
-        multiLevelWildcardsTopic += string.Concat(
-            Enumerable.Repeat($"{Mqtt.Topic.Separator}{Mqtt.Wildcard.MultiLevel}", 2));
-
-        var validatingMultiLevelWildcardTopic = () => TopicValidator.ValidateTopic(multiLevelWildcardsTopic);
-
-        validatingMultiLevelWildcardTopic
-            .Should()
-            .Throw<IllegalTopicConstructionException>();
+        validatingMultiLevelWildcardTopic.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     /// <summary>
@@ -207,12 +154,8 @@ public class TopicValidatorUnitTests
     [Fact]
     public void ValidateTopic_OnValidTopic()
     {
-        var validRawTopic = TestUtils.GenerateValidTopic();
+        var validatingMinimalTopic = () => TopicValidator.ValidateTopic("sensors/temperature/bedroom");
 
-        var validatingMinimalTopic = () => TopicValidator.ValidateTopic(validRawTopic);
-
-        validatingMinimalTopic
-            .Should()
-            .NotThrow<MqttBaseException>("because the topic is correctly built");
+        validatingMinimalTopic.ShouldNotThrow();
     }
 }

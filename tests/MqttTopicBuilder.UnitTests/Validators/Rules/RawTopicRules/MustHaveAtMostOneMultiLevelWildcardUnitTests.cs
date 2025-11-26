@@ -1,12 +1,6 @@
-using AutoFixture;
-
-using FluentAssertions;
-
-using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
@@ -16,10 +10,7 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
 /// </summary>
 public class MustHaveAtMostOneMultiLevelWildcardUnitTests
 {
-    /// <summary>
-    /// Private instance of <see cref="IFixture"/> for test data generation purposes
-    /// </summary>
-    private static readonly IFixture Fixture = new Fixture();
+    private readonly MustHaveAtMostOneMultiLevelWildcard _rule = new();
 
     /// <summary>
     /// Ensure that a topic containing two or more wildcard will break the rule
@@ -27,15 +18,9 @@ public class MustHaveAtMostOneMultiLevelWildcardUnitTests
     [Fact]
     public void Validate_OnMoreThanOneWildcard()
     {
-        var wildcardsCount = Fixture.Create<int>() + 2;
-        var rawTopic = new string(Mqtt.Wildcard.MultiLevel, wildcardsCount);
-        var rule = new MustHaveAtMostOneMultiLevelWildcard();
+        var validatingRawTopic = () => _rule.Validate("##");
 
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<IllegalTopicConstructionException>("because there is more than one wildcard, which is forbidden");
+        validatingRawTopic.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     /// <summary>
@@ -44,14 +29,9 @@ public class MustHaveAtMostOneMultiLevelWildcardUnitTests
     [Fact]
     public void Validate_OnNoWildcards()
     {
-        var rawTopic = TestUtils.GenerateSingleValidTopic();
-        var rule = new MustHaveAtMostOneMultiLevelWildcard();
+        var validatingRawTopic = () => _rule.Validate("sensors");
 
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .NotThrow<IllegalTopicConstructionException>("because the wildcard count is not violated");
+        validatingRawTopic.ShouldNotThrow();
     }
 
     /// <summary>
@@ -60,13 +40,8 @@ public class MustHaveAtMostOneMultiLevelWildcardUnitTests
     [Fact]
     public void Validate_OnOneWildcard()
     {
-        var rawTopic = Mqtt.Wildcard.MultiLevel.ToString();
-        var rule = new MustHaveAtMostOneMultiLevelWildcard();
+        var validatingRawTopic = () => _rule.Validate("#");
 
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .NotThrow<IllegalTopicConstructionException>("because the wildcard count is not violated");
+        validatingRawTopic.ShouldNotThrow();
     }
 }

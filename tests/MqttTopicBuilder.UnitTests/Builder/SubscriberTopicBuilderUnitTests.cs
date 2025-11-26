@@ -1,13 +1,7 @@
-using System.Collections.Generic;
-
-using AutoFixture;
-
-using FluentAssertions;
-
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;
@@ -18,10 +12,6 @@ namespace MqttTopicBuilder.UnitTests.Builder;
 /// </summary>
 public class SubscriberTopicBuilderUnitTests
 {
-    /// <summary>
-    /// Private instance of <see cref="IFixture"/> for test data generation purposes
-    /// </summary>
-    private static readonly IFixture Fixture = new Fixture();
 
     /// <summary>
     /// Ensure that the appending of a multi-level wildcard is correctly made
@@ -33,13 +23,8 @@ public class SubscriberTopicBuilderUnitTests
 
         builder = builder.AddMultiLevelWildcard();
 
-        builder.Levels
-            .Should()
-            .Be(1, "because the wildcard consist of one level");
-
-        builder.IsAppendingAllowed
-            .Should()
-            .BeFalse("because no addition should be allowed after a multi-level wildcard");
+        builder.Levels.ShouldBe(1);
+        builder.IsAppendingAllowed.ShouldBeFalse();
     }
 
     /// <summary>
@@ -52,13 +37,8 @@ public class SubscriberTopicBuilderUnitTests
 
         builder = builder.AddSingleLevelWildcard();
 
-        builder.Levels
-            .Should()
-            .Be(1, "because the wildcard consist of one level");
-
-        builder.IsAppendingAllowed
-            .Should()
-            .BeTrue("because a single level wildcard should not block topic appending");
+        builder.Levels.ShouldBe(1);
+        builder.IsAppendingAllowed.ShouldBeTrue();
     }
 
     /// <summary>
@@ -67,13 +47,11 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnBlankTopic()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
+        var builder = new TopicBuilder(Consumer.Subscriber);
 
         var appendingEmptyTopic = () => builder.AddTopic(string.Empty);
 
-        appendingEmptyTopic
-            .Should()
-            .Throw<EmptyTopicException>("because an empty topic is not a valid one to be added");
+        appendingEmptyTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -85,16 +63,10 @@ public class SubscriberTopicBuilderUnitTests
     {
         ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
-        builder = builder.AddTopic(
-            Mqtt.Wildcard.MultiLevel.ToString());
+        builder = builder.AddTopic(Mqtt.Wildcard.MultiLevel.ToString());
 
-        builder.Levels
-            .Should()
-            .Be(1, "because the wildcard consist of one level");
-
-        builder.IsAppendingAllowed
-            .Should()
-            .BeFalse("because no addition should be allowed after a multi-level wildcard");
+        builder.Levels.ShouldBe(1);
+        builder.IsAppendingAllowed.ShouldBeFalse();
     }
 
     /// <summary>
@@ -106,16 +78,10 @@ public class SubscriberTopicBuilderUnitTests
     {
         ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
-        builder = builder.AddTopic(
-            Mqtt.Wildcard.SingleLevel.ToString());
+        builder = builder.AddTopic(Mqtt.Wildcard.SingleLevel.ToString());
 
-        builder.Levels
-            .Should()
-            .Be(1, "because the wildcard consist of one level");
-
-        builder.IsAppendingAllowed
-            .Should()
-            .BeTrue("because a topic appending is allowed after a single-level wildcard");
+        builder.Levels.ShouldBe(1);
+        builder.IsAppendingAllowed.ShouldBeTrue();
     }
 
     /// <summary>
@@ -124,14 +90,11 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnTopicSeparator()
     {
-        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
+        var builder = new TopicBuilder(Consumer.Subscriber);
 
-        var appendingTopic = () => builder.AddTopic(
-                Mqtt.Topic.Separator.ToString());
+        var appendingTopic = () => builder.AddTopic(Mqtt.Topic.Separator.ToString());
 
-        appendingTopic
-            .Should()
-            .Throw<InvalidTopicException>("because the topic separator is not a valid topic to be appended");
+        appendingTopic.ShouldThrow<InvalidTopicException>();
     }
 
     /// <summary>
@@ -140,17 +103,12 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopic_OnValidTopic()
     {
-        var addCount = Fixture.Create<int>();
-        ITopicBuilder builder = new TopicBuilder(addCount + 1, Consumer.Subscriber);
+        var builder = new TopicBuilder(Consumer.Subscriber)
+            .AddTopic("sensors")
+            .AddTopic("bedroom")
+            .AddTopic("temperature");
 
-        for (var i = 0; i < addCount; ++i)
-        {
-            builder = builder.AddTopic(Fixture.Create<string>());
-        }
-
-        builder.Levels
-            .Should()
-            .Be(addCount, "because there should be as many levels as topics added");
+        builder.Levels.ShouldBe(3);
     }
 
     /// <summary>
@@ -159,19 +117,19 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopics_OnTopicsWithMultiLevelWildcard()
     {
-        var topics = Fixture.Create<List<string>>();
-        topics.Add(Mqtt.Wildcard.MultiLevel.ToString());
-        topics.AddRange(Fixture.Create<List<string>>());
+        string[] topics = [
+            "sensors",
+            Mqtt.Wildcard.MultiLevel.ToString(),
+            "temperature",
+        ];
 
-        ITopicBuilder builder = new TopicBuilder(topics.Count + 1, Consumer.Subscriber);
+        var builder = new TopicBuilder(Consumer.Subscriber);
 
         var addTopicsWithAMultiLevelWildcard = () => builder.AddTopics(topics);
 
-        addTopicsWithAMultiLevelWildcard
-            .Should()
-            .Throw<IllegalTopicConstructionException>(
-                "because adding a multi-level wildcard among other topics is not valid");
+        addTopicsWithAMultiLevelWildcard.ShouldThrow<IllegalTopicConstructionException>();
     }
+
 
     /// <summary>
     /// Ensure that multiple topics can successfully be added at once
@@ -179,13 +137,12 @@ public class SubscriberTopicBuilderUnitTests
     [Fact]
     public void AddTopics_OnValidTopics()
     {
-        var topics = Fixture.Create<string[]>();
-        ITopicBuilder builder = new TopicBuilder(topics.Length + 1, Consumer.Subscriber);
 
-        builder = builder.AddTopics(topics);
+        ITopicBuilder builder = new TopicBuilder(Consumer.Subscriber);
 
-        builder.Levels
-            .Should()
-            .Be(topics.Length, "because all topics should have been added");
+        builder = builder.AddTopics(["sensors", "bedroom", "temperature"]);
+
+        builder.Levels.ShouldBe(3);
+
     }
 }

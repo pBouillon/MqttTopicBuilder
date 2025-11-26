@@ -1,13 +1,9 @@
-using AutoFixture;
-
-using FluentAssertions;
-
-using Moq;
+using FakeItEasy;
 
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;
@@ -17,10 +13,6 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;
 /// </summary>
 public class MustNotBeFullUnitTests
 {
-    /// <summary>
-    /// Private instance of <see cref="IFixture"/> for test data generation purposes
-    /// </summary>
-    private static readonly IFixture Fixture = new Fixture();
 
     /// <summary>
     /// Ensure that a collection that is full
@@ -29,27 +21,16 @@ public class MustNotBeFullUnitTests
     [Fact]
     public void Validate_OnFullCollection()
     {
-        // Ensure that this level is at least 1
-        var maxLevel = Fixture.Create<int>() + 1;
-        var level = maxLevel;
+        var topicCollection = A.Fake<ITopicCollection>();
 
-        var topicCollectionMock = new Mock<ITopicCollection>();
+        A.CallTo(() => topicCollection.Levels).Returns(3);
+        A.CallTo(() => topicCollection.MaxLevel).Returns(3);
 
-        topicCollectionMock.Setup(_ => _.Levels)
-            .Returns(level);
+        var validatingCollectionStatus = () => new MustNotBeFull().Validate(topicCollection);
 
-        topicCollectionMock.Setup(_ => _.MaxLevel)
-            .Returns(maxLevel);
-
-        var topicCollection = topicCollectionMock.Object;
-
-        var validatingCollectionStatus = () => new MustNotBeFull()
-                .Validate(topicCollection);
-
-        validatingCollectionStatus
-            .Should()
-            .Throw<TooManyTopicsAppendingException>("because the collection has as many levels as it can contains");
+        validatingCollectionStatus.ShouldThrow<TooManyTopicsAppendingException>();
     }
+
 
     /// <summary>
     /// Ensure that a collection that is not full will pass the rule
@@ -57,25 +38,13 @@ public class MustNotBeFullUnitTests
     [Fact]
     public void Validate_OnNotFullCollection()
     {
-        // Ensure that this level is at least 1
-        var maxLevel = Fixture.Create<int>() + 1;
-        var level = maxLevel - 1;
+        var topicCollection = A.Fake<ITopicCollection>();
 
-        var topicCollectionMock = new Mock<ITopicCollection>();
+        A.CallTo(() => topicCollection.Levels).Returns(3);
+        A.CallTo(() => topicCollection.MaxLevel).Returns(5);
 
-        topicCollectionMock.Setup(_ => _.Levels)
-            .Returns(level);
+        var validatingCollectionStatus = () => new MustNotBeFull().Validate(topicCollection);
 
-        topicCollectionMock.Setup(_ => _.MaxLevel)
-            .Returns(maxLevel);
-
-        var topicCollection = topicCollectionMock.Object;
-
-        var validatingCollectionStatus = () => new MustNotBeFull()
-                .Validate(topicCollection);
-
-        validatingCollectionStatus
-            .Should()
-            .NotThrow<TooManyTopicsAppendingException>("because the collection has less levels than it can contains");
+        validatingCollectionStatus.ShouldNotThrow();
     }
 }

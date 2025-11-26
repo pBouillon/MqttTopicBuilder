@@ -1,11 +1,6 @@
-using AutoFixture;
-
-using FluentAssertions;
-
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
@@ -15,10 +10,7 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
 /// </summary>
 public class MustNotBeBlankUnitTests
 {
-    /// <summary>
-    /// Private instance of <see cref="IFixture"/> for test data generation purposes
-    /// </summary>
-    private static readonly IFixture Fixture = new Fixture();
+    private readonly MustNotBeBlank _rule = new();
 
     /// <summary>
     /// Ensure that a topic containing only whitespaces will break the rule
@@ -26,16 +18,9 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnBlankString()
     {
-        var whitespaceCount = Fixture.Create<int>() + 1;
-        var rawTopic = new string(' ', whitespaceCount);
+        var validatingRawTopic = () => _rule.Validate("   ");
 
-        var rule = new MustNotBeBlank();
-
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<EmptyTopicException>("because a blank topic should break the rule");
+        validatingRawTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -44,15 +29,9 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnEmptyString()
     {
-        var rawTopic = string.Empty;
+        var validatingRawTopic = () => _rule.Validate(string.Empty);
 
-        var rule = new MustNotBeBlank();
-
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<EmptyTopicException>("because an empty topic should break the rule");
+        validatingRawTopic.ShouldThrow<EmptyTopicException>();
     }
 
     /// <summary>
@@ -61,14 +40,9 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnNonEmptyString()
     {
-        var rawTopic = TestUtils.GenerateSingleValidTopic();
-        var rule = new MustNotBeBlank();
+        var validatingRawTopic = () => _rule.Validate("sensors");
 
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .NotThrow<EmptyTopicException>("because a topic with a valid value should not break the rule");
+        validatingRawTopic.ShouldNotThrow();
     }
 
     /// <summary>
@@ -77,14 +51,8 @@ public class MustNotBeBlankUnitTests
     [Fact]
     public void Validate_OnNullString()
     {
-        string rawTopic = null;
+        var validatingRawTopic = () => _rule.Validate(null);
 
-        var rule = new MustNotBeBlank();
-
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<EmptyTopicException>("because an null topic should break the rule");
+        validatingRawTopic.ShouldThrow<EmptyTopicException>();
     }
 }

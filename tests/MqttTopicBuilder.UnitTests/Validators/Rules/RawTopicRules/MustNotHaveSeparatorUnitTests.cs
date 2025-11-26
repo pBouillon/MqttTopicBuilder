@@ -1,10 +1,6 @@
-using FluentAssertions;
-
-using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
@@ -14,6 +10,8 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
 /// </summary>
 public class MustNotHaveSeparatorUnitTests
 {
+    private readonly MustNotHaveSeparator _rule = new();
+
     /// <summary>
     /// Ensure that a topic that does not contain a separator will not
     /// break the rule
@@ -21,14 +19,9 @@ public class MustNotHaveSeparatorUnitTests
     [Fact]
     public void Validate_OnNoSeparator()
     {
-        var rawTopic = TestUtils.GenerateSingleValidTopic();
-        var rule = new MustNotHaveSeparator();
+        var validatingRawTopic = () => _rule.Validate("sensors");
 
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .NotThrow<InvalidTopicException>("because the topic does not contains a separator");
+        validatingRawTopic.ShouldNotThrow();
     }
 
     /// <summary>
@@ -37,14 +30,9 @@ public class MustNotHaveSeparatorUnitTests
     [Fact]
     public void Validate_OnSeparatorOnly()
     {
-        var rawTopic = Mqtt.Topic.Separator.ToString();
-        var rule = new MustNotHaveSeparator();
+        var validatingRawTopic = () => _rule.Validate("/");
 
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<InvalidTopicException>("because a unique separator is as invalid as one within a longer string");
+        validatingRawTopic.ShouldThrow<InvalidTopicException>();
     }
 
     /// <summary>
@@ -53,16 +41,8 @@ public class MustNotHaveSeparatorUnitTests
     [Fact]
     public void Validate_OnSeveralSeparators()
     {
-        var rawTopic = TestUtils.GenerateSingleValidTopic()
-                       + Mqtt.Topic.Separator
-                       + TestUtils.GenerateSingleValidTopic();
+        var validatingRawTopic = () => _rule.Validate("sens/ors");
 
-        var rule = new MustNotHaveSeparator();
-
-        var validatingRawTopic = () => rule.Validate(rawTopic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<InvalidTopicException>("because a separator within a topic is not allowed");
+        validatingRawTopic.ShouldThrow<InvalidTopicException>();
     }
 }

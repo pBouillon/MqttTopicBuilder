@@ -1,10 +1,6 @@
-using FluentAssertions;
-
-using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
-using MqttTopicBuilder.UnitTests.Utils;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
@@ -14,67 +10,37 @@ namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;
 /// </summary>
 public class MustEndWithMultiLevelWildcardIfAnyUnitTests
 {
+    private readonly MustEndWithMultiLevelWildcardIfAny _rule = new();
+
     [Fact]
     public void Validate_RawTopicWithSeveralWildcards()
     {
-        var topic = TestUtils.GenerateSingleValidTopic() + Mqtt.Topic.Separator
-                                                         + Mqtt.Wildcard.MultiLevel + Mqtt.Topic.Separator
-                                                         + Mqtt.Wildcard.MultiLevel;
+        var validatingRawTopic = () => _rule.Validate("sensors/#/#");
 
-        var rule = new MustEndWithMultiLevelWildcardIfAny();
-
-        var validatingRawTopic = () => rule.Validate(topic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<IllegalTopicConstructionException>("because at most one multi-level wildcard is allowed");
+        validatingRawTopic.ShouldThrow<IllegalTopicConstructionException>();
     }
 
     [Fact]
     public void Validate_RawTopicWithWildcardAndSlashAsLastChars()
     {
-        var topic = TestUtils.GenerateSingleValidTopic() + Mqtt.Topic.Separator
-                                                         + Mqtt.Wildcard.MultiLevel + Mqtt.Topic.Separator;
+        var validatingRawTopic = () => _rule.Validate("sensors/#/");
 
-        var rule = new MustEndWithMultiLevelWildcardIfAny();
-
-        var validatingRawTopic = () => rule.Validate(topic);
-
-        validatingRawTopic
-            .Should()
-            .NotThrow<IllegalTopicConstructionException>("because a final separator should not make the test fail");
+        validatingRawTopic.ShouldNotThrow();
     }
 
     [Fact]
     public void Validate_RawTopicWithWildcardAsLastChar()
     {
-        var topic = TestUtils.GenerateSingleValidTopic() + Mqtt.Topic.Separator
-                                                         + Mqtt.Wildcard.MultiLevel;
+        var validatingRawTopic = () => _rule.Validate("sensors/#");
 
-        var rule = new MustEndWithMultiLevelWildcardIfAny();
-
-        var validatingRawTopic = () => rule.Validate(topic);
-
-        validatingRawTopic
-            .Should()
-            .NotThrow<IllegalTopicConstructionException>(
-                "because ending a topic with a multi-level wildcard is a valid behavior");
+        validatingRawTopic.ShouldNotThrow();
     }
 
     [Fact]
     public void Validate_RawTopicWithWildcardInItsMiddle()
     {
-        var topic = TestUtils.GenerateSingleValidTopic() + Mqtt.Topic.Separator
-                                                         + Mqtt.Wildcard.MultiLevel + Mqtt.Topic.Separator
-                                                         + TestUtils.GenerateSingleValidTopic();
+        var validatingRawTopic = () => _rule.Validate("sensors/#/temperature");
 
-        var rule = new MustEndWithMultiLevelWildcardIfAny();
-
-        var validatingRawTopic = () => rule.Validate(topic);
-
-        validatingRawTopic
-            .Should()
-            .Throw<IllegalTopicConstructionException>(
-                "because a multi-level wildcard is allowed only at the end of the topic");
+        validatingRawTopic.ShouldThrow<IllegalTopicConstructionException>();
     }
 }

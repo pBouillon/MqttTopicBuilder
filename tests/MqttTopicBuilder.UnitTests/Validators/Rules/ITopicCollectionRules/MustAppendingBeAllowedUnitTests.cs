@@ -1,11 +1,9 @@
-using FluentAssertions;
-
-using Moq;
+using FakeItEasy;
 
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
-
+using Shouldly;
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;
@@ -22,19 +20,13 @@ public class MustAppendingBeAllowedUnitTests
     [Fact]
     public void Validate_OnAppendingAllowed()
     {
-        var topicCollectionMock = new Mock<ITopicCollection>();
+        var topicCollection = A.Fake<ITopicCollection>();
 
-        topicCollectionMock
-            .Setup(_ => _.IsAppendingAllowed)
-            .Returns(true);
-
-        var topicCollection = topicCollectionMock.Object;
+        A.CallTo(() => topicCollection.IsAppendingAllowed).Returns(true);
 
         var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed().Validate(topicCollection);
 
-        validatingCollectionAppendingAllowance
-            .Should()
-            .NotThrow<IllegalTopicConstructionException>("because the collection can accept another topic");
+        validatingCollectionAppendingAllowance.ShouldNotThrow();
     }
 
     /// <summary>
@@ -44,18 +36,12 @@ public class MustAppendingBeAllowedUnitTests
     [Fact]
     public void Validate_OnAppendingNotAllowed()
     {
-        var topicCollectionMock = new Mock<ITopicCollection>();
+        var topicCollection = A.Fake<ITopicCollection>();
 
-        topicCollectionMock
-            .Setup(_ => _.IsAppendingAllowed)
-            .Returns(false);
-
-        var topicCollection = topicCollectionMock.Object;
+        A.CallTo(() => topicCollection.IsAppendingAllowed).Returns(false);
 
         var validatingCollectionAppendingAllowance = () => new MustAppendingBeAllowed().Validate(topicCollection);
 
-        validatingCollectionAppendingAllowance
-            .Should()
-            .Throw<IllegalTopicConstructionException>("because the collection cannot accept another topic");
+        validatingCollectionAppendingAllowance.ShouldThrow<IllegalTopicConstructionException>();
     }
 }
