@@ -5,9 +5,11 @@
 </h1>
 
 <p align="center">
-    [![NuGet](https://img.shields.io/nuget/v/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
-    [![NuGet Downloads](https://img.shields.io/nuget/dt/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
-    [![License](https://img.shields.io/github/license/pBouillon/MqttTopicBuilder.svg)](https://github.com/pBouillon/MqttTopicBuilder/blob/main/LICENSE)
+    <a href="https://www.nuget.org/packages/MqttTopicBuilder/"><img src="https://img.shields.io/nuget/v/MqttTopicBuilder.svg" alt="NuGet"></a>
+    &nbsp;&nbsp;
+    <a href="https://www.nuget.org/packages/MqttTopicBuilder/"><img src="https://img.shields.io/nuget/dt/MqttTopicBuilder.svg" alt="NuGet Downloads"></a>
+    &nbsp;&nbsp;
+    <a href="https://github.com/pBouillon/MqttTopicBuilder/blob/main/LICENSE"><img src="https://img.shields.io/github/license/pBouillon/MqttTopicBuilder.svg" alt="License"></a>
 </p>
 
 <p align="center">
@@ -122,3 +124,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
