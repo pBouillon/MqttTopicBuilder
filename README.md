@@ -1,10 +1,18 @@
-# MqttTopicBuilder
+<h1 align="center">
+  <a href="https://www.nuget.org/packages/MqttTopicBuilder">
+    MqttTopicBuilder
+  </a>
+</h1>
 
-[![NuGet](https://img.shields.io/nuget/v/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
-[![License](https://img.shields.io/github/license/pBouillon/MqttTopicBuilder.svg)](https://github.com/pBouillon/MqttTopicBuilder/blob/main/LICENSE)
+<p align="center">
+    [![NuGet](https://img.shields.io/nuget/v/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
+    [![NuGet Downloads](https://img.shields.io/nuget/dt/MqttTopicBuilder.svg)](https://www.nuget.org/packages/MqttTopicBuilder/)
+    [![License](https://img.shields.io/github/license/pBouillon/MqttTopicBuilder.svg)](https://github.com/pBouillon/MqttTopicBuilder/blob/main/LICENSE)
+</p>
 
-A lightweight, zero-dependency library for building and validating MQTT topics with compile-time safety.
+<p align="center">
+    Build valid and verified MQTT topics
+</p>
 
 ## Overview
 
@@ -54,8 +62,8 @@ Console.WriteLine(publishTopic);
 
 ### Topic Properties
 
-
 Access topic metadata through the `Topic` object:
+
 ```csharp
 var topic = new TopicBuilder(TopicConsumer.Subscriber)
     .AddTopic("home")
@@ -84,21 +92,28 @@ Console.WriteLine(topic.Levels);  // 3
 
 Validate topic strings before using them:
 
-```csharp
-// This will throw - multi-level wildcard must be at the end
-TopicValidator.ValidateTopic("sensors/#/temperature");
+Topic integrity can also be checked sing the `TopicValidator` methods:
 
-// This will throw - '+' is a wildcard and cannot be part of a topic name
-"invalid+topic".ValidateTopicForAppending();
+```csharp
+TopicValidator.ValidateTopic("a/wrong/#/Topic");
+// Will throw an exception since no topic is allowed after '#'
+
+"wrong+Topic".ValidateTopicForAppending();
+// Will throw an exception since '+' is not allowed in a topic
 ```
+
+MQTT Topics rules are checked, such as if the topic is not blank,
+is utf-8, does not contains any forbidden character, and so on.
+
+If any rule isn't respected, this will throw a specific exception, inheriting from the
+`MqttBaseException`.
 
 ## Features
 
-- **Zero dependencies** - Lightweight and framework-agnostic
-- **Publisher and Subscriber modes** - Build topics with validation rules specific to each use case
 - **Fluent API** - Intuitive builder pattern for constructing topics
 - **Validation** - Enforces MQTT specification rules
 - **Wildcard support** - Proper handling of single-level (`+`) and multi-level (`#`) wildcards
+- **Publisher and Subscriber modes** - Build topics with validation rules specific to each use case
 
 ## Contributing
 

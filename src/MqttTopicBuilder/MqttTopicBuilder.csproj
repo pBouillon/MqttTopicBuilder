@@ -9,7 +9,7 @@
     <!-- Package Metadata -->
     <PackageId>MqttTopicBuilder</PackageId>
     <Title>MqttTopicBuilder</Title>
-    <Description>📮 MqttTopicBuilder is a tool to build valid and verified MQTT topics</Description>
+    <Description>Build valid and verified MQTT topic.</Description>
     <Authors>Pierre Bouillon</Authors>
 
     <!-- Version (will be overridden by CI) -->
