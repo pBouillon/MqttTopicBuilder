@@ -1,15 +1,30 @@
-name: Continuous integration
+name: .NET CI
 
-on: [push]
+on:
+  pull_request:
+    branches: [main, master]
+
+  push:
+    branches: [main, master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-    - run: dotnet build --configuration Release
-    - run: dotnet test
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "9.x"
+
+      - name: Restore dependencies
+        run: dotnet restore MqttTopicBuilder.slnx
+
+      - name: Build
+        run: dotnet build MqttTopicBuilder.slnx --no-restore
+
+      - name: Test
+        run: dotnet test MqttTopicBuilder.slnx --no-build --verbosity normal

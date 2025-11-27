@@ -1,19 +1,48 @@
 name: Publish NuGet package
 
 on:
+  push:
+    tags:
+      - "v*"
+
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: src/
 
 jobs:
   publish:
-    name: push on nuget
+    name: Publish to NuGet
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v2
+      - name: Checkout code
+        uses: actions/checkout@v5
         with:
-          dotnet-version: 6.0.x
-      - run: dotnet pack ./MqttTopicBuilder --configuration Release
-      - name: Publish the package to nuget.org
-        run: dotnet nuget push */bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.NugetApiKey }}
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "9.x"
+
+      - name: Pack
+        run: dotnet pack ./MqttTopicBuilder --configuration Release --output ./nupkgs -p:Version=${{ steps.get_version.outputs.VERSION }}
+
+      - name: Publish to NuGet
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
