@@ -39,7 +39,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: "9.x"
+          dotnet-version: "10.x"
 
       - name: Pack
         run: dotnet pack ./MqttTopicBuilder --configuration Release --output ./nupkgs -p:Version=${{ steps.get_version.outputs.VERSION }}
