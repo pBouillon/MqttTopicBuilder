@@ -9,7 +9,7 @@ public class MustNotBeBlank : BaseRawTopicRule
 {
     /// <inheritdoc cref="Rule{T}.IsValid"/>
     protected override bool IsValid(string value)
-        => ! string.IsNullOrWhiteSpace(value);
+        => !string.IsNullOrWhiteSpace(value);
 
     /// <inheritdoc cref="Rule{T}.OnError"/>
     protected override void OnError()

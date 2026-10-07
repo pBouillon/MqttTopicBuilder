@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+
 using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
+
 using Shouldly;
-using System.Collections.Generic;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder;

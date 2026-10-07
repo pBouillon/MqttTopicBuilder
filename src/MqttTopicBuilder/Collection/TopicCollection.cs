@@ -23,7 +23,7 @@ internal class TopicCollection : ITopicCollection
     private readonly Queue<string> _stagedTopics;
 
     /// <inheritdoc cref="ITopicCollection.IsAppendingAllowed"/>
-    public bool IsAppendingAllowed 
+    public bool IsAppendingAllowed
         => IsEmpty || _stagedTopics.Last() != Mqtt.Wildcard.MultiLevel.ToString();
 
     /// <inheritdoc cref="ITopicCollection.IsEmpty"/>
@@ -79,7 +79,7 @@ internal class TopicCollection : ITopicCollection
     /// <inheritdoc cref="ITopicCollection.AddTopics"/>
     public ITopicCollection AddTopics(IEnumerable<string> topics)
         => topics.Aggregate(
-            (ITopicCollection) this,
+            (ITopicCollection)this,
             (current, topic) => current.AddTopic(topic));
 
     /// <summary>

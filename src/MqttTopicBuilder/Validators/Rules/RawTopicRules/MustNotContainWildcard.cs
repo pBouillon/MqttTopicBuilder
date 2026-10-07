@@ -1,4 +1,5 @@
 using System.Linq;
+
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 
@@ -10,7 +11,7 @@ namespace MqttTopicBuilder.Validators.Rules.RawTopicRules;
 public class MustNotContainWildcard : BaseRawTopicRule
 {
     /// <inheritdoc cref="Rule{T}.IsValid"/>
-    protected override bool IsValid( string value )
+    protected override bool IsValid(string value)
     {
         var wildcards = new[]
         {

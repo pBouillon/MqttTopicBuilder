@@ -1,7 +1,9 @@
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators;
+
 using Shouldly;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators;

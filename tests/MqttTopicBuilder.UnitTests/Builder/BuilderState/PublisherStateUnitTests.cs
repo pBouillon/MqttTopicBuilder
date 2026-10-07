@@ -1,7 +1,9 @@
 ﻿using MqttTopicBuilder.Builder;
 using MqttTopicBuilder.Builder.BuilderState;
 using MqttTopicBuilder.Exceptions;
+
 using Shouldly;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Builder.BuilderState;

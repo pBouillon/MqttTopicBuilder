@@ -13,7 +13,7 @@ public class MustNotHaveNullChar : BaseRawTopicRule
 {
     /// <inheritdoc cref="Rule{T}.IsValid"/>
     protected override bool IsValid(string value)
-        => ! value.Contains(Mqtt.Topic.NullCharacter);
+        => !value.Contains(Mqtt.Topic.NullCharacter);
 
     /// <inheritdoc cref="Rule{T}.OnError"/>
     protected override void OnError()

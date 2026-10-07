@@ -13,7 +13,7 @@ public class MustNotHaveSeparator : BaseRawTopicRule
 {
     /// <inheritdoc cref="Rule{T}.IsValid"/>
     protected override bool IsValid(string value)
-        => ! value.Contains(Mqtt.Topic.Separator);
+        => !value.Contains(Mqtt.Topic.Separator);
 
     /// <inheritdoc cref="Rule{T}.OnError"/>
     protected override void OnError()

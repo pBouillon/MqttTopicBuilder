@@ -11,7 +11,7 @@ namespace MqttTopicBuilder.Validators;
 /// </summary>
 public static class ValidatorFactory
 {
-    private static readonly Lazy<Validator<string>> PublishedTopicValidator = new(() 
+    private static readonly Lazy<Validator<string>> PublishedTopicValidator = new(()
         => Validator<string>.CreatePipelineWith(new MustNotContainWildcard()));
 
     private static readonly Lazy<Validator<string>> RawTopicValidator = new(()
@@ -39,7 +39,7 @@ public static class ValidatorFactory
     /// Get a validator with a set of rule to validate that a topic can be used on PUBLISH mode
     /// </summary>
     /// <returns>The validator to be used</returns>
-    public static Validator<string> GetPublishedTopicValidator() 
+    public static Validator<string> GetPublishedTopicValidator()
         => PublishedTopicValidator.Value;
 
     /// <summary>

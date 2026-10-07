@@ -1,5 +1,6 @@
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators.Rules.RawTopicRules;
+
 using Shouldly;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.RawTopicRules;

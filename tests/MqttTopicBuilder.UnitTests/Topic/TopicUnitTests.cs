@@ -1,6 +1,8 @@
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
+
 using Shouldly;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Topic;

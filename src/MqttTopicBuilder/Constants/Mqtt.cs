@@ -28,7 +28,7 @@ public class Mqtt
         /// <summary>
         /// Encoding of the forbidden null character
         /// </summary>
-        public const char NullCharacter = (char) 0;
+        public const char NullCharacter = (char)0;
 
         /// <summary>
         /// Default MQTT topic's separator

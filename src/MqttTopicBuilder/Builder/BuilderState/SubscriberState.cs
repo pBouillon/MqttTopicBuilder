@@ -16,7 +16,7 @@ internal class SubscriberState : BuilderState
     /// Default constructor
     /// </summary>
     /// <param name="topicBuilder">State context</param>
-    public SubscriberState(ITopicBuilder topicBuilder) 
+    public SubscriberState(ITopicBuilder topicBuilder)
         : base(topicBuilder) { }
 
     /// <inheritdoc cref="BuilderState.AddMultiLevelWildcard"/>
@@ -39,7 +39,7 @@ internal class SubscriberState : BuilderState
 
     /// <inheritdoc cref="BuilderState.AddTopics(string[])"/>
     public override ITopicBuilder AddTopics(params string[] topics)
-        => AddTopics((IEnumerable<string>) topics);
+        => AddTopics((IEnumerable<string>)topics);
 
     /// <inheritdoc cref="BuilderState.AddSingleLevelWildcard"/>
     public override ITopicBuilder AddSingleLevelWildcard()

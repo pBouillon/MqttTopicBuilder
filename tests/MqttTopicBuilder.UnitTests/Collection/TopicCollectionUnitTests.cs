@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 
-using Shouldly;
-
-
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Constants;
 using MqttTopicBuilder.Exceptions;
+
+using Shouldly;
 
 using Xunit;
 

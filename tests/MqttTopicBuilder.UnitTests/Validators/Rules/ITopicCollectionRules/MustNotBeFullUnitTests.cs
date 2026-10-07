@@ -3,7 +3,9 @@ using FakeItEasy;
 using MqttTopicBuilder.Collection;
 using MqttTopicBuilder.Exceptions;
 using MqttTopicBuilder.Validators.Rules.ITopicCollectionRules;
+
 using Shouldly;
+
 using Xunit;
 
 namespace MqttTopicBuilder.UnitTests.Validators.Rules.ITopicCollectionRules;
