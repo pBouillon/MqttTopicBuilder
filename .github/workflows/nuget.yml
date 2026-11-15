@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - "v*"
-
   workflow_dispatch:
 
 permissions:
@@ -18,6 +17,10 @@ jobs:
   publish:
     name: Publish to NuGet
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -35,7 +38,6 @@ jobs:
           fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Publishing version: $VERSION"
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
@@ -44,5 +46,11 @@ jobs:
       - name: Pack
         run: dotnet pack ./MqttTopicBuilder --configuration Release --output ./nupkgs -p:Version=${{ steps.get_version.outputs.VERSION }}
 
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: pbouillon
+
       - name: Publish to NuGet
-        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGETAPIKEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
