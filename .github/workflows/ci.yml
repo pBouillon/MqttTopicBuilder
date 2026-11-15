@@ -2,10 +2,10 @@ name: .NET CI
 
 on:
   pull_request:
-    branches: [main, master]
+    branches: [main,]
 
   push:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: "10.x"
+          dotnet-version: "11.x"
 
       - name: Restore dependencies
         run: dotnet restore MqttTopicBuilder.slnx
